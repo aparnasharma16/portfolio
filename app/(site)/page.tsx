@@ -36,7 +36,7 @@ export default function HomePage() {
 
       <HomeExperiencePreview jobs={experience} previewCount={3} />
 
-      <section className="mt-12 border-t border-[var(--border)] pt-10">
+      <section className="mt-8 border-t border-[var(--border)] pt-6">
         <h2 className="text-lg font-semibold text-[var(--foreground)]">
           Education
         </h2>

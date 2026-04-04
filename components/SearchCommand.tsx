@@ -1,7 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { createPortal } from "react-dom";
 
 const commands = [
   {
@@ -41,56 +48,222 @@ const commands = [
 export function SearchCommand() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+
+  // Hydration guard for portal
+  useEffect(() => setMounted(true), []);
 
   const close = useCallback(() => {
     setOpen(false);
     setQuery("");
+    setSelectedIndex(0);
   }, []);
+
+  // Lock body scroll when open
+  useEffect(() => {
+    if (open) {
+      const scrollY = window.scrollY;
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.left = "0";
+      document.body.style.right = "0";
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.position = "";
+        document.body.style.top = "";
+        document.body.style.left = "";
+        document.body.style.right = "";
+        document.body.style.overflow = "";
+        window.scrollTo(0, scrollY);
+      };
+    }
+  }, [open]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
         e.preventDefault();
-        setOpen((value) => !value);
+        setOpen((v) => !v);
       }
-      if (e.key === "Escape") {
-        setOpen(false);
-        setQuery("");
+      if (e.key === "Escape" && open) {
+        e.preventDefault();
+        close();
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [open, close]);
 
   useEffect(() => {
     if (!open) return;
-    const frame = window.requestAnimationFrame(() => {
-      inputRef.current?.focus();
-    });
-    return () => window.cancelAnimationFrame(frame);
+    const frame = requestAnimationFrame(() => inputRef.current?.focus());
+    return () => cancelAnimationFrame(frame);
   }, [open]);
 
-  const filteredCommands = useMemo(() => {
-    const normalized = query.trim().toLowerCase();
-    if (!normalized) return commands;
-
-    return commands.filter((command) => {
-      const haystack = [
-        command.title,
-        command.description,
-        command.shortcut,
-        ...command.keywords,
-      ]
+  const filtered = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    if (!q) return commands;
+    return commands.filter((c) => {
+      const hay = [c.title, c.description, c.shortcut, ...c.keywords]
         .join(" ")
         .toLowerCase();
-
-      return haystack.includes(normalized);
+      return hay.includes(q);
     });
   }, [query]);
 
+  useEffect(() => {
+    setSelectedIndex(0);
+  }, [query]);
+
+  // Keyboard nav
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "ArrowDown") {
+        e.preventDefault();
+        setSelectedIndex((i) => Math.min(i + 1, filtered.length - 1));
+      } else if (e.key === "ArrowUp") {
+        e.preventDefault();
+        setSelectedIndex((i) => Math.max(i - 1, 0));
+      } else if (e.key === "Enter" && filtered[selectedIndex]) {
+        e.preventDefault();
+        const el = listRef.current?.querySelector(
+          `[data-index="${selectedIndex}"]`
+        ) as HTMLAnchorElement | null;
+        el?.click();
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, filtered, selectedIndex]);
+
+  useEffect(() => {
+    if (!listRef.current) return;
+    const el = listRef.current.querySelector(`[data-index="${selectedIndex}"]`);
+    el?.scrollIntoView({ block: "nearest" });
+  }, [selectedIndex]);
+
+  const modal = open ? (
+    <div
+      className="fixed inset-0"
+      style={{ zIndex: 9999, isolation: "isolate" }}
+    >
+      {/* Full-screen dark overlay */}
+      <div
+        className="absolute inset-0 bg-black/60"
+        onClick={close}
+        aria-hidden
+      />
+      {/* Centered dialog */}
+      <div
+        className="relative flex h-full w-full items-start justify-center px-4 pt-[min(20vh,12rem)]"
+        role="dialog"
+        aria-modal="true"
+        aria-label="Command palette"
+        onClick={close}
+      >
+        <div
+          className="w-full max-w-[32rem] overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--background)] shadow-[0_25px_60px_-12px_rgba(0,0,0,0.35)]"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Search input */}
+          <div className="flex items-center gap-3 border-b border-[var(--border)] px-4 py-3.5">
+            <SearchIcon className="h-5 w-5 shrink-0 text-[var(--muted-fg)]" />
+            <input
+              ref={inputRef}
+              type="text"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder="Type a command or search..."
+              className="w-full bg-transparent text-[0.95rem] text-[var(--foreground)] outline-none placeholder:text-[var(--muted-fg)]"
+            />
+            <kbd className="shrink-0 rounded-md border border-[var(--border)] bg-[var(--secondary)] px-2 py-0.5 text-[0.7rem] font-medium text-[var(--muted-fg)]">
+              ESC
+            </kbd>
+          </div>
+
+          {/* Results */}
+          <div
+            ref={listRef}
+            className="max-h-[min(26rem,55vh)] overflow-y-auto overscroll-contain p-2"
+          >
+            <p className="px-3 py-2 text-[0.7rem] font-semibold uppercase tracking-widest text-[var(--muted-fg)]">
+              Navigation
+            </p>
+
+            {filtered.length > 0 ? (
+              <ul className="space-y-0.5">
+                {filtered.map((command, i) => {
+                  const Icon = command.icon;
+                  const isSelected = i === selectedIndex;
+                  return (
+                    <li key={command.href}>
+                      <Link
+                        href={command.href}
+                        data-index={i}
+                        onClick={close}
+                        onMouseEnter={() => setSelectedIndex(i)}
+                        className={`flex items-center gap-3.5 rounded-xl px-3 py-3 transition-colors ${
+                          isSelected
+                            ? "bg-[var(--secondary)]"
+                            : "hover:bg-[var(--secondary)]"
+                        }`}
+                      >
+                        <span className="flex h-7 w-7 shrink-0 items-center justify-center text-[var(--muted-fg)]">
+                          <Icon className="h-[1.15rem] w-[1.15rem]" />
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block text-[0.92rem] font-medium text-[var(--foreground)]">
+                            {command.title}
+                          </span>
+                          <span className="block text-[0.8rem] leading-snug text-[var(--muted-fg)]">
+                            {command.description}
+                          </span>
+                        </span>
+                        <kbd className="shrink-0 rounded-md border border-[var(--border)] bg-[var(--background)] px-2.5 py-1 text-[0.75rem] font-medium text-[var(--muted-fg)]">
+                          {command.shortcut}
+                        </kbd>
+                      </Link>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : (
+              <p className="px-3 py-8 text-center text-[0.88rem] text-[var(--muted-fg)]">
+                No matching commands found.
+              </p>
+            )}
+          </div>
+
+          {/* Footer */}
+          <div className="flex items-center justify-between border-t border-[var(--border)] px-4 py-2.5 text-[0.7rem] text-[var(--muted-fg)]">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1">
+                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">↑</kbd>
+                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">↓</kbd>
+                navigate
+              </span>
+              <span className="flex items-center gap-1">
+                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">↵</kbd>
+                select
+              </span>
+            </div>
+            <span className="flex items-center gap-1">
+              <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">⌘K</kbd>
+              to open
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : null;
+
   return (
     <>
+      {/* Mobile button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -99,6 +272,7 @@ export function SearchCommand() {
       >
         <SearchIcon className="h-4 w-4" />
       </button>
+      {/* Desktop button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -111,84 +285,8 @@ export function SearchCommand() {
         </span>
       </button>
 
-      {open ? (
-        <>
-          {/* Backdrop */}
-          <div
-            className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
-            onClick={close}
-            aria-hidden
-          />
-          {/* Modal */}
-          <div
-            className="fixed inset-0 z-[101] flex items-start justify-center p-4 pt-[min(18vh,10rem)]"
-            role="dialog"
-            aria-modal="true"
-            aria-label="Site search"
-            onClick={close}
-          >
-            <div
-              className="w-full max-w-[32rem] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--background)] shadow-2xl"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="flex items-center gap-3 border-b border-[var(--border)] px-4 py-3">
-                <SearchIcon className="h-5 w-5 shrink-0 text-[var(--muted-fg)]" />
-                <input
-                  ref={inputRef}
-                  type="text"
-                  value={query}
-                  onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Type a command or search..."
-                  className="w-full bg-transparent text-[0.95rem] text-[var(--foreground)] outline-none placeholder:text-[var(--muted-fg)]"
-                />
-              </div>
-
-              <div className="max-h-[24rem] overflow-y-auto p-2">
-                <p className="px-3 py-2 text-xs font-medium uppercase tracking-wider text-[var(--muted-fg)]">
-                  Navigation
-                </p>
-
-                <ul>
-                  {filteredCommands.length > 0 ? (
-                    filteredCommands.map((command) => {
-                      const Icon = command.icon;
-
-                      return (
-                        <li key={command.href}>
-                          <Link
-                            href={command.href}
-                            onClick={close}
-                            className="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-[var(--secondary)]"
-                          >
-                            <span className="flex h-6 w-6 shrink-0 items-center justify-center text-[var(--muted-fg)]">
-                              <Icon className="h-4 w-4" />
-                            </span>
-                            <span className="min-w-0 flex-1">
-                              <span className="block text-[0.9rem] font-medium text-[var(--foreground)]">
-                                {command.title}
-                              </span>
-                              <span className="block text-[0.8rem] text-[var(--muted-fg)]">
-                                {command.description}
-                              </span>
-                            </span>
-                            <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-2 py-0.5 text-[0.75rem] font-medium text-[var(--muted-fg)]">
-                              {command.shortcut}
-                            </kbd>
-                          </Link>
-                        </li>
-                      );
-                    })
-                  ) : (
-                    <li className="px-3 py-6 text-center text-[0.88rem] text-[var(--muted-fg)]">
-                      No matching commands found.
-                    </li>
-                  )}
-                </ul>
-              </div>
-            </div>
-          </div>
-        </>
-      ) : null}
+      {/* Portal to body so it's above everything including sticky header */}
+      {mounted ? createPortal(modal, document.body) : null}
     </>
   );
 }

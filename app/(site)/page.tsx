@@ -63,7 +63,11 @@ export default function HomePage() {
 
 function SocialLinks() {
   const iconClass =
-    "text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]";
+    "group relative text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]";
+  const tooltipClass =
+    "pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--foreground)] px-2 py-0.5 text-[0.65rem] font-medium text-[var(--background)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100";
+  const arrowClass =
+    "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rotate-45 bg-[var(--foreground)]";
   return (
     <>
       <a
@@ -74,6 +78,7 @@ function SocialLinks() {
         aria-label="X / Twitter"
       >
         <XIcon className="h-[1.1rem] w-[1.1rem]" />
+        <span className={tooltipClass}>X / Twitter<span className={arrowClass} /></span>
       </a>
       <a
         href={profile.links.linkedin}
@@ -83,6 +88,7 @@ function SocialLinks() {
         aria-label="LinkedIn"
       >
         <LinkedInIcon className="h-[1.1rem] w-[1.1rem]" />
+        <span className={tooltipClass}>LinkedIn<span className={arrowClass} /></span>
       </a>
       <a
         href={profile.links.github}
@@ -92,6 +98,7 @@ function SocialLinks() {
         aria-label="GitHub"
       >
         <GithubIcon className="h-[1.1rem] w-[1.1rem]" />
+        <span className={tooltipClass}>GitHub<span className={arrowClass} /></span>
       </a>
       <a
         href={profile.links.instagram}
@@ -101,6 +108,7 @@ function SocialLinks() {
         aria-label="Instagram"
       >
         <InstagramIcon className="h-[1.1rem] w-[1.1rem]" />
+        <span className={tooltipClass}>Instagram<span className={arrowClass} /></span>
       </a>
       <a
         href={profile.links.email}
@@ -108,6 +116,7 @@ function SocialLinks() {
         aria-label="Email"
       >
         <MailIcon className="h-[1.1rem] w-[1.1rem]" />
+        <span className={tooltipClass}>Email<span className={arrowClass} /></span>
       </a>
     </>
   );

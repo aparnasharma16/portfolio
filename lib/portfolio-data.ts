@@ -11,18 +11,17 @@ export const profile = {
   summary:
     "Senior Software Engineer at PayPal with over 7 years of expertise in the MERN stack (MongoDB, Express.js, React.js, Node.js) and hands-on experience with SFCC (Salesforce Commerce Cloud), HTML, JavaScript, TypeScript, CSS, RWD, Shopify, PHP, and MySQL. Proficient in API development and integration. Adept at writing test cases using Jest and committed to ensuring high code quality. Familiar with Kafka for event-driven architecture and a solid understanding of basic AWS services. Demonstrated strong leadership abilities through mentoring teams, conducting code reviews, and optimizing performance. Passionate about building scalable, high-performance applications and delivering robust solutions in payments, e-commerce, and full-stack development while staying updated with the latest technologies.",
   links: {
-    email: "mailto:your.email@example.com",
-    emailDisplay: "your.email@example.com",
-    linkedin: "https://www.linkedin.com/in/your-profile",
-    github: "https://github.com/your-username",
-    twitter: "https://x.com/your-handle",
-    instagram: "https://instagram.com/your-handle",
+    email: "mailto:aparnasharma157@gmail.com",
+    emailDisplay: "aparnasharma157@gmail.com",
+    linkedin: "https://www.linkedin.com/in/aparna-sharma-97006b141/",
+    github: "https://github.com/aparnasharma16",
+    twitter: "https://x.com/aparna1697",
+    instagram: "https://www.instagram.com/aparnasharma1601",
   },
   /** Set to e.g. "/resume.pdf" after adding the file under public/ */
   resumePdfPath: "",
 };
 
-/** Shown at the bottom of the Work page (reference-style quote block). */
 export const workPageQuote = {
   text: "Excellence is never an accident; it is the result of high intention and intelligent effort.",
   attribution: "Aristotle",
@@ -31,6 +30,7 @@ export const workPageQuote = {
 export type ExperienceEntry = {
   role: string;
   company: string;
+  logo?: string;
   location: string;
   workType: string;
   period: string;
@@ -44,6 +44,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Senior Software Engineer",
     company: "PayPal",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s",
     location: "Bengaluru, India",
     workType: "On-Site",
     period: "January 2026 – Present",
@@ -70,6 +71,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Technical Lead",
     company: "Dentsu",
+    logo: "https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg",
     location: "Bengaluru, India",
     workType: "On-Site",
     period: "November 2024 – December 2025",
@@ -96,6 +98,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Senior Frontend Developer",
     company: "Merkle, a dentsu company",
+    logo: "https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg",
     location: "Bengaluru, India",
     workType: "On-Site",
     period: "April 2023 – October 2024",
@@ -120,6 +123,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Frontend Developer",
     company: "Merkle, a dentsu company",
+    logo: "https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg",
     location: "Bengaluru, India",
     workType: "On-Site",
     period: "August 2021 – March 2023",
@@ -144,6 +148,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "PHP Developer",
     company: "ONS Tech",
+    logo: "https://www.onstechglobal.com/build/assets/ons_tech_logo-4dbdbfd3.png",
     location: "Chandigarh, India",
     workType: "On-Site",
     period: "August 2018 – July 2021",
@@ -159,6 +164,7 @@ export const experience: ExperienceEntry[] = [
   {
     role: "Trainee",
     company: "ONS Tech",
+    logo: "https://www.onstechglobal.com/build/assets/ons_tech_logo-4dbdbfd3.png",
     location: "Chandigarh, India",
     workType: "On-Site",
     period: "January 2018 – July 2018",
@@ -175,6 +181,7 @@ export const experience: ExperienceEntry[] = [
 export const education = {
   degree: "B.E., Computer Science & Engineering",
   school: "Chitkara Institute of Engineering & Technology",
+  logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaGkBGFJe-tIGpvst2pWJCQkUFMhDuJ-qM4A&s",
   years: "2014 — 2018",
 } as const;
 

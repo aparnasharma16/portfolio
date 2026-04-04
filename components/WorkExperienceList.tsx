@@ -1,3 +1,4 @@
+import { CompanyLogo } from "@/components/CompanyLogo";
 import { TechIcon } from "@/components/TechIcon";
 import type { ExperienceEntry } from "@/lib/portfolio-data";
 
@@ -12,23 +13,34 @@ export function WorkExperienceList({ jobs }: { jobs: ExperienceEntry[] }) {
           {/* Company header + date/location */}
           <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
             <div className="min-w-0">
-              <div className="flex flex-wrap items-center gap-2">
-                <h3 className="text-[1.15rem] font-bold leading-snug tracking-[-0.02em] text-[var(--foreground)]">
-                  {job.company}
-                </h3>
-                {job.current ? (
-                  <span className="inline-flex items-center gap-1.5 rounded-xl border border-[#86efac] bg-[#f0fdf4] px-2.5 py-0.5 text-[0.8rem] font-medium text-[#166534] dark:border-[#14532d] dark:bg-[#052e16] dark:text-[#bbf7d0]">
-                    <span
-                      className="h-2 w-2 rounded-full bg-[#4ade80]"
-                      aria-hidden
-                    />
-                    Working
-                  </span>
+              <div className="flex items-start gap-3">
+                {job.logo ? (
+                  <CompanyLogo
+                    src={job.logo}
+                    alt={`${job.company} logo`}
+                    size="md"
+                  />
                 ) : null}
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <h3 className="text-[1.15rem] font-bold leading-snug tracking-[-0.02em] text-[var(--foreground)]">
+                      {job.company}
+                    </h3>
+                    {job.current ? (
+                      <span className="inline-flex items-center gap-1.5 rounded-xl border border-[#86efac] bg-[#f0fdf4] px-2.5 py-0.5 text-[0.8rem] font-medium text-[#166534] dark:border-[#14532d] dark:bg-[#052e16] dark:text-[#bbf7d0]">
+                        <span
+                          className="h-2 w-2 rounded-full bg-[#4ade80]"
+                          aria-hidden
+                        />
+                        Working
+                      </span>
+                    ) : null}
+                  </div>
+                  <p className="mt-0.5 text-[0.88rem] leading-6 text-[var(--muted-fg)]">
+                    {job.role}
+                  </p>
+                </div>
               </div>
-              <p className="mt-0.5 text-[0.88rem] leading-6 text-[var(--muted-fg)]">
-                {job.role}
-              </p>
             </div>
             <div className="shrink-0 text-left text-[0.88rem] leading-6 text-[var(--muted-fg)] sm:text-right">
               <p>{job.period}</p>

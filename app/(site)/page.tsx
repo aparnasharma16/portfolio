@@ -1,4 +1,5 @@
 import { CopyEmailButton } from "@/components/CopyEmailButton";
+import { CompanyLogo } from "@/components/CompanyLogo";
 import { HomeExperiencePreview } from "@/components/HomeExperiencePreview";
 import {
   accomplishments,
@@ -36,9 +37,16 @@ export default function HomePage() {
         <h2 className="text-lg font-semibold text-[var(--foreground)]">
           Education
         </h2>
-        <p className="mt-2 text-sm text-[var(--muted-fg)]">
-          {education.degree} — {education.school} ({education.years})
-        </p>
+        <div className="mt-3 flex items-start gap-3">
+          <CompanyLogo
+            src={education.logo}
+            alt={`${education.school} logo`}
+            size="sm"
+          />
+          <p className="min-w-0 pt-0.5 text-sm text-[var(--muted-fg)]">
+            {education.degree} — {education.school} ({education.years})
+          </p>
+        </div>
       </section>
 
       <section className="mt-8">

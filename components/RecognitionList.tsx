@@ -14,6 +14,7 @@ export function RecognitionList({ items }: { items: readonly Item[] }) {
         eyebrow="Recognition"
         title="Certifications and awards"
         description="Signals of consistency matter too. These recognitions support the delivery and ownership story shown across the rest of the portfolio."
+        icon={<AwardIcon className="h-4 w-4" />}
       />
       <div className="mt-6 space-y-3">
         {items.map((item) => (
@@ -39,5 +40,14 @@ export function RecognitionList({ items }: { items: readonly Item[] }) {
         ))}
       </div>
     </section>
+  );
+}
+
+function AwardIcon({ className }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <circle cx="12" cy="8" r="5" />
+      <path d="m8.5 13.5-1.5 7 5-2.8 5 2.8-1.5-7" />
+    </svg>
   );
 }

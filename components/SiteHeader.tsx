@@ -17,10 +17,10 @@ export function SiteHeader() {
 
   return (
     <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--background)]/88 backdrop-blur-md">
-      <div className="mx-auto flex max-w-2xl items-center gap-2 px-5 py-4">
-        <div className="w-[4.5rem] shrink-0 sm:w-24" aria-hidden />
+      <div className="mx-auto flex max-w-4xl items-center gap-2 px-5 py-4">
+        <div className="w-[7rem] shrink-0 sm:w-[8.5rem]" aria-hidden />
         <nav
-          className="flex min-w-0 flex-1 flex-wrap items-center justify-center gap-x-7 gap-y-2 text-[0.92rem] font-medium tracking-[-0.015em]"
+          className="flex min-w-0 flex-1 flex-wrap items-center justify-center gap-x-8 gap-y-2 text-[0.92rem] font-medium tracking-[-0.015em]"
           aria-label="Primary"
         >
           {nav.map((item) => {
@@ -43,7 +43,7 @@ export function SiteHeader() {
             );
           })}
         </nav>
-        <div className="flex w-[4.5rem] shrink-0 items-center justify-end gap-2 sm:w-24">
+        <div className="flex w-[8rem] shrink-0 items-center justify-end gap-2 sm:w-[9rem]">
           <SearchCommand />
           <ThemeToggle />
         </div>

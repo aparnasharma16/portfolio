@@ -102,7 +102,7 @@ export function SearchCommand() {
       <button
         type="button"
         onClick={() => setOpen(true)}
-        className="hidden h-10 items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--background)] px-3 text-[0.9rem] text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:flex"
+        className="hidden h-10 min-w-[6.8rem] items-center justify-center gap-2 rounded-full border border-[var(--border)] bg-[var(--background)] px-3.5 text-[0.9rem] text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:flex"
         aria-label="Open search"
       >
         <SearchIcon className="h-4 w-4" />

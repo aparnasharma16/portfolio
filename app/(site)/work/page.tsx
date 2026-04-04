@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
+import { PageQuote } from "@/components/PageQuote";
 import { WorkExperienceList } from "@/components/WorkExperienceList";
-import { WorkPageQuote } from "@/components/WorkPageQuote";
-import { experience, profile } from "@/lib/portfolio-data";
+import { experience, profile, sitePageQuotes } from "@/lib/portfolio-data";
 
 export const metadata: Metadata = {
   title: `Work — ${profile.name}`,
@@ -20,7 +20,7 @@ export default function WorkPage() {
       <div className="mt-10">
         <WorkExperienceList jobs={experience} />
       </div>
-      <WorkPageQuote />
+      <PageQuote quote={sitePageQuotes.work} />
     </main>
   );
 }

@@ -5,6 +5,7 @@ import type { ReactNode } from 'react';
 const navigate = [
   { href: '/', label: 'Home' },
   { href: '/work', label: 'Work' },
+  { href: '/impact', label: 'Impact' },
   { href: '/blog', label: 'Blog' },
   { href: '/resume', label: 'Resume' },
 ] as const;

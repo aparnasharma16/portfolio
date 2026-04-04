@@ -2,14 +2,20 @@ export const profile = {
   name: "Aparna Sharma",
   title: "Senior Software Engineer",
   location: "Bengaluru, India",
-  /** Short line under name: roles · email */
-  identityLine: "Senior Software Engineer · MERN & commerce",
+  identityLine: "Senior Software Engineer · MERN · payments · commerce",
   tagline:
-    "Love to build scalable products, mentor engineers, and ship high-quality experiences in payments and e-commerce.",
+    "I build reliable, high-quality products across frontend, backend, and commerce platforms, with a strong focus on delivery ownership and engineering quality.",
+  valueProposition:
+    "Engineering leader and senior IC with 7+ years shipping payment and commerce experiences, improving product quality, and mentoring teams across fast-moving product organizations.",
   metaDescription:
     "Senior Software Engineer at PayPal (7+ yrs): MERN, SFCC, APIs, Jest, microservices, and e-commerce. Bengaluru.",
   summary:
     "Senior Software Engineer at PayPal with over 7 years of expertise in the MERN stack (MongoDB, Express.js, React.js, Node.js) and hands-on experience with SFCC (Salesforce Commerce Cloud), HTML, JavaScript, TypeScript, CSS, RWD, Shopify, PHP, and MySQL. Proficient in API development and integration. Adept at writing test cases using Jest and committed to ensuring high code quality. Familiar with Kafka for event-driven architecture and a solid understanding of basic AWS services. Demonstrated strong leadership abilities through mentoring teams, conducting code reviews, and optimizing performance. Passionate about building scalable, high-performance applications and delivering robust solutions in payments, e-commerce, and full-stack development while staying updated with the latest technologies.",
+  yearsExperience: "7+ years",
+  primaryFocus: "Frontend systems, full-stack delivery, payments, and commerce",
+  availabilityNote:
+    "Open to senior frontend and full-stack engineering roles with strong product ownership, quality focus, and mentoring opportunities.",
+  resumeLastUpdated: "April 2026",
   links: {
     email: "mailto:aparnasharma157@gmail.com",
     emailDisplay: "aparnasharma157@gmail.com",
@@ -18,14 +24,194 @@ export const profile = {
     twitter: "https://x.com/aparna1697",
     instagram: "https://www.instagram.com/aparnasharma1601",
   },
-  /** Set to e.g. "/resume.pdf" after adding the file under public/ */
   resumePdfPath: "",
 };
 
-export const workPageQuote = {
-  text: "Excellence is never an accident; it is the result of high intention and intelligent effort.",
-  attribution: "Aristotle",
+export type SitePageQuoteKey = "home" | "work" | "impact" | "blog" | "resume";
+
+export const sitePageQuotes: Record<
+  SitePageQuoteKey,
+  { text: string; attribution: string }
+> = {
+  home: {
+    text: "Be steadfast in yoga. Perform your duties without attachment to success or failure. Such equanimity is called yoga.",
+    attribution: "Bhagavad Gita, 2.48",
+  },
+  work: {
+    text: "You have a right to perform your prescribed duty, but you are not entitled to the fruits of your actions.",
+    attribution: "Bhagavad Gita, 2.47",
+  },
+  impact: {
+    text: "By devotion to one's own natural duty, a person attains perfection.",
+    attribution: "Bhagavad Gita, 18.45",
+  },
+  blog: {
+    text: "In this world, there is nothing so purifying as true knowledge.",
+    attribution: "Bhagavad Gita, 4.38",
+  },
+  resume: {
+    text: "A person must elevate themselves by their own mind, and not degrade themselves. The mind is the friend of the conditioned soul, and their enemy as well.",
+    attribution: "Bhagavad Gita, 6.5",
+  },
 } as const;
+
+export type ExpertiseArea = {
+  label: string;
+  description: string;
+};
+
+export const expertiseAreas: ExpertiseArea[] = [
+  {
+    label: "Frontend Engineering",
+    description:
+      "Build accessible, scalable interfaces in React and TypeScript with strong performance and maintainability.",
+  },
+  {
+    label: "Full-Stack Delivery",
+    description:
+      "Own features end-to-end across APIs, services, testing, release workflows, and production readiness.",
+  },
+  {
+    label: "E-commerce & Payments",
+    description:
+      "Deliver checkout, commerce, and customer-facing flows where reliability, trust, and speed matter.",
+  },
+  {
+    label: "Leadership & Mentoring",
+    description:
+      "Guide engineers through reviews, standards, testing strategy, and execution without losing delivery pace.",
+  },
+];
+
+export type FeaturedWin = {
+  metric: string;
+  title: string;
+  summary: string;
+};
+
+export const featuredWins: FeaturedWin[] = [
+  {
+    metric: "35%",
+    title: "Lower API latency",
+    summary:
+      "Improved payment-service response times through query optimization and smarter caching strategies.",
+  },
+  {
+    metric: "90%+",
+    title: "Coverage on critical flows",
+    summary:
+      "Built Playwright and Jest coverage for high-value checkout journeys to raise release confidence.",
+  },
+  {
+    metric: "8 engineers",
+    title: "Led delivery teams",
+    summary:
+      "Managed execution, architecture direction, and engineering standards while shipping MERN products.",
+  },
+  {
+    metric: "45%",
+    title: "Fewer production bugs",
+    summary:
+      "Introduced stronger E2E and unit testing practices that materially reduced release regressions.",
+  },
+  {
+    metric: "50K+",
+    title: "Daily active users served",
+    summary:
+      "Built commerce experiences at scale across multi-site storefronts used across North American markets.",
+  },
+];
+
+export type ExpertiseGroup = {
+  title: string;
+  items: string[];
+};
+
+export const coreExpertise: ExpertiseGroup[] = [
+  {
+    title: "Frontend",
+    items: ["React", "TypeScript", "Redux", "Tailwind CSS", "Responsive UI"],
+  },
+  {
+    title: "Backend",
+    items: ["Node.js", "Express", "REST APIs", "GraphQL", "MySQL"],
+  },
+  {
+    title: "Testing",
+    items: ["Jest", "Cypress", "Playwright", "Regression strategy", "QA collaboration"],
+  },
+  {
+    title: "Commerce",
+    items: ["PayPal", "Shopify", "SFCC", "WooCommerce", "Checkout flows"],
+  },
+  {
+    title: "Leadership",
+    items: ["Mentoring", "Code reviews", "Delivery ownership", "Standards", "Cross-team coordination"],
+  },
+];
+
+export type CaseStudy = {
+  title: string;
+  company: string;
+  period: string;
+  context: string;
+  problem: string;
+  ownership: string;
+  outcome: string;
+  tech: string[];
+};
+
+export const caseStudies: CaseStudy[] = [
+  {
+    title: "Checkout and payment experience improvements",
+    company: "PayPal",
+    period: "2026 – Present",
+    context:
+      "Worked on payment experiences used in high-traffic checkout journeys where stability and speed directly affect customer trust.",
+    problem:
+      "Critical transaction flows needed stronger reliability, faster API performance, and better release confidence across environments.",
+    ownership:
+      "Owned full-stack feature delivery across React, Node.js, and GraphQL, and built automated test coverage for critical checkout paths.",
+    outcome:
+      "Reduced API latency by 35%, improved confidence with 90%+ coverage on key flows, and supported zero-downtime releases with production-ready delivery practices.",
+    tech: ["React", "TypeScript", "Node.js", "GraphQL", "Jest", "Playwright", "AWS"],
+  },
+  {
+    title: "Monolith to microservices migration leadership",
+    company: "Dentsu",
+    period: "2024 – 2025",
+    context:
+      "Led a team delivering MERN applications while the platform evolved toward more scalable and resilient architecture.",
+    problem:
+      "The existing system was slowing delivery and increasing operational risk, with testing and deployment quality needing improvement as the system grew.",
+    ownership:
+      "Led a team of 8 engineers, guided migration decisions, introduced better testing standards, and helped shape documentation and release practices.",
+    outcome:
+      "Reduced downtime by 30%, lowered production bugs by 45%, and strengthened engineering consistency through reviews, API standards, and CI/CD practices.",
+    tech: ["MongoDB", "Express", "React", "Node.js", "Kafka", "Jest", "Cypress", "MySQL"],
+  },
+  {
+    title: "Reusable commerce frontend systems",
+    company: "Merkle / dentsu",
+    period: "2021 – 2024",
+    context:
+      "Built storefront and platform capabilities for e-commerce teams serving multiple markets and product teams.",
+    problem:
+      "Teams needed faster feature delivery, stronger consistency across interfaces, and better confidence in complex user-facing flows.",
+    ownership:
+      "Built reusable component patterns, customized commerce frontends, implemented Cypress coverage, and mentored junior engineers on scalable React practices.",
+    outcome:
+      "Improved delivery speed by 40%, reached 95% regression coverage for critical journeys, and helped reduce page-load time by around 2 seconds.",
+    tech: ["React", "TypeScript", "Redux", "Shopify", "GraphQL", "Tailwind CSS", "Cypress"],
+  },
+];
+
+export const leadershipHighlights = [
+  "Led teams of up to 8 engineers with end-to-end ownership across architecture, delivery, and release readiness.",
+  "Mentored junior developers on React, testing, responsive design, and maintainable engineering patterns.",
+  "Raised code quality through review standards, documentation discipline, and stronger release processes.",
+  "Balanced hands-on implementation with technical direction in product environments where execution speed mattered.",
+] as const;
 
 export type ExperienceEntry = {
   role: string;
@@ -186,29 +372,51 @@ export const education = {
 } as const;
 
 export const accomplishments = [
-  { title: "Certified AI Associate", org: "Salesforce", date: "Oct 17, 2024" },
-  { title: "Q4 Make It Real Award", org: "Merkle / dentsu", date: "2023" },
+  {
+    title: "Certified AI Associate",
+    org: "Salesforce",
+    date: "Oct 17, 2024",
+    note: "Validated applied AI fundamentals and practical product understanding.",
+  },
+  {
+    title: "Q4 Make It Real Award",
+    org: "Merkle / dentsu",
+    date: "2023",
+    note: "Recognized for delivery impact and contribution to product execution.",
+  },
   {
     title: "Certified JavaScript Developer I",
     org: "Salesforce",
     date: "Jul 10, 2023",
+    note: "Demonstrated strong JavaScript foundation across modern application work.",
   },
-  { title: "Q3 Trail Blazer Award", org: "Merkle / dentsu", date: "2022" },
+  {
+    title: "Q3 Trail Blazer Award",
+    org: "Merkle / dentsu",
+    date: "2022",
+    note: "Recognized for initiative, ownership, and engineering contribution.",
+  },
 ] as const;
 
-export const blogPosts = [
-  {
-    slug: "shipping-quality-at-scale",
-    title: "Shipping quality at scale",
-    description:
-      "Notes on code review, testing, and pragmatic architecture in product teams.",
-    date: "Mar 15, 2026",
-  },
+export type BlogPost = {
+  slug: string;
+  title: string;
+  description: string;
+  date: string;
+};
+
+export const blogPosts: BlogPost[] = [];
+
+export const upcomingBlogTopics = [
+  "How I improve frontend quality at scale",
+  "What I learned leading teams in commerce projects",
+  "A practical testing strategy with Jest, Cypress, and Playwright",
 ] as const;
 
 export const searchLinks = [
   { href: "/", label: "Home", hint: "Landing" },
   { href: "/work", label: "Work", hint: "Experience" },
+  { href: "/impact", label: "Impact", hint: "Case studies" },
   { href: "/blog", label: "Blog", hint: "Writing" },
   { href: "/resume", label: "Resume", hint: "CV" },
 ] as const;

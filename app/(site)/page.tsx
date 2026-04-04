@@ -1,17 +1,32 @@
 import { CopyEmailButton } from "@/components/CopyEmailButton";
+import { CaseStudiesList } from "@/components/CaseStudiesList";
 import { CompanyLogo } from "@/components/CompanyLogo";
+import { ExpertiseGrid } from "@/components/ExpertiseGrid";
+import { FeaturedWins } from "@/components/FeaturedWins";
 import { HomeExperiencePreview } from "@/components/HomeExperiencePreview";
+import { LeadershipHighlights } from "@/components/LeadershipHighlights";
+import { RecognitionList } from "@/components/RecognitionList";
+import Link from "next/link";
+import { PageQuote } from "@/components/PageQuote";
 import {
   accomplishments,
+  caseStudies,
   education,
+  expertiseAreas,
   experience,
+  featuredWins,
+  leadershipHighlights,
   profile,
+  sitePageQuotes,
 } from "@/lib/portfolio-data";
 
 export default function HomePage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-16">
       <div>
+        <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
+          Bengaluru, India · {profile.yearsExperience}
+        </p>
         <h1 className="text-[1.75rem] font-bold tracking-[-0.03em] text-[var(--foreground)] md:text-[2rem]">
           {profile.name}
         </h1>
@@ -26,12 +41,42 @@ export default function HomePage() {
         <p className="mt-4 text-[0.92rem] leading-relaxed text-[var(--muted-fg)]">
           {profile.tagline}
         </p>
+        <p className="mt-3 max-w-2xl text-[0.98rem] leading-7 text-[var(--foreground)]">
+          {profile.valueProposition}
+        </p>
         <div className="mt-5 flex flex-wrap items-center gap-4">
           <SocialLinks />
+        </div>
+        <div className="mt-6 flex flex-wrap gap-3">
+          <Link
+            href="/resume"
+            className="inline-flex items-center gap-2 rounded-lg bg-[var(--foreground)] px-4 py-2 text-sm font-medium text-[var(--background)] transition-opacity hover:opacity-90"
+          >
+            <ResumeIcon className="h-4 w-4" />
+            View resume
+          </Link>
+          <Link
+            href="/work"
+            className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+          >
+            Read work experience
+          </Link>
+          <a
+            href={profile.links.email}
+            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+          >
+            <MailIcon className="h-4 w-4" />
+            Email me
+          </a>
         </div>
       </div>
 
       <HomeExperiencePreview jobs={experience} previewCount={3} />
+      <ExpertiseGrid items={expertiseAreas} />
+      <FeaturedWins wins={featuredWins} />
+      <CaseStudiesList studies={caseStudies} compact />
+      <LeadershipHighlights items={leadershipHighlights} />
+      <RecognitionList items={accomplishments} />
 
       <section className="mt-8 border-t border-[var(--border)] pt-6">
         <h2 className="text-lg font-semibold text-[var(--foreground)]">
@@ -49,22 +94,41 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className="mt-8">
-        <h2 className="text-lg font-semibold text-[var(--foreground)]">
-          Accomplishments
+      <section className="mt-14 rounded-[1.5rem] border border-[var(--border)] bg-[var(--chip-bg)] px-6 py-7">
+        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
+          Contact
+        </p>
+        <h2 className="mt-2 text-[1.25rem] font-semibold tracking-[-0.03em] text-[var(--foreground)]">
+          Let&apos;s talk about impactful product engineering
         </h2>
-        <ul className="mt-4 space-y-3 text-sm text-[var(--muted-fg)]">
-          {accomplishments.map((a) => (
-            <li key={a.title}>
-              <span className="font-medium text-[var(--foreground)]">
-                {a.title}
-              </span>
-              <span className="text-[var(--subtle)]"> · </span>
-              {a.org} ({a.date})
-            </li>
-          ))}
-        </ul>
+        <p className="mt-3 max-w-xl text-[0.9rem] leading-7 text-[var(--muted-fg)]">
+          {profile.availabilityNote}
+        </p>
+        <div className="mt-5 flex flex-wrap gap-3 text-sm">
+          <a
+            href={profile.links.email}
+            className="rounded-lg bg-[var(--foreground)] px-4 py-2 font-medium text-[var(--background)] transition-opacity hover:opacity-90"
+          >
+            {profile.links.emailDisplay}
+          </a>
+          <a
+            href={profile.links.linkedin}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+          >
+            LinkedIn
+          </a>
+          <Link
+            href="/impact"
+            className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+          >
+            View impact highlights
+          </Link>
+        </div>
       </section>
+
+      <PageQuote quote={sitePageQuotes.home} />
     </main>
   );
 }
@@ -174,6 +238,25 @@ function MailIcon({ className }: { className?: string }) {
     >
       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
       <path d="m22 6-10 7L2 6" />
+    </svg>
+  );
+}
+
+function ResumeIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M7 3.5h7l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V5A1.5 1.5 0 0 1 7.5 3.5Z" />
+      <path d="M14 3.5V8h4" />
+      <path d="M9 12h6M9 16h6" />
     </svg>
   );
 }

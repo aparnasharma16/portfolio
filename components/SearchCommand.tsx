@@ -7,6 +7,7 @@ import {
   useMemo,
   useRef,
   useState,
+  useSyncExternalStore,
 } from "react";
 import { createPortal } from "react-dom";
 
@@ -26,6 +27,14 @@ const commands = [
     keywords: ["work", "experience", "career"],
     shortcut: "W",
     icon: BriefcaseIcon,
+  },
+  {
+    href: "/impact",
+    title: "Go to Impact",
+    description: "View case studies and impact highlights",
+    keywords: ["impact", "case studies", "proof", "highlights"],
+    shortcut: "I",
+    icon: SparklesIcon,
   },
   {
     href: "/blog",
@@ -49,12 +58,13 @@ export function SearchCommand() {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [selectedIndex, setSelectedIndex] = useState(0);
-  const [mounted, setMounted] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
-
-  // Hydration guard for portal
-  useEffect(() => setMounted(true), []);
+  const mounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
 
   const close = useCallback(() => {
     setOpen(false);
@@ -112,10 +122,6 @@ export function SearchCommand() {
         .toLowerCase();
       return hay.includes(q);
     });
-  }, [query]);
-
-  useEffect(() => {
-    setSelectedIndex(0);
   }, [query]);
 
   // Keyboard nav
@@ -176,7 +182,10 @@ export function SearchCommand() {
               ref={inputRef}
               type="text"
               value={query}
-              onChange={(e) => setQuery(e.target.value)}
+              onChange={(e) => {
+                setQuery(e.target.value);
+                setSelectedIndex(0);
+              }}
               placeholder="Type a command or search..."
               className="w-full bg-transparent text-[0.95rem] text-[var(--foreground)] outline-none placeholder:text-[var(--muted-fg)]"
             />
@@ -380,6 +389,25 @@ function FileTextIcon({ className }: { className?: string }) {
       <path d="M7 3.5h7l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V5A1.5 1.5 0 0 1 7.5 3.5Z" />
       <path d="M14 3.5V8h4" />
       <path d="M9 12h6M9 16h6" />
+    </svg>
+  );
+}
+
+function SparklesIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="m12 3 1.9 4.1L18 9l-4.1 1.9L12 15l-1.9-4.1L6 9l4.1-1.9L12 3Z" />
+      <path d="M5 16l.9 2.1L8 19l-2.1.9L5 22l-.9-2.1L2 19l2.1-.9L5 16Z" />
+      <path d="M19 14l1.2 2.8L23 18l-2.8 1.2L19 22l-1.2-2.8L15 18l2.8-1.2L19 14Z" />
     </svg>
   );
 }

@@ -9,45 +9,34 @@ import {
 
 export default function HomePage() {
   return (
-    <main id="main" className="mx-auto max-w-2xl px-5 py-16 md:py-24">
-      <div className="flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-10">
-        <div
-          className="mx-auto flex h-24 w-24 shrink-0 items-center justify-center rounded-full border-2 border-dashed border-[var(--border-strong)] bg-[var(--chip-bg)] text-2xl font-semibold text-[var(--muted-fg)] sm:mx-0"
-          aria-hidden
-        >
-          {profile.name
-            .split(" ")
-            .map((n) => n[0])
-            .join("")}
+    <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-16">
+      <div>
+        <h1 className="text-3xl font-semibold tracking-tight text-[var(--foreground)] md:text-4xl">
+          {profile.name}
+        </h1>
+        <p className="mt-2 flex flex-wrap items-center gap-2 text-sm text-[var(--muted-fg)]">
+          <span>{profile.identityLine}</span>
+          <span className="text-[var(--subtle)]">·</span>
+          <span className="inline-flex items-center gap-1">
+            {profile.links.emailDisplay}
+            <CopyEmailButton />
+          </span>
+        </p>
+        <p className="mt-3 text-base leading-relaxed text-[var(--muted-fg)]">
+          {profile.tagline}
+        </p>
+        <div className="mt-5 flex flex-wrap items-center gap-3">
+          <SocialLinks />
         </div>
-        <div className="min-w-0 flex-1 text-center sm:text-left">
-          <h1 className="text-3xl font-semibold tracking-tight text-[var(--foreground)] md:text-4xl">
-            {profile.name}
-          </h1>
-          <p className="mt-2 flex flex-wrap items-center justify-center gap-2 text-sm text-[var(--muted-fg)] sm:justify-start">
-            <span>{profile.identityLine}</span>
-            <span className="text-[var(--subtle)]">·</span>
-            <span className="inline-flex items-center gap-1">
-              {profile.links.emailDisplay}
-              <CopyEmailButton />
-            </span>
-          </p>
-          <p className="mt-6 text-base leading-relaxed text-[var(--muted-fg)]">
-            {profile.tagline}
-          </p>
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-3 sm:justify-start">
-            <SocialLinks />
-          </div>
-          <p className="mt-10 text-sm leading-relaxed text-[var(--muted-fg)]">
-            {profile.summary.slice(0, 280)}
-            {profile.summary.length > 280 ? "…" : ""}
-          </p>
-        </div>
+        <p className="mt-6 text-sm leading-relaxed text-[var(--muted-fg)]">
+          {profile.summary.slice(0, 280)}
+          {profile.summary.length > 280 ? "…" : ""}
+        </p>
       </div>
 
       <HomeExperiencePreview jobs={experience} previewCount={3} />
 
-      <section className="mt-20 border-t border-[var(--border)] pt-16">
+      <section className="mt-12 border-t border-[var(--border)] pt-10">
         <h2 className="text-lg font-semibold text-[var(--foreground)]">
           Education
         </h2>
@@ -56,7 +45,7 @@ export default function HomePage() {
         </p>
       </section>
 
-      <section className="mt-12">
+      <section className="mt-8">
         <h2 className="text-lg font-semibold text-[var(--foreground)]">
           Accomplishments
         </h2>

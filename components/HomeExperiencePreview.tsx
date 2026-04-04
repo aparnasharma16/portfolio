@@ -16,18 +16,18 @@ export function HomeExperiencePreview({
   const hasMore = jobs.length > visible.length;
 
   return (
-    <section className="mt-20 border-t border-[var(--border)] pt-16">
+    <section className="mt-12 border-t border-[var(--border)] pt-10">
       <h2 className="text-2xl font-semibold tracking-tight text-[var(--foreground)] md:text-3xl">
         Experience
       </h2>
-      <ul className="mt-10 space-y-0">
+      <ul className="mt-6 space-y-0">
         {visible.map((job, i) => (
           <li
             key={`${job.company}-${job.period}`}
             className={
               i < visible.length - 1
-                ? "border-b border-[var(--border)] py-8 first:pt-0"
-                : "pt-8 first:pt-0"
+                ? "border-b border-[var(--border)] py-5 first:pt-0"
+                : "pt-5 first:pt-0"
             }
           >
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
@@ -58,7 +58,7 @@ export function HomeExperiencePreview({
           </li>
         ))}
       </ul>
-      <div className="mt-10 flex justify-center">
+      <div className="mt-6 flex justify-center">
         <Link
           href="/work"
           className="rounded-lg border border-[var(--border)] bg-[var(--secondary)] px-6 py-2.5 text-sm font-medium text-[var(--secondary-foreground)] transition-opacity hover:opacity-90"

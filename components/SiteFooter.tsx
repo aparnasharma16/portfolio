@@ -12,7 +12,7 @@ const navigate = [
 export function SiteFooter() {
   return (
     <footer className="border-t border-[var(--border)]">
-      <div className="mx-auto max-w-3xl px-5 py-14">
+      <div className="mx-auto max-w-3xl px-5 py-10">
         <div className="grid gap-12 sm:grid-cols-2 sm:gap-10">
           <div>
             <h2 className="text-xs font-semibold uppercase tracking-[0.2em] text-[var(--subtle)]">
@@ -64,7 +64,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-12 border-t border-[var(--border)] pt-8">
+        <div className="mt-8 border-t border-[var(--border)] pt-6">
           <p className="text-center text-xs text-[var(--muted-fg)] sm:text-left">
             © {new Date().getFullYear()} {profile.name}. All rights reserved.
           </p>

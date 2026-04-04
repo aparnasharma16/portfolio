@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { CompanyLogo } from "@/components/CompanyLogo";
+import { MotionPress, getExpandTransition } from "@/components/SubtleMotion";
 import type { ExperienceEntry } from "@/lib/portfolio-data";
 import { TechIcon } from "@/components/TechIcon";
 
@@ -16,6 +18,7 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
     previewCount >= jobs.length ? jobs : jobs.slice(0, previewCount);
   const hasMore = jobs.length > visible.length;
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+  const reduceMotion = useReducedMotion() ?? false;
 
   return (
     <section className="mt-10">
@@ -91,47 +94,60 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                 </div>
               </div>
 
-              {isExpanded && (
-                <div className="mt-3 border-t border-[var(--border)] pt-3">
-                  <h4 className="text-[0.82rem] font-semibold text-[var(--foreground)]">
-                    Technologies &amp; Tools
-                  </h4>
-                  <ul className="mt-2 flex flex-wrap gap-1.5" aria-label="Technologies">
-                    {job.tech.map((t) => (
-                      <li key={t}>
-                        <TechIcon name={t} />
-                      </li>
-                    ))}
-                  </ul>
-                  <h4 className="mt-3 text-[0.82rem] font-semibold text-[var(--foreground)]">
-                    What I&apos;ve done
-                  </h4>
-                  <ul className="mt-1.5 space-y-1 text-[0.82rem] leading-6 text-[var(--muted-fg)]">
-                    {job.highlights.map((h) => (
-                      <li key={h} className="relative pl-3.5">
-                        <span
-                          className="absolute left-0 top-[0.6rem] h-1 w-1 rounded-full bg-[var(--subtle)]"
-                          aria-hidden
-                        />
-                        {h}
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              )}
+              <AnimatePresence initial={false}>
+                {isExpanded ? (
+                  <motion.div
+                    key="details"
+                    initial={reduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
+                    animate={reduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }}
+                    exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
+                    transition={getExpandTransition(reduceMotion)}
+                    className="overflow-hidden"
+                  >
+                    <div className="mt-3 border-t border-[var(--border)] pt-3">
+                      <h4 className="text-[0.82rem] font-semibold text-[var(--foreground)]">
+                        Technologies &amp; Tools
+                      </h4>
+                      <ul className="mt-2 flex flex-wrap gap-1.5" aria-label="Technologies">
+                        {job.tech.map((t) => (
+                          <li key={t}>
+                            <TechIcon name={t} />
+                          </li>
+                        ))}
+                      </ul>
+                      <h4 className="mt-3 text-[0.82rem] font-semibold text-[var(--foreground)]">
+                        What I&apos;ve done
+                      </h4>
+                      <ul className="mt-1.5 space-y-1 text-[0.82rem] leading-6 text-[var(--muted-fg)]">
+                        {job.highlights.map((h) => (
+                          <li key={h} className="relative pl-3.5">
+                            <span
+                              className="absolute left-0 top-[0.6rem] h-1 w-1 rounded-full bg-[var(--subtle)]"
+                              aria-hidden
+                            />
+                            {h}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  </motion.div>
+                ) : null}
+              </AnimatePresence>
             </li>
           );
         })}
       </ul>
       <div className="mt-6 flex justify-center">
-        <Link
-          href="/work"
-          className="rounded-lg border border-[var(--border)] px-5 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-        >
-          {hasMore
-            ? "Show all work experiences"
-            : "View full work experiences"}
-        </Link>
+        <MotionPress className="inline-flex">
+          <Link
+            href="/work"
+            className="rounded-lg border border-[var(--border)] px-5 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+          >
+            {hasMore
+              ? "Show all work experiences"
+              : "View full work experiences"}
+          </Link>
+        </MotionPress>
       </div>
     </section>
   );

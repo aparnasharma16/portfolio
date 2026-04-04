@@ -8,6 +8,7 @@ import { LeadershipHighlights } from "@/components/LeadershipHighlights";
 import { RecognitionList } from "@/components/RecognitionList";
 import Link from "next/link";
 import { PageQuote } from "@/components/PageQuote";
+import { MotionPress, MotionReveal } from "@/components/SubtleMotion";
 import {
   accomplishments,
   caseStudies,
@@ -23,7 +24,8 @@ import {
 export default function HomePage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-16">
-      <div>
+      <MotionReveal>
+        <div>
         <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
           Bengaluru, India · {profile.yearsExperience}
         </p>
@@ -48,87 +50,118 @@ export default function HomePage() {
           <SocialLinks />
         </div>
         <div className="mt-6 flex flex-wrap gap-3">
-          <Link
-            href="/resume"
-            className="inline-flex items-center gap-2 rounded-lg bg-[var(--foreground)] px-4 py-2 text-sm font-medium text-[var(--background)] transition-opacity hover:opacity-90"
-          >
-            <ResumeIcon className="h-4 w-4" />
-            View resume
-          </Link>
-          <Link
-            href="/work"
-            className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-          >
-            Read work experience
-          </Link>
-          <a
-            href={profile.links.email}
-            className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-          >
-            <MailIcon className="h-4 w-4" />
-            Email me
-          </a>
+          <MotionPress className="inline-flex">
+            <Link
+              href="/resume"
+              className="inline-flex items-center gap-2 rounded-lg bg-[var(--foreground)] px-4 py-2 text-sm font-medium text-[var(--background)] transition-opacity hover:opacity-90"
+            >
+              <ResumeIcon className="h-4 w-4" />
+              View resume
+            </Link>
+          </MotionPress>
+          <MotionPress className="inline-flex">
+            <Link
+              href="/work"
+              className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+            >
+              Read work experience
+            </Link>
+          </MotionPress>
+          <MotionPress className="inline-flex">
+            <a
+              href={profile.links.email}
+              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+            >
+              <MailIcon className="h-4 w-4" />
+              Email me
+            </a>
+          </MotionPress>
         </div>
-      </div>
+        </div>
+      </MotionReveal>
 
-      <HomeExperiencePreview jobs={experience} previewCount={3} />
-      <ExpertiseGrid items={expertiseAreas} />
-      <FeaturedWins wins={featuredWins} />
-      <CaseStudiesList studies={caseStudies} compact />
-      <LeadershipHighlights items={leadershipHighlights} />
-      <RecognitionList items={accomplishments} />
+      <MotionReveal delay={0.04}>
+        <HomeExperiencePreview jobs={experience} previewCount={3} />
+      </MotionReveal>
+      <MotionReveal delay={0.06}>
+        <ExpertiseGrid items={expertiseAreas} />
+      </MotionReveal>
+      <MotionReveal delay={0.08}>
+        <FeaturedWins wins={featuredWins} />
+      </MotionReveal>
+      <MotionReveal delay={0.1}>
+        <CaseStudiesList studies={caseStudies} compact />
+      </MotionReveal>
+      <MotionReveal delay={0.12}>
+        <LeadershipHighlights items={leadershipHighlights} />
+      </MotionReveal>
+      <MotionReveal delay={0.14}>
+        <RecognitionList items={accomplishments} />
+      </MotionReveal>
 
-      <section className="mt-8 border-t border-[var(--border)] pt-6">
-        <h2 className="text-lg font-semibold text-[var(--foreground)]">
-          Education
-        </h2>
-        <div className="mt-3 flex items-start gap-3">
-          <CompanyLogo
-            src={education.logo}
-            alt={`${education.school} logo`}
-            size="sm"
-          />
-          <p className="min-w-0 pt-0.5 text-sm text-[var(--muted-fg)]">
-            {education.degree} — {education.school} ({education.years})
+      <MotionReveal delay={0.16}>
+        <section className="mt-8 border-t border-[var(--border)] pt-6">
+          <h2 className="text-lg font-semibold text-[var(--foreground)]">
+            Education
+          </h2>
+          <div className="mt-3 flex items-start gap-3">
+            <CompanyLogo
+              src={education.logo}
+              alt={`${education.school} logo`}
+              size="sm"
+            />
+            <p className="min-w-0 pt-0.5 text-sm text-[var(--muted-fg)]">
+              {education.degree} — {education.school} ({education.years})
+            </p>
+          </div>
+        </section>
+      </MotionReveal>
+
+      <MotionReveal delay={0.18}>
+        <section className="mt-14 rounded-[1.5rem] border border-[var(--border)] bg-[var(--chip-bg)] px-6 py-7">
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
+            Contact
           </p>
-        </div>
-      </section>
+          <h2 className="mt-2 text-[1.25rem] font-semibold tracking-[-0.03em] text-[var(--foreground)]">
+            Let&apos;s talk about impactful product engineering
+          </h2>
+          <p className="mt-3 max-w-xl text-[0.9rem] leading-7 text-[var(--muted-fg)]">
+            {profile.availabilityNote}
+          </p>
+          <div className="mt-5 flex flex-wrap gap-3 text-sm">
+            <MotionPress className="inline-flex">
+              <a
+                href={profile.links.email}
+                className="rounded-lg bg-[var(--foreground)] px-4 py-2 font-medium text-[var(--background)] transition-opacity hover:opacity-90"
+              >
+                {profile.links.emailDisplay}
+              </a>
+            </MotionPress>
+            <MotionPress className="inline-flex">
+              <a
+                href={profile.links.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+              >
+                LinkedIn
+              </a>
+            </MotionPress>
+            <MotionPress className="inline-flex">
+              <Link
+                href="/impact"
+                className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+              >
+                View impact highlights
+              </Link>
+            </MotionPress>
+          </div>
+        </section>
+      </MotionReveal>
 
-      <section className="mt-14 rounded-[1.5rem] border border-[var(--border)] bg-[var(--chip-bg)] px-6 py-7">
-        <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
-          Contact
-        </p>
-        <h2 className="mt-2 text-[1.25rem] font-semibold tracking-[-0.03em] text-[var(--foreground)]">
-          Let&apos;s talk about impactful product engineering
-        </h2>
-        <p className="mt-3 max-w-xl text-[0.9rem] leading-7 text-[var(--muted-fg)]">
-          {profile.availabilityNote}
-        </p>
-        <div className="mt-5 flex flex-wrap gap-3 text-sm">
-          <a
-            href={profile.links.email}
-            className="rounded-lg bg-[var(--foreground)] px-4 py-2 font-medium text-[var(--background)] transition-opacity hover:opacity-90"
-          >
-            {profile.links.emailDisplay}
-          </a>
-          <a
-            href={profile.links.linkedin}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-          >
-            LinkedIn
-          </a>
-          <Link
-            href="/impact"
-            className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-          >
-            View impact highlights
-          </Link>
-        </div>
-      </section>
-
-      <PageQuote quote={sitePageQuotes.home} />
+      <MotionReveal delay={0.2}>
+        <PageQuote quote={sitePageQuotes.home} />
+      </MotionReveal>
     </main>
   );
 }

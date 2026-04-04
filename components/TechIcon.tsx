@@ -537,6 +537,35 @@ const icons: Record<string, IconDef> = {
       </Svg>
     ),
   },
+  Playwright: {
+    label: "Playwright",
+    glyph: (
+      <Svg>
+        <rect x="2" y="2" width="20" height="20" rx="4" fill="#2EAD33" />
+        <path
+          d="M8 8.5c0 2.5 1 4 3 5M16 8.5c0 2.5-1 4-3 5M9.5 16.5l2.5-3 2.5 3"
+          stroke="#ffffff"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    ),
+  },
+  Cypress: {
+    label: "Cypress",
+    glyph: (
+      <Svg>
+        <circle cx="12" cy="12" r="9.5" fill="#1B1E2E" />
+        <path
+          d="M15.5 9.5c-1-.8-2.2-1-3.5-.6-1.3.4-2 1.5-2 3.1s.7 2.7 2 3.1c1.3.4 2.5.2 3.5-.6"
+          stroke="#ffffff"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+      </Svg>
+    ),
+  },
   CodeIgniter: {
     label: "CodeIgniter",
     glyph: (

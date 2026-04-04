@@ -112,19 +112,26 @@ export function SearchCommand() {
       </button>
 
       {open ? (
-        <div
-          className="fixed inset-0 z-[100] flex items-start justify-center bg-white/20 p-4 pt-[18vh] backdrop-blur-md dark:bg-black/40"
-          role="dialog"
-          aria-modal="true"
-          aria-label="Site search"
-          onClick={close}
-        >
+        <>
+          {/* Backdrop */}
           <div
-            className="w-full max-w-[33.5rem] overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--background)] shadow-[0_24px_80px_rgba(15,23,42,0.18)]"
-            onClick={(e) => e.stopPropagation()}
+            className="fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
+            onClick={close}
+            aria-hidden
+          />
+          {/* Modal */}
+          <div
+            className="fixed inset-0 z-[101] flex items-start justify-center p-4 pt-[min(18vh,10rem)]"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Site search"
+            onClick={close}
           >
-            <div className="border-b border-[var(--border)] px-4 py-3">
-              <label className="flex items-center gap-3 rounded-xl border border-[var(--border)] bg-[var(--secondary)] px-4 py-3">
+            <div
+              className="w-full max-w-[32rem] overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--background)] shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="flex items-center gap-3 border-b border-[var(--border)] px-4 py-3">
                 <SearchIcon className="h-5 w-5 shrink-0 text-[var(--muted-fg)]" />
                 <input
                   ref={inputRef}
@@ -132,55 +139,55 @@ export function SearchCommand() {
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
                   placeholder="Type a command or search..."
-                  className="w-full bg-transparent text-[1.05rem] text-[var(--foreground)] outline-none placeholder:text-[var(--muted-fg)]"
+                  className="w-full bg-transparent text-[0.95rem] text-[var(--foreground)] outline-none placeholder:text-[var(--muted-fg)]"
                 />
-              </label>
-            </div>
+              </div>
 
-            <div className="max-h-[38rem] overflow-y-auto px-4 pb-4 pt-3">
-              <p className="px-2 text-[0.95rem] font-medium text-[var(--muted-fg)]">
-                Navigation
-              </p>
+              <div className="max-h-[24rem] overflow-y-auto p-2">
+                <p className="px-3 py-2 text-xs font-medium uppercase tracking-wider text-[var(--muted-fg)]">
+                  Navigation
+                </p>
 
-              <ul className="mt-3 space-y-1.5">
-                {filteredCommands.length > 0 ? (
-                  filteredCommands.map((command) => {
-                    const Icon = command.icon;
+                <ul>
+                  {filteredCommands.length > 0 ? (
+                    filteredCommands.map((command) => {
+                      const Icon = command.icon;
 
-                    return (
-                      <li key={command.href}>
-                        <Link
-                          href={command.href}
-                          onClick={close}
-                          className="flex items-center gap-4 rounded-2xl px-3 py-3 transition-colors hover:bg-[var(--secondary)]"
-                        >
-                          <span className="flex h-8 w-8 shrink-0 items-center justify-center text-[var(--foreground)]">
-                            <Icon className="h-5 w-5" />
-                          </span>
-                          <span className="min-w-0 flex-1">
-                            <span className="block text-[0.98rem] font-medium tracking-[-0.02em] text-[var(--foreground)]">
-                              {command.title}
+                      return (
+                        <li key={command.href}>
+                          <Link
+                            href={command.href}
+                            onClick={close}
+                            className="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-[var(--secondary)]"
+                          >
+                            <span className="flex h-6 w-6 shrink-0 items-center justify-center text-[var(--muted-fg)]">
+                              <Icon className="h-4 w-4" />
                             </span>
-                            <span className="mt-0.5 block text-[0.92rem] leading-6 text-[var(--muted-fg)]">
-                              {command.description}
+                            <span className="min-w-0 flex-1">
+                              <span className="block text-[0.9rem] font-medium text-[var(--foreground)]">
+                                {command.title}
+                              </span>
+                              <span className="block text-[0.8rem] text-[var(--muted-fg)]">
+                                {command.description}
+                              </span>
                             </span>
-                          </span>
-                          <span className="rounded-lg border border-[var(--border)] bg-[var(--background)] px-2.5 py-1 text-[0.82rem] font-medium text-[var(--muted-fg)] shadow-[0_1px_0_rgba(0,0,0,0.02)]">
-                            {command.shortcut}
-                          </span>
-                        </Link>
-                      </li>
-                    );
-                  })
-                ) : (
-                  <li className="rounded-2xl px-3 py-8 text-center text-[0.95rem] text-[var(--muted-fg)]">
-                    No matching commands found.
-                  </li>
-                )}
-              </ul>
+                            <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-2 py-0.5 text-[0.75rem] font-medium text-[var(--muted-fg)]">
+                              {command.shortcut}
+                            </kbd>
+                          </Link>
+                        </li>
+                      );
+                    })
+                  ) : (
+                    <li className="px-3 py-6 text-center text-[0.88rem] text-[var(--muted-fg)]">
+                      No matching commands found.
+                    </li>
+                  )}
+                </ul>
+              </div>
             </div>
           </div>
-        </div>
+        </>
       ) : null}
     </>
   );

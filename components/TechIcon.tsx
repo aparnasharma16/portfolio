@@ -6,13 +6,13 @@ type IconDef = {
 };
 
 const chipClassName =
-  "group inline-flex h-10 items-center overflow-hidden rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--chip-bg)] px-3 text-[var(--foreground)] shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-[var(--border)] hover:bg-[var(--background)] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]";
+  "group inline-flex h-11 items-center overflow-hidden rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--chip-bg)] px-3 text-[var(--foreground)] shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-[var(--border)] hover:bg-[var(--background)] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]";
 
 const labelClassName =
   "max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium opacity-0 transition-all duration-200 group-hover:ml-2 group-hover:max-w-24 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-24 group-focus-visible:opacity-100";
 
 const iconWrapClassName =
-  "flex h-4 w-4 shrink-0 items-center justify-center";
+  "flex h-5 w-5 shrink-0 items-center justify-center";
 
 function Svg({
   children,
@@ -25,7 +25,7 @@ function Svg({
     <svg
       aria-hidden
       viewBox={viewBox}
-      className="h-4 w-4 shrink-0"
+      className="h-5 w-5 shrink-0"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -263,7 +263,7 @@ const icons: Record<string, IconDef> = {
           y="11"
           fontSize="7.5"
           fontWeight="700"
-          fill="#111827"
+          fill="currentColor"
           fontFamily="ui-sans-serif, system-ui, sans-serif"
         >
           aws
@@ -310,7 +310,7 @@ const icons: Record<string, IconDef> = {
           y="15"
           fontSize="10"
           fontWeight="600"
-          fill="#111827"
+          fill="currentColor"
           fontFamily="ui-sans-serif, system-ui, sans-serif"
         >
           ex
@@ -336,12 +336,12 @@ const icons: Record<string, IconDef> = {
     label: "Kafka",
     glyph: (
       <Svg>
-        <circle cx="7" cy="12" r="2" fill="#111827" />
-        <circle cx="17" cy="6" r="2" fill="#111827" />
-        <circle cx="17" cy="18" r="2" fill="#111827" />
+        <circle cx="7" cy="12" r="2" fill="currentColor" />
+        <circle cx="17" cy="6" r="2" fill="currentColor" />
+        <circle cx="17" cy="18" r="2" fill="currentColor" />
         <path
           d="M9 12h6m0 0V8m0 4v4"
-          stroke="#111827"
+          stroke="currentColor"
           strokeWidth="1.8"
           strokeLinecap="round"
         />
@@ -562,6 +562,51 @@ const icons: Record<string, IconDef> = {
           stroke="#ffffff"
           strokeWidth="1.6"
           strokeLinecap="round"
+        />
+      </Svg>
+    ),
+  },
+  Storybook: {
+    label: "Storybook",
+    glyph: (
+      <Svg>
+        <rect x="4" y="2" width="16" height="20" rx="3" fill="#FF4785" />
+        <path
+          d="M14.5 5.5 15 3l.5 2.5M10 8.5c2.5-1 5-.5 5 1.5s-2.5 2.5-5 1.5M10 14c2.5-1 5-.5 5 1.5s-2.5 2.5-5 1.5"
+          stroke="#ffffff"
+          strokeWidth="1.3"
+          strokeLinecap="round"
+        />
+      </Svg>
+    ),
+  },
+  Claude: {
+    label: "Claude",
+    glyph: (
+      <Svg>
+        <rect x="2" y="2" width="20" height="20" rx="5" fill="#D4A27F" />
+        <path
+          d="M8.5 14.5c1-2.5 2.5-4 3.5-4s2.5 1.5 3.5 4"
+          stroke="#ffffff"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+        />
+        <circle cx="10" cy="9" r="1" fill="#ffffff" />
+        <circle cx="14" cy="9" r="1" fill="#ffffff" />
+      </Svg>
+    ),
+  },
+  "Next.js": {
+    label: "Next.js",
+    glyph: (
+      <Svg>
+        <circle cx="12" cy="12" r="9.5" fill="currentColor" />
+        <path
+          d="M10 8v8M10 8l6.5 8M16 8v5"
+          stroke="var(--background, #ffffff)"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+          strokeLinejoin="round"
         />
       </Svg>
     ),

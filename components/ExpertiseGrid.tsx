@@ -7,21 +7,21 @@ import { MotionItem, MotionStagger } from "@/components/SubtleMotion";
 
 export function ExpertiseGrid({ items }: { items: ExpertiseArea[] }) {
   return (
-    <section className="mt-14">
+    <section className="mt-16">
       <SectionIntro
         eyebrow="Specialization"
         title="What I specialize in"
         description="I work best on product teams that need strong frontend judgment, dependable end-to-end delivery, and a quality-first approach to shipping."
         icon={<SparkIcon className="h-4 w-4" />}
       />
-      <MotionStagger className="mt-6 grid gap-3 sm:grid-cols-2" delay={0.06}>
+      <MotionStagger className="mt-7 grid gap-4 sm:grid-cols-2" delay={0.06}>
         {items.map((item) => (
           <MotionItem key={item.label}>
-            <article className="rounded-2xl border border-[var(--border)] bg-[var(--chip-bg)] px-5 py-5">
+            <article className="rounded-2xl border border-[var(--border)] bg-[var(--chip-bg)] px-5 py-5 transition-colors hover:border-[var(--foreground)]/10">
               <h3 className="text-[0.98rem] font-semibold text-[var(--foreground)]">
                 {item.label}
               </h3>
-              <p className="mt-2 text-[0.88rem] leading-6 text-[var(--muted-fg)]">
+              <p className="mt-2.5 text-[0.88rem] leading-6 text-[var(--muted-fg)]">
                 {item.description}
               </p>
             </article>
@@ -34,26 +34,26 @@ export function ExpertiseGrid({ items }: { items: ExpertiseArea[] }) {
 
 export function CoreExpertiseGroups({ groups }: { groups: ExpertiseGroup[] }) {
   return (
-    <section className="mt-14">
+    <section className="mt-16">
       <SectionIntro
         eyebrow="Core Expertise"
         title="How I contribute across the stack"
         description="A recruiter should be able to see my shape quickly: strong frontend depth, practical backend delivery, modern testing discipline, and product-minded leadership."
         icon={<GridIcon className="h-4 w-4" />}
       />
-      <MotionStagger className="mt-6 grid gap-3 sm:grid-cols-2" delay={0.04}>
+      <MotionStagger className="mt-7 grid gap-4 sm:grid-cols-2" delay={0.04}>
         {groups.map((group) => (
           <MotionItem key={group.title}>
-            <article className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 py-5">
-              <div className="flex items-center gap-2">
+            <article className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 py-5 transition-colors hover:border-[var(--foreground)]/10">
+              <div className="flex items-center gap-3">
                 <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--secondary)] text-[var(--foreground)]">
                   {getExpertiseIcon(group.title)}
                 </span>
-                <h3 className="text-[0.92rem] font-semibold text-[var(--foreground)]">
+                <h3 className="text-[0.94rem] font-bold text-[var(--foreground)]">
                   {group.title}
                 </h3>
               </div>
-              <ul className="mt-3 flex flex-wrap gap-2">
+              <ul className="mt-4 flex flex-wrap gap-2">
                 {group.items.map((item) => (
                   <li
                     key={item}

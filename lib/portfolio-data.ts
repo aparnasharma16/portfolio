@@ -153,18 +153,21 @@ export const coreExpertise: ExpertiseGroup[] = [
 export type CaseStudy = {
   title: string;
   company: string;
+  logo?: string;
   period: string;
   context: string;
   problem: string;
   ownership: string;
   outcome: string;
   tech: string[];
+  artifacts?: string[];
 };
 
 export const caseStudies: CaseStudy[] = [
   {
     title: "Checkout and payment experience improvements",
     company: "PayPal",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s",
     period: "2026 – Present",
     context:
       "Worked on payment experiences used in high-traffic checkout journeys where stability and speed directly affect customer trust.",
@@ -179,6 +182,7 @@ export const caseStudies: CaseStudy[] = [
   {
     title: "Monolith to microservices migration leadership",
     company: "Dentsu",
+    logo: "https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg",
     period: "2024 – 2025",
     context:
       "Led a team delivering MERN applications while the platform evolved toward more scalable and resilient architecture.",
@@ -193,6 +197,7 @@ export const caseStudies: CaseStudy[] = [
   {
     title: "Reusable commerce frontend systems",
     company: "Merkle / dentsu",
+    logo: "https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg",
     period: "2021 – 2024",
     context:
       "Built storefront and platform capabilities for e-commerce teams serving multiple markets and product teams.",
@@ -203,6 +208,35 @@ export const caseStudies: CaseStudy[] = [
     outcome:
       "Improved delivery speed by 40%, reached 95% regression coverage for critical journeys, and helped reduce page-load time by around 2 seconds.",
     tech: ["React", "TypeScript", "Redux", "Shopify", "GraphQL", "Tailwind CSS", "Cypress"],
+  },
+  {
+    title: "Internal reusable component library",
+    company: "Dentsu",
+    logo: "https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg",
+    period: "2024 – 2025",
+    context:
+      "Frontend teams across Dentsu were building similar UI patterns independently, leading to inconsistent experiences and duplicated effort across projects.",
+    problem:
+      "There was no shared component system, so teams were shipping inconsistent UIs, spending time rebuilding common patterns, and struggling to maintain design coherence across products.",
+    ownership:
+      "Led the creation of a reusable component package with 50+ components — including Accordion, Data Table, Dialog, Drawer, Command, Combobox, and more — used across internal frontend systems. Collaborated with 3 teammates to build comprehensive documentation alongside the library.",
+    outcome:
+      "Reduced UI development time significantly by providing ready-to-use, well-documented components. Improved design consistency across teams and established a single source of truth for frontend patterns within the organization.",
+    tech: ["React", "TypeScript", "Tailwind CSS", "Storybook", "Jest"],
+    artifacts: [
+      "Accordion", "Alert", "Alert Dialog", "Aspect Ratio", "Avatar",
+      "Badge", "Breadcrumb", "Button", "Button Group", "Calendar",
+      "Card", "Carousel", "Chart", "Checkbox", "Collapsible",
+      "Combobox", "Command", "Context Menu", "Data Table", "Date Picker",
+      "Dialog", "Direction", "Drawer", "Dropdown Menu", "Empty",
+      "Field", "Hover Card", "Input", "Input Group", "Input OTP",
+      "Item", "Kbd", "Label", "Menubar", "Native Select",
+      "Navigation Menu", "Pagination", "Popover", "Progress", "Radio Group",
+      "Resizable", "Scroll Area", "Select", "Separator", "Sheet",
+      "Sidebar", "Skeleton", "Slider", "Sonner", "Spinner",
+      "Switch", "Table", "Tabs", "Textarea", "Toast",
+      "Toggle", "Toggle Group", "Tooltip", "Typography",
+    ],
   },
 ];
 
@@ -239,13 +273,14 @@ export const experience: ExperienceEntry[] = [
     tech: [
       "TypeScript",
       "React",
+      "Next.js",
       "Node",
       "REST",
       "Jest",
       "GraphQL",
       "AWS",
       "Playwright",
-      "MySQL",
+      "Claude",
     ],
     highlights: [
       "Architected and shipped full-stack payment features using React, Node.js, and GraphQL, serving millions of daily transactions globally.",
@@ -413,10 +448,26 @@ export const upcomingBlogTopics = [
   "A practical testing strategy with Jest, Cypress, and Playwright",
 ] as const;
 
+export type Hobby = {
+  label: string;
+  emoji: string;
+};
+
+export const hobbies: Hobby[] = [
+  { label: "Painting", emoji: "painting" },
+  { label: "Long drives", emoji: "drives" },
+  { label: "Music", emoji: "music" },
+  { label: "Trying out coffees", emoji: "coffee" },
+  { label: "Reading books", emoji: "reading" },
+  { label: "Cooking", emoji: "cooking" },
+  { label: "Travel", emoji: "travel" },
+] as const;
+
 export const searchLinks = [
   { href: "/", label: "Home", hint: "Landing" },
   { href: "/work", label: "Work", hint: "Experience" },
   { href: "/impact", label: "Impact", hint: "Case studies" },
   { href: "/blog", label: "Blog", hint: "Writing" },
+  { href: "/hobbies", label: "Hobbies", hint: "Beyond work" },
   { href: "/resume", label: "Resume", hint: "CV" },
 ] as const;

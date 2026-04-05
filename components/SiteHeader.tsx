@@ -10,6 +10,7 @@ const nav = [
   { href: '/work', label: 'Work' },
   { href: '/impact', label: 'Impact' },
   { href: '/blog', label: 'Blog' },
+  { href: '/hobbies', label: 'Hobbies' },
   { href: '/resume', label: 'Resume' },
 ] as const;
 

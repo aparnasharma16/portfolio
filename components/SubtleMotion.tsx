@@ -1,9 +1,10 @@
 "use client";
 
-import type { ReactNode } from "react";
+import { useRef, useEffect, useState, type ReactNode } from "react";
 import {
   motion,
   useReducedMotion,
+  useInView,
   type HTMLMotionProps,
 } from "motion/react";
 
@@ -137,3 +138,63 @@ export function getExpandTransition(reduceMotion: boolean) {
 }
 
 export type MotionDivProps = HTMLMotionProps<"div">;
+
+type MotionCounterProps = {
+  value: string;
+  className?: string;
+  duration?: number;
+};
+
+export function MotionCounter({
+  value,
+  className,
+  duration = 1.6,
+}: MotionCounterProps) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true, amount: 0.5 });
+  const reduceMotion = useReducedMotion();
+  const [display, setDisplay] = useState(reduceMotion ? value : "");
+
+  useEffect(() => {
+    if (!inView || reduceMotion) {
+      setDisplay(value);
+      return;
+    }
+
+    const numericMatch = value.match(/^([\d.]+)/);
+    if (!numericMatch) {
+      setDisplay(value);
+      return;
+    }
+
+    const target = parseFloat(numericMatch[1]);
+    const suffix = value.slice(numericMatch[1].length);
+    const isDecimal = numericMatch[1].includes(".");
+    const startTime = performance.now();
+
+    let raf: number;
+    const animate = (now: number) => {
+      const elapsed = (now - startTime) / 1000;
+      const progress = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      const current = target * eased;
+
+      setDisplay(
+        `${isDecimal ? current.toFixed(1) : Math.round(current)}${suffix}`
+      );
+
+      if (progress < 1) {
+        raf = requestAnimationFrame(animate);
+      }
+    };
+
+    raf = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(raf);
+  }, [inView, value, duration, reduceMotion]);
+
+  return (
+    <span ref={ref} className={className}>
+      {display}
+    </span>
+  );
+}

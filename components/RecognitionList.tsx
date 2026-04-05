@@ -1,4 +1,7 @@
+"use client";
+
 import { SectionIntro } from "@/components/SectionIntro";
+import { MotionItem, MotionStagger } from "@/components/SubtleMotion";
 
 type Item = {
   title: string;
@@ -9,36 +12,35 @@ type Item = {
 
 export function RecognitionList({ items }: { items: readonly Item[] }) {
   return (
-    <section className="mt-14">
+    <section className="mt-16">
       <SectionIntro
         eyebrow="Recognition"
         title="Certifications and awards"
         description="Signals of consistency matter too. These recognitions support the delivery and ownership story shown across the rest of the portfolio."
         icon={<AwardIcon className="h-4 w-4" />}
       />
-      <div className="mt-6 space-y-3">
+      <MotionStagger className="mt-7 space-y-4" delay={0.04}>
         {items.map((item) => (
-          <article
-            key={`${item.title}-${item.date}`}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 py-4"
-          >
-            <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <h3 className="text-[0.94rem] font-semibold text-[var(--foreground)]">
-                  {item.title}
-                </h3>
-                <p className="mt-1 text-[0.82rem] text-[var(--muted-fg)]">
-                  {item.org}
-                </p>
+          <MotionItem key={`${item.title}-${item.date}`}>
+            <article className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 py-5 transition-colors hover:border-[var(--foreground)]/10">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <h3 className="text-[0.94rem] font-semibold text-[var(--foreground)]">
+                    {item.title}
+                  </h3>
+                  <p className="mt-1 text-[0.82rem] text-[var(--muted-fg)]">
+                    {item.org}
+                  </p>
+                </div>
+                <p className="shrink-0 text-[0.78rem] font-medium text-[var(--subtle)] sm:text-right">{item.date}</p>
               </div>
-              <p className="text-[0.78rem] text-[var(--subtle)]">{item.date}</p>
-            </div>
-            <p className="mt-3 text-[0.85rem] leading-6 text-[var(--muted-fg)]">
-              {item.note}
-            </p>
-          </article>
+              <p className="mt-3 text-[0.85rem] leading-6 text-[var(--muted-fg)]">
+                {item.note}
+              </p>
+            </article>
+          </MotionItem>
         ))}
-      </div>
+      </MotionStagger>
     </section>
   );
 }

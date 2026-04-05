@@ -3,7 +3,7 @@
 import { CompanyLogo } from '@/components/CompanyLogo';
 import { MotionPress, getExpandTransition } from '@/components/SubtleMotion';
 import { TechIcon } from '@/components/TechIcon';
-import type { ExperienceEntry } from '@/lib/portfolio-data';
+import { type ExperienceEntry, groupExperience } from '@/lib/portfolio-data';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { useState } from 'react';
@@ -14,8 +14,9 @@ type Props = {
 };
 
 export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
-  const visible = previewCount >= jobs.length ? jobs : jobs.slice(0, previewCount);
-  const hasMore = jobs.length > visible.length;
+  const grouped = groupExperience(jobs);
+  const visible = previewCount >= grouped.length ? grouped : grouped.slice(0, previewCount);
+  const hasMore = grouped.length > visible.length;
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const reduceMotion = useReducedMotion() ?? false;
 
@@ -25,22 +26,22 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
         Experience
       </h2>
       <ul className="mt-5">
-        {visible.map((job, i) => {
+        {visible.map((group, i) => {
           const isExpanded = expandedIndex === i;
           return (
-            <li key={`${job.company}-${job.period}`} className={i > 0 ? 'mt-4' : ''}>
+            <li key={`${group.company}-${group.period}`} className={i > 0 ? 'mt-4' : ''}>
               <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <div className="flex items-start gap-3">
-                    {job.logo ? (
-                      <CompanyLogo src={job.logo} alt={`${job.company} logo`} size="sm" />
+                    {group.logo ? (
+                      <CompanyLogo src={group.logo} alt={`${group.company} logo`} size="sm" />
                     ) : null}
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[0.95rem] font-semibold text-[var(--foreground)]">
-                          {job.company}
+                          {group.company}
                         </span>
-                        {job.current ? (
+                        {group.current ? (
                           <>
                             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#86efac] bg-[#f0fdf4] px-2 py-0.5 text-xs font-medium text-[#166534] dark:border-[#14532d] dark:bg-[#052e16] dark:text-[#bbf7d0]">
                               <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" aria-hidden />
@@ -68,14 +69,27 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                           </>
                         ) : null}
                       </div>
-                      <p className="text-[0.85rem] text-[var(--muted-fg)]">{job.role}</p>
+                      {group.roles.length === 1 ? (
+                        <p className="text-[0.85rem] text-[var(--muted-fg)]">
+                          {group.roles[0].role}
+                        </p>
+                      ) : (
+                        <div className="mt-1 space-y-0.5">
+                          {group.roles.map((role) => (
+                            <p key={role.period} className="text-[0.82rem] text-[var(--muted-fg)]">
+                              <span className="font-medium text-[var(--foreground)]">{role.role}</span>
+                              <span className="text-[var(--subtle)]"> · {role.periodShort}</span>
+                            </p>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 </div>
                 <div className="shrink-0 text-left sm:text-right">
-                  <p className="text-[0.85rem] text-[var(--foreground)]">{job.period}</p>
+                  <p className="text-[0.85rem] text-[var(--foreground)]">{group.period}</p>
                   <p className="text-[0.85rem] text-[var(--muted-fg)]">
-                    {job.location} ({job.workType})
+                    {group.location} ({group.workType})
                   </p>
                 </div>
               </div>
@@ -95,7 +109,7 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                         Technologies &amp; Tools
                       </h4>
                       <ul className="mt-2 flex flex-wrap gap-1.5" aria-label="Technologies">
-                        {job.tech.map((t) => (
+                        {group.roles[0].tech.map((t) => (
                           <li key={t}>
                             <TechIcon name={t} />
                           </li>
@@ -105,7 +119,7 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                         What I&apos;ve done
                       </h4>
                       <ul className="mt-1.5 space-y-1 text-[0.82rem] leading-6 text-[var(--muted-fg)]">
-                        {job.highlights.map((h) => (
+                        {group.roles[0].highlights.map((h) => (
                           <li key={h} className="relative pl-3.5">
                             <span
                               className="absolute left-0 top-[0.6rem] h-1 w-1 rounded-full bg-[var(--subtle)]"

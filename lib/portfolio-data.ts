@@ -310,6 +310,7 @@ export type ExperienceEntry = {
   current?: boolean;
   tech: string[];
   highlights: string[];
+  group?: string;
 };
 
 export const experience: ExperienceEntry[] = [
@@ -349,6 +350,7 @@ export const experience: ExperienceEntry[] = [
     workType: 'On-Site',
     period: 'November 2024 – December 2025',
     periodShort: 'Nov 2024 – Dec 2025',
+    group: 'dentsu',
     tech: [
       'MongoDB',
       'Express',
@@ -369,35 +371,41 @@ export const experience: ExperienceEntry[] = [
     ],
   },
   {
-    role: 'Senior Frontend Developer',
+    role: 'Senior Software Developer',
     company: 'Merkle, a dentsu company',
     logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
     location: 'Bengaluru, India',
     workType: 'On-Site',
     period: 'April 2023 – October 2024',
     periodShort: 'Apr 2023 – Oct 2024',
+    group: 'dentsu',
     tech: ['React', 'Redux', 'TypeScript', 'Shopify', 'GraphQL', 'Tailwind', 'Cypress', 'Figma'],
     highlights: [
-      'Built a reusable component library with React and TypeScript, reducing feature delivery time by 40% across 3 product teams.',
-      'Implemented Cypress E2E tests for all critical user flows, achieving 95% regression coverage before each release.',
-      'Customized Shopify themes and integrated GraphQL APIs for optimized data fetching, improving page load by 2s.',
-      'Mentored 5 junior developers on React patterns, testing best practices, and responsive design with Tailwind CSS.',
+      'Built reusable React and TypeScript components used across 3 product teams, cutting feature delivery time by 40%.',
+      'Developed checkout, order, and mini cart pages with Shopify and GraphQL, improving page load by 2 seconds.',
+      'Integrated Razorpay payment gateway for seamless transactions across multiple storefronts.',
+      'Built Node.js APIs for product catalog and inventory sync between Shopify and internal systems.',
+      'Wrote Cypress E2E tests for all critical user flows, reaching 95% regression coverage before each release.',
+      'Mentored 5 junior developers on React patterns, testing, and responsive design with Tailwind CSS.',
     ],
   },
   {
-    role: 'Frontend Developer',
+    role: 'Software Developer',
     company: 'Merkle, a dentsu company',
     logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
     location: 'Bengaluru, India',
     workType: 'On-Site',
     period: 'August 2021 – March 2023',
     periodShort: 'Aug 2021 – Mar 2023',
+    group: 'dentsu',
     tech: ['React', 'WordPress', 'PHP', 'MySQL', 'Algolia', 'JavaScript', 'HTML', 'CSS'],
     highlights: [
-      'Led frontend development for multi-site e-commerce platforms serving US and Canada markets with 50K+ daily active users.',
-      'Built custom WooCommerce plugins with PHP and MySQL, automating inventory sync and reducing manual effort by 60%.',
-      'Integrated Algolia search with faceted filtering, improving product discovery and increasing conversion rates by 15%.',
-      'Developed real-time sales dashboards with React and MySQL queries, enabling data-driven decisions for stakeholders.',
+      'Built and maintained e-commerce storefronts for US and Canada markets, serving 50K+ daily active users.',
+      'Developed checkout and order flows with WooCommerce, PHP, and MySQL for multi-site platforms.',
+      'Built custom WordPress plugins to automate inventory sync and reduce manual work by 60%.',
+      'Integrated Algolia search with filters, improving product discovery and boosting conversions by 15%.',
+      'Created REST APIs with PHP for order management, reporting, and third-party service integrations.',
+      'Built real-time sales dashboards with React and MySQL, helping stakeholders make data-driven decisions.',
     ],
   },
   {
@@ -432,6 +440,57 @@ export const experience: ExperienceEntry[] = [
     ],
   },
 ];
+
+export type GroupedExperience = {
+  company: string;
+  logo?: string;
+  location: string;
+  workType: string;
+  period: string;
+  periodShort: string;
+  current?: boolean;
+  roles: ExperienceEntry[];
+};
+
+export function groupExperience(jobs: ExperienceEntry[]): GroupedExperience[] {
+  const result: GroupedExperience[] = [];
+  let i = 0;
+  while (i < jobs.length) {
+    const job = jobs[i];
+    if (job.group) {
+      const groupJobs: ExperienceEntry[] = [];
+      while (i < jobs.length && jobs[i].group === job.group) {
+        groupJobs.push(jobs[i]);
+        i++;
+      }
+      const first = groupJobs[0];
+      const last = groupJobs[groupJobs.length - 1];
+      result.push({
+        company: 'Dentsu / Merkle',
+        logo: first.logo,
+        location: first.location,
+        workType: first.workType,
+        period: `${last.periodShort.split(' – ')[0]} – ${first.periodShort.split(' – ')[1]}`,
+        periodShort: `${last.periodShort.split(' – ')[0]} – ${first.periodShort.split(' – ')[1]}`,
+        current: first.current,
+        roles: groupJobs,
+      });
+    } else {
+      result.push({
+        company: job.company,
+        logo: job.logo,
+        location: job.location,
+        workType: job.workType,
+        period: job.period,
+        periodShort: job.periodShort,
+        current: job.current,
+        roles: [job],
+      });
+      i++;
+    }
+  }
+  return result;
+}
 
 export const education = {
   degree: 'B.E., Computer Science & Engineering',

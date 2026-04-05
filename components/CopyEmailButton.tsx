@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { useCallback, useState } from "react";
-import { profile } from "@/lib/portfolio-data";
+import { profile } from '@/lib/portfolio-data';
+import { useCallback, useState } from 'react';
 
 export function CopyEmailButton() {
   const [done, setDone] = useState(false);
@@ -22,14 +22,10 @@ export function CopyEmailButton() {
       type="button"
       onClick={copy}
       className="inline-flex items-center gap-1 rounded-md p-0.5 text-[var(--muted-fg)] transition-colors hover:bg-[var(--chip-bg)] hover:text-[var(--foreground)]"
-      aria-label={done ? "Copied" : "Copy email"}
+      aria-label={done ? 'Copied' : 'Copy email'}
       title="Copy email"
     >
-      {done ? (
-        <span className="text-xs">Copied</span>
-      ) : (
-        <CopyIcon className="h-3.5 w-3.5" />
-      )}
+      {done ? <span className="text-xs">Copied</span> : <CopyIcon className="h-3.5 w-3.5" />}
     </button>
   );
 }

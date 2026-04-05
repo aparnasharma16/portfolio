@@ -1,12 +1,21 @@
-"use client";
+'use client';
 
-import type { FeaturedWin } from "@/lib/portfolio-data";
-import { SectionIntro } from "@/components/SectionIntro";
-import { MotionCounter, MotionItem, MotionStagger } from "@/components/SubtleMotion";
+import { SectionIntro } from '@/components/SectionIntro';
+import { MotionCounter, MotionItem, MotionStagger } from '@/components/SubtleMotion';
+import type { FeaturedWin } from '@/lib/portfolio-data';
 
 function TrendUpIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M3 17 9 11l4 4 8-8" />
       <path d="M14 7h7v7" />
     </svg>
@@ -56,9 +65,7 @@ export function FeaturedWinsGrid({ wins }: { wins: FeaturedWin[] }) {
               <p className="mt-1.5 text-[0.86rem] font-semibold text-[var(--foreground)]">
                 {win.title}
               </p>
-              <p className="mt-2.5 text-[0.8rem] leading-6 text-[var(--muted-fg)]">
-                {win.summary}
-              </p>
+              <p className="mt-2.5 text-[0.8rem] leading-6 text-[var(--muted-fg)]">{win.summary}</p>
             </article>
           </MotionItem>
         ))}
@@ -74,9 +81,7 @@ export function FeaturedWinsGrid({ wins }: { wins: FeaturedWin[] }) {
               <p className="mt-1.5 text-[0.86rem] font-semibold text-[var(--foreground)]">
                 {win.title}
               </p>
-              <p className="mt-2.5 text-[0.8rem] leading-6 text-[var(--muted-fg)]">
-                {win.summary}
-              </p>
+              <p className="mt-2.5 text-[0.8rem] leading-6 text-[var(--muted-fg)]">{win.summary}</p>
             </article>
           </MotionItem>
         ))}

@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useCallback, useState, useSyncExternalStore } from "react";
+import { useCallback, useState, useSyncExternalStore } from 'react';
 
-const STORAGE_KEY = "portfolio-theme";
+const STORAGE_KEY = 'portfolio-theme';
 
 function getIsDark(): boolean {
-  if (typeof document === "undefined") return false;
-  return document.documentElement.classList.contains("dark");
+  if (typeof document === 'undefined') return false;
+  return document.documentElement.classList.contains('dark');
 }
 
 export function ThemeToggle() {
@@ -20,8 +20,8 @@ export function ThemeToggle() {
 
   const toggle = useCallback(() => {
     const next = !getIsDark();
-    document.documentElement.classList.toggle("dark", next);
-    localStorage.setItem(STORAGE_KEY, next ? "dark" : "light");
+    document.documentElement.classList.toggle('dark', next);
+    localStorage.setItem(STORAGE_KEY, next ? 'dark' : 'light');
     setVersion((current) => current + 1);
   }, []);
 
@@ -31,7 +31,7 @@ export function ThemeToggle() {
       onClick={toggle}
       data-theme-version={version}
       className="flex h-10 w-10 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)] transition-colors hover:border-[var(--border-strong)]"
-      aria-label={dark ? "Switch to light theme" : "Switch to dark theme"}
+      aria-label={dark ? 'Switch to light theme' : 'Switch to dark theme'}
     >
       {mounted ? (
         dark ? (

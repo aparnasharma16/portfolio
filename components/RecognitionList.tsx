@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import { SectionIntro } from "@/components/SectionIntro";
-import { MotionItem, MotionStagger } from "@/components/SubtleMotion";
+import { SectionIntro } from '@/components/SectionIntro';
+import { MotionItem, MotionStagger } from '@/components/SubtleMotion';
 
 type Item = {
   title: string;
@@ -28,15 +28,13 @@ export function RecognitionList({ items }: { items: readonly Item[] }) {
                   <h3 className="text-[0.94rem] font-semibold text-[var(--foreground)]">
                     {item.title}
                   </h3>
-                  <p className="mt-1 text-[0.82rem] text-[var(--muted-fg)]">
-                    {item.org}
-                  </p>
+                  <p className="mt-1 text-[0.82rem] text-[var(--muted-fg)]">{item.org}</p>
                 </div>
-                <p className="shrink-0 text-[0.78rem] font-medium text-[var(--subtle)] sm:text-right">{item.date}</p>
+                <p className="shrink-0 text-[0.78rem] font-medium text-[var(--subtle)] sm:text-right">
+                  {item.date}
+                </p>
               </div>
-              <p className="mt-3 text-[0.85rem] leading-6 text-[var(--muted-fg)]">
-                {item.note}
-              </p>
+              <p className="mt-3 text-[0.85rem] leading-6 text-[var(--muted-fg)]">{item.note}</p>
             </article>
           </MotionItem>
         ))}
@@ -47,7 +45,16 @@ export function RecognitionList({ items }: { items: readonly Item[] }) {
 
 function AwardIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <circle cx="12" cy="8" r="5" />
       <path d="m8.5 13.5-1.5 7 5-2.8 5 2.8-1.5-7" />
     </svg>

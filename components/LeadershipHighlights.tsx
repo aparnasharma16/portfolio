@@ -1,13 +1,9 @@
-"use client";
+'use client';
 
-import { SectionIntro } from "@/components/SectionIntro";
-import { MotionItem, MotionStagger } from "@/components/SubtleMotion";
+import { SectionIntro } from '@/components/SectionIntro';
+import { MotionItem, MotionStagger } from '@/components/SubtleMotion';
 
-export function LeadershipHighlights({
-  items,
-}: {
-  items: readonly string[];
-}) {
+export function LeadershipHighlights({ items }: { items: readonly string[] }) {
   return (
     <section className="mt-16">
       <SectionIntro
@@ -34,7 +30,16 @@ export function LeadershipHighlights({
 
 function UsersIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M16 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2" />
       <circle cx="9.5" cy="7" r="3" />
       <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
@@ -45,7 +50,16 @@ function UsersIcon({ className }: { className?: string }) {
 
 function CheckIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="m5 12 4.5 4.5L19 7" />
     </svg>
   );

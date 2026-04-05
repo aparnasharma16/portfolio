@@ -1,62 +1,63 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  useSyncExternalStore,
-} from "react";
-import { createPortal } from "react-dom";
+import Link from 'next/link';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import { createPortal } from 'react-dom';
 
 const commands = [
   {
-    href: "/",
-    title: "Go to Home",
-    description: "Navigate to the homepage",
-    keywords: ["home", "landing", "index"],
-    shortcut: "H",
+    href: '/',
+    title: 'Go to Home',
+    description: 'Navigate to the homepage',
+    keywords: ['home', 'landing', 'index'],
+    shortcut: 'H',
     icon: HomeIcon,
   },
   {
-    href: "/work",
-    title: "Go to Work",
-    description: "View work experience",
-    keywords: ["work", "experience", "career"],
-    shortcut: "W",
+    href: '/work',
+    title: 'Go to Work',
+    description: 'View work experience',
+    keywords: ['work', 'experience', 'career'],
+    shortcut: 'W',
     icon: BriefcaseIcon,
   },
   {
-    href: "/impact",
-    title: "Go to Impact",
-    description: "View case studies and impact highlights",
-    keywords: ["impact", "case studies", "proof", "highlights"],
-    shortcut: "I",
+    href: '/impact',
+    title: 'Go to Impact',
+    description: 'View case studies and impact highlights',
+    keywords: ['impact', 'case studies', 'proof', 'highlights'],
+    shortcut: 'I',
     icon: SparklesIcon,
   },
   {
-    href: "/blog",
-    title: "Go to Blog",
-    description: "Browse all blog posts",
-    keywords: ["blog", "writing", "articles"],
-    shortcut: "B",
+    href: '/blog',
+    title: 'Go to Blog',
+    description: 'Browse all blog posts',
+    keywords: ['blog', 'writing', 'articles'],
+    shortcut: 'B',
     icon: BookOpenIcon,
   },
   {
-    href: "/resume",
-    title: "Go to Resume",
-    description: "View and download resume",
-    keywords: ["resume", "cv", "profile"],
-    shortcut: "R",
+    href: '/hobbies',
+    title: 'Go to Hobbies',
+    description: 'Things beyond code',
+    keywords: ['hobbies', 'beyond work', 'interests', 'personal', 'painting', 'music', 'coffee'],
+    shortcut: 'Y',
+    icon: HeartIcon,
+  },
+  {
+    href: '/resume',
+    title: 'Go to Resume',
+    description: 'View and download resume',
+    keywords: ['resume', 'cv', 'profile'],
+    shortcut: 'R',
     icon: FileTextIcon,
   },
 ] as const;
 
 export function SearchCommand() {
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
+  const [query, setQuery] = useState('');
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
@@ -68,25 +69,24 @@ export function SearchCommand() {
 
   const close = useCallback(() => {
     setOpen(false);
-    setQuery("");
+    setQuery('');
     setSelectedIndex(0);
   }, []);
 
-  // Lock body scroll when open
   useEffect(() => {
     if (open) {
       const scrollY = window.scrollY;
-      document.body.style.position = "fixed";
+      document.body.style.position = 'fixed';
       document.body.style.top = `-${scrollY}px`;
-      document.body.style.left = "0";
-      document.body.style.right = "0";
-      document.body.style.overflow = "hidden";
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.overflow = 'hidden';
       return () => {
-        document.body.style.position = "";
-        document.body.style.top = "";
-        document.body.style.left = "";
-        document.body.style.right = "";
-        document.body.style.overflow = "";
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.left = '';
+        document.body.style.right = '';
+        document.body.style.overflow = '';
         window.scrollTo(0, scrollY);
       };
     }
@@ -94,17 +94,17 @@ export function SearchCommand() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
         e.preventDefault();
         setOpen((v) => !v);
       }
-      if (e.key === "Escape" && open) {
+      if (e.key === 'Escape' && open) {
         e.preventDefault();
         close();
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [open, close]);
 
   useEffect(() => {
@@ -117,24 +117,21 @@ export function SearchCommand() {
     const q = query.trim().toLowerCase();
     if (!q) return commands;
     return commands.filter((c) => {
-      const hay = [c.title, c.description, c.shortcut, ...c.keywords]
-        .join(" ")
-        .toLowerCase();
+      const hay = [c.title, c.description, c.shortcut, ...c.keywords].join(' ').toLowerCase();
       return hay.includes(q);
     });
   }, [query]);
 
-  // Keyboard nav
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowDown") {
+      if (e.key === 'ArrowDown') {
         e.preventDefault();
         setSelectedIndex((i) => Math.min(i + 1, filtered.length - 1));
-      } else if (e.key === "ArrowUp") {
+      } else if (e.key === 'ArrowUp') {
         e.preventDefault();
         setSelectedIndex((i) => Math.max(i - 1, 0));
-      } else if (e.key === "Enter" && filtered[selectedIndex]) {
+      } else if (e.key === 'Enter' && filtered[selectedIndex]) {
         e.preventDefault();
         const el = listRef.current?.querySelector(
           `[data-index="${selectedIndex}"]`
@@ -142,28 +139,19 @@ export function SearchCommand() {
         el?.click();
       }
     };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
   }, [open, filtered, selectedIndex]);
 
   useEffect(() => {
     if (!listRef.current) return;
     const el = listRef.current.querySelector(`[data-index="${selectedIndex}"]`);
-    el?.scrollIntoView({ block: "nearest" });
+    el?.scrollIntoView({ block: 'nearest' });
   }, [selectedIndex]);
 
   const modal = open ? (
-    <div
-      className="fixed inset-0"
-      style={{ zIndex: 9999, isolation: "isolate" }}
-    >
-      {/* Full-screen dark overlay */}
-      <div
-        className="absolute inset-0 bg-black/60"
-        onClick={close}
-        aria-hidden
-      />
-      {/* Centered dialog */}
+    <div className="fixed inset-0" style={{ zIndex: 9999, isolation: 'isolate' }}>
+      <div className="absolute inset-0 bg-black/60" onClick={close} aria-hidden />
       <div
         className="relative flex h-full w-full items-start justify-center px-4 pt-[min(20vh,12rem)]"
         role="dialog"
@@ -175,7 +163,6 @@ export function SearchCommand() {
           className="w-full max-w-[32rem] overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--background)] shadow-[0_25px_60px_-12px_rgba(0,0,0,0.35)]"
           onClick={(e) => e.stopPropagation()}
         >
-          {/* Search input */}
           <div className="flex items-center gap-3 border-b border-[var(--border)] px-4 py-3.5">
             <SearchIcon className="h-5 w-5 shrink-0 text-[var(--muted-fg)]" />
             <input
@@ -194,7 +181,6 @@ export function SearchCommand() {
             </kbd>
           </div>
 
-          {/* Results */}
           <div
             ref={listRef}
             className="max-h-[min(26rem,55vh)] overflow-y-auto overscroll-contain p-2"
@@ -216,9 +202,7 @@ export function SearchCommand() {
                         onClick={close}
                         onMouseEnter={() => setSelectedIndex(i)}
                         className={`flex items-center gap-3.5 rounded-xl px-3 py-3 transition-colors ${
-                          isSelected
-                            ? "bg-[var(--secondary)]"
-                            : "hover:bg-[var(--secondary)]"
+                          isSelected ? 'bg-[var(--secondary)]' : 'hover:bg-[var(--secondary)]'
                         }`}
                       >
                         <span className="flex h-7 w-7 shrink-0 items-center justify-center text-[var(--muted-fg)]">
@@ -251,17 +235,25 @@ export function SearchCommand() {
           <div className="flex items-center justify-between border-t border-[var(--border)] px-4 py-2.5 text-[0.7rem] text-[var(--muted-fg)]">
             <div className="flex items-center gap-4">
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">↑</kbd>
-                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">↓</kbd>
+                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
+                  ↑
+                </kbd>
+                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
+                  ↓
+                </kbd>
                 navigate
               </span>
               <span className="flex items-center gap-1">
-                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">↵</kbd>
+                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
+                  ↵
+                </kbd>
                 select
               </span>
             </div>
             <span className="flex items-center gap-1">
-              <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">⌘K</kbd>
+              <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
+                ⌘K
+              </kbd>
               to open
             </span>
           </div>
@@ -272,7 +264,6 @@ export function SearchCommand() {
 
   return (
     <>
-      {/* Mobile button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -281,7 +272,6 @@ export function SearchCommand() {
       >
         <SearchIcon className="h-4 w-4" />
       </button>
-      {/* Desktop button */}
       <button
         type="button"
         onClick={() => setOpen(true)}
@@ -294,7 +284,6 @@ export function SearchCommand() {
         </span>
       </button>
 
-      {/* Portal to body so it's above everything including sticky header */}
       {mounted ? createPortal(modal, document.body) : null}
     </>
   );
@@ -389,6 +378,23 @@ function FileTextIcon({ className }: { className?: string }) {
       <path d="M7 3.5h7l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V5A1.5 1.5 0 0 1 7.5 3.5Z" />
       <path d="M14 3.5V8h4" />
       <path d="M9 12h6M9 16h6" />
+    </svg>
+  );
+}
+
+function HeartIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.9"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
     </svg>
   );
 }

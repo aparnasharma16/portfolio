@@ -1,12 +1,17 @@
-import type { Metadata } from "next";
-import { PageQuote } from "@/components/PageQuote";
-import { Hobbies } from "@/components/Hobbies";
-import { MotionReveal } from "@/components/SubtleMotion";
-import { hobbies, profile, sitePageQuotes } from "@/lib/portfolio-data";
+import { BookList } from '@/components/BookList';
+import { Hobbies } from '@/components/Hobbies';
+import { PageQuote } from '@/components/PageQuote';
+import { MotionReveal } from '@/components/SubtleMotion';
+import { hobbies, profile, readingList, sitePageQuotes } from '@/lib/portfolio-data';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: `Hobbies — ${profile.name}`,
-  description: "Beyond code — the things I enjoy outside of engineering.",
+  description: 'Beyond code — the things I enjoy outside of engineering.',
+  openGraph: {
+    title: `Hobbies — ${profile.name}`,
+    description: 'Beyond code — the things I enjoy outside of engineering.',
+  },
 };
 
 export default function HobbiesPage() {
@@ -18,7 +23,8 @@ export default function HobbiesPage() {
             Beyond work
           </h1>
           <p className="mt-3 max-w-2xl text-[0.95rem] leading-7 text-[var(--muted-fg)]">
-            When I&apos;m not building products, these are the things that keep me energized and inspired.
+            When I&apos;m not building products, these are the things that keep me energized and
+            inspired.
           </p>
         </div>
       </MotionReveal>
@@ -28,6 +34,10 @@ export default function HobbiesPage() {
       </MotionReveal>
 
       <MotionReveal delay={0.08}>
+        <BookList books={readingList} />
+      </MotionReveal>
+
+      <MotionReveal delay={0.12}>
         <PageQuote quote={sitePageQuotes.home} />
       </MotionReveal>
     </main>

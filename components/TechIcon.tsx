@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 type IconDef = {
   label: string;
@@ -6,21 +6,14 @@ type IconDef = {
 };
 
 const chipClassName =
-  "group inline-flex h-11 items-center overflow-hidden rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--chip-bg)] px-3 text-[var(--foreground)] shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-[var(--border)] hover:bg-[var(--background)] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]";
+  'group inline-flex h-11 items-center overflow-hidden rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--chip-bg)] px-3 text-[var(--foreground)] shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-[var(--border)] hover:bg-[var(--background)] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]';
 
 const labelClassName =
-  "max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium opacity-0 transition-all duration-200 group-hover:ml-2 group-hover:max-w-24 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-24 group-focus-visible:opacity-100";
+  'max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium opacity-0 transition-all duration-200 group-hover:ml-2 group-hover:max-w-24 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-24 group-focus-visible:opacity-100';
 
-const iconWrapClassName =
-  "flex h-5 w-5 shrink-0 items-center justify-center";
+const iconWrapClassName = 'flex h-5 w-5 shrink-0 items-center justify-center';
 
-function Svg({
-  children,
-  viewBox = "0 0 24 24",
-}: {
-  children: ReactNode;
-  viewBox?: string;
-}) {
+function Svg({ children, viewBox = '0 0 24 24' }: { children: ReactNode; viewBox?: string }) {
   return (
     <svg
       aria-hidden
@@ -34,15 +27,7 @@ function Svg({
   );
 }
 
-function LetterBadge({
-  text,
-  bg,
-  fg = "#ffffff",
-}: {
-  text: string;
-  bg: string;
-  fg?: string;
-}) {
+function LetterBadge({ text, bg, fg = '#ffffff' }: { text: string; bg: string; fg?: string }) {
   return (
     <Svg>
       <rect x="1.5" y="1.5" width="21" height="21" rx="4.5" fill={bg} />
@@ -63,26 +48,19 @@ function LetterBadge({
 
 const icons: Record<string, IconDef> = {
   TypeScript: {
-    label: "TypeScript",
+    label: 'TypeScript',
     glyph: <LetterBadge text="TS" bg="#3178C6" />,
   },
   JavaScript: {
-    label: "JavaScript",
+    label: 'JavaScript',
     glyph: <LetterBadge text="JS" bg="#F7DF1E" fg="#111827" />,
   },
   React: {
-    label: "React",
+    label: 'React',
     glyph: (
       <Svg>
         <circle cx="12" cy="12" r="1.9" fill="#61DAFB" />
-        <ellipse
-          cx="12"
-          cy="12"
-          rx="9"
-          ry="3.8"
-          stroke="#61DAFB"
-          strokeWidth="1.6"
-        />
+        <ellipse cx="12" cy="12" rx="9" ry="3.8" stroke="#61DAFB" strokeWidth="1.6" />
         <ellipse
           cx="12"
           cy="12"
@@ -104,19 +82,12 @@ const icons: Record<string, IconDef> = {
       </Svg>
     ),
   },
-  "React Native": {
-    label: "React Native",
+  'React Native': {
+    label: 'React Native',
     glyph: (
       <Svg>
         <circle cx="12" cy="12" r="1.9" fill="#61DAFB" />
-        <ellipse
-          cx="12"
-          cy="12"
-          rx="9"
-          ry="3.8"
-          stroke="#61DAFB"
-          strokeWidth="1.6"
-        />
+        <ellipse cx="12" cy="12" rx="9" ry="3.8" stroke="#61DAFB" strokeWidth="1.6" />
         <ellipse
           cx="12"
           cy="12"
@@ -139,37 +110,25 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Node: {
-    label: "Node.js",
+    label: 'Node.js',
     glyph: (
       <Svg>
-        <path
-          d="M12 1.8 20.4 6.7v10.6L12 22.2 3.6 17.3V6.7L12 1.8Z"
-          fill="#539E43"
-        />
-        <path
-          d="M9.1 15.9V8.1h1.7l3.3 4.2V8.1h1.8v7.8h-1.6L10.9 11v4.9H9.1Z"
-          fill="#ffffff"
-        />
+        <path d="M12 1.8 20.4 6.7v10.6L12 22.2 3.6 17.3V6.7L12 1.8Z" fill="#539E43" />
+        <path d="M9.1 15.9V8.1h1.7l3.3 4.2V8.1h1.8v7.8h-1.6L10.9 11v4.9H9.1Z" fill="#ffffff" />
       </Svg>
     ),
   },
-  "Node.js": {
-    label: "Node.js",
+  'Node.js': {
+    label: 'Node.js',
     glyph: (
       <Svg>
-        <path
-          d="M12 1.8 20.4 6.7v10.6L12 22.2 3.6 17.3V6.7L12 1.8Z"
-          fill="#539E43"
-        />
-        <path
-          d="M9.1 15.9V8.1h1.7l3.3 4.2V8.1h1.8v7.8h-1.6L10.9 11v4.9H9.1Z"
-          fill="#ffffff"
-        />
+        <path d="M12 1.8 20.4 6.7v10.6L12 22.2 3.6 17.3V6.7L12 1.8Z" fill="#539E43" />
+        <path d="M9.1 15.9V8.1h1.7l3.3 4.2V8.1h1.8v7.8h-1.6L10.9 11v4.9H9.1Z" fill="#ffffff" />
       </Svg>
     ),
   },
   REST: {
-    label: "REST APIs",
+    label: 'REST APIs',
     glyph: (
       <Svg>
         <rect x="2" y="4" width="20" height="16" rx="4" fill="#F97316" />
@@ -189,8 +148,8 @@ const icons: Record<string, IconDef> = {
       </Svg>
     ),
   },
-  "REST APIs": {
-    label: "REST APIs",
+  'REST APIs': {
+    label: 'REST APIs',
     glyph: (
       <Svg>
         <rect x="2" y="4" width="20" height="16" rx="4" fill="#F97316" />
@@ -211,26 +170,17 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Jest: {
-    label: "Jest",
+    label: 'Jest',
     glyph: (
       <Svg>
-        <path
-          d="M12 2.5 8.4 4.1v5.2L12 11l3.6-1.7V4.1L12 2.5Z"
-          fill="#99425B"
-        />
-        <path
-          d="M8.4 11.4 5.4 13v4.1l3 1.5 3-1.5V13l-3-1.6Z"
-          fill="#C16A7B"
-        />
-        <path
-          d="M15.6 11.4 12.6 13v4.1l3 1.5 3-1.5V13l-3-1.6Z"
-          fill="#C16A7B"
-        />
+        <path d="M12 2.5 8.4 4.1v5.2L12 11l3.6-1.7V4.1L12 2.5Z" fill="#99425B" />
+        <path d="M8.4 11.4 5.4 13v4.1l3 1.5 3-1.5V13l-3-1.6Z" fill="#C16A7B" />
+        <path d="M15.6 11.4 12.6 13v4.1l3 1.5 3-1.5V13l-3-1.6Z" fill="#C16A7B" />
       </Svg>
     ),
   },
   GraphQL: {
-    label: "GraphQL",
+    label: 'GraphQL',
     glyph: (
       <Svg>
         <path
@@ -255,7 +205,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   AWS: {
-    label: "AWS",
+    label: 'AWS',
     glyph: (
       <Svg viewBox="0 0 32 24">
         <text
@@ -285,24 +235,19 @@ const icons: Record<string, IconDef> = {
     ),
   },
   MongoDB: {
-    label: "MongoDB",
+    label: 'MongoDB',
     glyph: (
       <Svg>
         <path
           d="M12 2.5c2.7 3.1 4.2 6.2 4.2 9.1 0 4.1-2.5 7.5-4.2 9.9-1.8-2.3-4.2-5.8-4.2-9.9 0-3 1.5-6 4.2-9.1Z"
           fill="#13AA52"
         />
-        <path
-          d="M12 4.5v13.7"
-          stroke="#B8E6C6"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-        />
+        <path d="M12 4.5v13.7" stroke="#B8E6C6" strokeWidth="1.2" strokeLinecap="round" />
       </Svg>
     ),
   },
   Express: {
-    label: "Express",
+    label: 'Express',
     glyph: (
       <Svg viewBox="0 0 30 24">
         <text
@@ -319,21 +264,16 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Swagger: {
-    label: "Swagger",
+    label: 'Swagger',
     glyph: (
       <Svg>
         <rect x="2.5" y="2.5" width="19" height="19" rx="5" fill="#85EA2D" />
-        <path
-          d="M7 12h10M12 7v10"
-          stroke="#173200"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
+        <path d="M7 12h10M12 7v10" stroke="#173200" strokeWidth="1.8" strokeLinecap="round" />
       </Svg>
     ),
   },
   Kafka: {
-    label: "Kafka",
+    label: 'Kafka',
     glyph: (
       <Svg>
         <circle cx="7" cy="12" r="2" fill="currentColor" />
@@ -349,7 +289,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Redux: {
-    label: "Redux",
+    label: 'Redux',
     glyph: (
       <Svg>
         <circle cx="7.2" cy="15.8" r="1.7" fill="#764ABC" />
@@ -365,7 +305,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Shopify: {
-    label: "Shopify",
+    label: 'Shopify',
     glyph: (
       <Svg>
         <path
@@ -391,7 +331,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Tailwind: {
-    label: "Tailwind CSS",
+    label: 'Tailwind CSS',
     glyph: (
       <Svg>
         <path
@@ -409,8 +349,8 @@ const icons: Record<string, IconDef> = {
       </Svg>
     ),
   },
-  "Tailwind CSS": {
-    label: "Tailwind CSS",
+  'Tailwind CSS': {
+    label: 'Tailwind CSS',
     glyph: (
       <Svg>
         <path
@@ -429,7 +369,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Figma: {
-    label: "Figma",
+    label: 'Figma',
     glyph: (
       <Svg>
         <circle cx="9" cy="6.5" r="3.2" fill="#F24E1E" />
@@ -441,7 +381,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   WordPress: {
-    label: "WordPress",
+    label: 'WordPress',
     glyph: (
       <Svg>
         <circle cx="12" cy="12" r="9" fill="#21759B" />
@@ -460,7 +400,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   PHP: {
-    label: "PHP",
+    label: 'PHP',
     glyph: (
       <Svg viewBox="0 0 32 24">
         <ellipse cx="16" cy="12" rx="12" ry="7" fill="#777BB4" />
@@ -479,7 +419,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Algolia: {
-    label: "Algolia",
+    label: 'Algolia',
     glyph: (
       <Svg>
         <circle cx="12" cy="12" r="8.5" fill="#003DFF" />
@@ -489,13 +429,10 @@ const icons: Record<string, IconDef> = {
     ),
   },
   HTML: {
-    label: "HTML5",
+    label: 'HTML5',
     glyph: (
       <Svg>
-        <path
-          d="M5 3h14l-1.2 14.5L12 20l-5.8-2.5L5 3Z"
-          fill="#E34F26"
-        />
+        <path d="M5 3h14l-1.2 14.5L12 20l-5.8-2.5L5 3Z" fill="#E34F26" />
         <path d="M12 4.2h5.7l-1 12L12 18.3V4.2Z" fill="#EF652A" />
         <path
           d="m8 8.1.2 2.2H12V8.1H8Zm.4 3.3.3 3 3.3 1.1v-2.2l-1.3-.4-.1-1.5H8.4Zm7.2-3.3H12v2.2h3.4l-.3 3-3.1 1v2.3l3.2-1.1.8-7.4Z"
@@ -505,13 +442,10 @@ const icons: Record<string, IconDef> = {
     ),
   },
   CSS: {
-    label: "CSS3",
+    label: 'CSS3',
     glyph: (
       <Svg>
-        <path
-          d="M5 3h14l-1.2 14.5L12 20l-5.8-2.5L5 3Z"
-          fill="#1572B6"
-        />
+        <path d="M5 3h14l-1.2 14.5L12 20l-5.8-2.5L5 3Z" fill="#1572B6" />
         <path d="M12 4.2h5.7l-1 12L12 18.3V4.2Z" fill="#33A9DC" />
         <path
           d="m8.3 8.1.2 2.2H12V8.1H8.3Zm.3 3.3.3 3 3.1 1.1v-2.3l-1.3-.4-.1-1.4H8.6Zm3.4-3.3v2.2h3.2l-.3 3-2.9 1v2.3l3-1.1.8-7.4H12Z"
@@ -521,7 +455,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   MySQL: {
-    label: "MySQL",
+    label: 'MySQL',
     glyph: (
       <Svg>
         <path
@@ -538,7 +472,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Playwright: {
-    label: "Playwright",
+    label: 'Playwright',
     glyph: (
       <Svg>
         <rect x="2" y="2" width="20" height="20" rx="4" fill="#2EAD33" />
@@ -553,7 +487,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Cypress: {
-    label: "Cypress",
+    label: 'Cypress',
     glyph: (
       <Svg>
         <circle cx="12" cy="12" r="9.5" fill="#1B1E2E" />
@@ -567,7 +501,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Storybook: {
-    label: "Storybook",
+    label: 'Storybook',
     glyph: (
       <Svg>
         <rect x="4" y="2" width="16" height="20" rx="3" fill="#FF4785" />
@@ -581,7 +515,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Claude: {
-    label: "Claude",
+    label: 'Claude',
     glyph: (
       <Svg>
         <rect x="2" y="2" width="20" height="20" rx="5" fill="#D4A27F" />
@@ -596,8 +530,8 @@ const icons: Record<string, IconDef> = {
       </Svg>
     ),
   },
-  "Next.js": {
-    label: "Next.js",
+  'Next.js': {
+    label: 'Next.js',
     glyph: (
       <Svg>
         <circle cx="12" cy="12" r="9.5" fill="currentColor" />
@@ -612,7 +546,7 @@ const icons: Record<string, IconDef> = {
     ),
   },
   CodeIgniter: {
-    label: "CodeIgniter",
+    label: 'CodeIgniter',
     glyph: (
       <Svg>
         <path
@@ -628,7 +562,7 @@ function fallbackLabel(name: string) {
   return name
     .split(/[\s.-]+/)
     .map((part) => part[0])
-    .join("")
+    .join('')
     .slice(0, 2)
     .toUpperCase();
 }
@@ -641,9 +575,7 @@ export function TechIcon({ name }: { name: string }) {
     <span className={chipClassName} title={label}>
       <span className={iconWrapClassName}>
         {icon?.glyph ?? (
-          <span className="text-[10px] font-semibold tracking-tight">
-            {fallbackLabel(name)}
-          </span>
+          <span className="text-[10px] font-semibold tracking-tight">{fallbackLabel(name)}</span>
         )}
       </span>
       <span className={labelClassName}>{label}</span>

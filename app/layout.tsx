@@ -1,20 +1,33 @@
-import type { Metadata } from "next";
-import { Hanken_Grotesk } from "next/font/google";
-import Script from "next/script";
-import { profile } from "@/lib/portfolio-data";
-import { themeInitScript } from "@/lib/theme-init";
-import "./globals.css";
+import { profile } from '@/lib/portfolio-data';
+import { themeInitScript } from '@/lib/theme-init';
+import type { Metadata } from 'next';
+import { Hanken_Grotesk } from 'next/font/google';
+import Script from 'next/script';
+import './globals.css';
 
 const hankenGrotesk = Hanken_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-hanken",
-  display: "swap",
-  style: ["normal", "italic"],
+  subsets: ['latin'],
+  variable: '--font-hanken',
+  display: 'swap',
+  style: ['normal', 'italic'],
 });
 
 export const metadata: Metadata = {
   title: `${profile.name} — ${profile.title}`,
   description: profile.metaDescription,
+  metadataBase: new URL(profile.siteUrl),
+  openGraph: {
+    title: `${profile.name} — ${profile.title}`,
+    description: profile.metaDescription,
+    siteName: profile.name,
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: `${profile.name} — ${profile.title}`,
+    description: profile.metaDescription,
+  },
 };
 
 export default function RootLayout({

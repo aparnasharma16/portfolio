@@ -7,6 +7,7 @@ const navigate = [
   { href: '/work', label: 'Work' },
   { href: '/impact', label: 'Impact' },
   { href: '/blog', label: 'Blog' },
+  { href: '/hobbies', label: 'Hobbies' },
   { href: '/resume', label: 'Resume' },
 ] as const;
 
@@ -23,7 +24,6 @@ export function SiteFooter() {
     <footer className="border-t border-[var(--border)]">
       <div className="mx-auto max-w-2xl px-5 py-12">
         <div className="flex flex-col gap-10 sm:flex-row sm:justify-between">
-          {/* Navigate */}
           <div>
             <h2 className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[var(--subtle)]">
               Navigate
@@ -42,7 +42,6 @@ export function SiteFooter() {
             </ul>
           </div>
 
-          {/* Connect */}
           <div>
             <h2 className="text-[0.65rem] font-semibold uppercase tracking-[0.25em] text-[var(--subtle)]">
               Connect
@@ -78,7 +77,6 @@ function FooterIconLink({ href, label, icon }: { href: string; label: string; ic
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
     >
       {icon}
-      {/* Tooltip */}
       <span className="pointer-events-none absolute -top-9 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--foreground)] px-2.5 py-1 text-[0.7rem] font-medium text-[var(--background)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100">
         {label}
         <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 h-2 w-2 rotate-45 bg-[var(--foreground)]" />
@@ -86,8 +84,6 @@ function FooterIconLink({ href, label, icon }: { href: string; label: string; ic
     </Link>
   );
 }
-
-/* ---------- SVG Glyphs ---------- */
 
 function XGlyph({ className }: { className?: string }) {
   return (

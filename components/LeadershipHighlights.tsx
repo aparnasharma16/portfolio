@@ -1,4 +1,7 @@
+"use client";
+
 import { SectionIntro } from "@/components/SectionIntro";
+import { MotionItem, MotionStagger } from "@/components/SubtleMotion";
 
 export function LeadershipHighlights({
   items,
@@ -6,26 +9,25 @@ export function LeadershipHighlights({
   items: readonly string[];
 }) {
   return (
-    <section className="mt-14">
+    <section className="mt-16">
       <SectionIntro
         eyebrow="Leadership"
         title="How I support teams"
         description="My contribution is not just shipping code. I help teams move faster by improving quality, clarifying direction, and supporting the people around me."
         icon={<UsersIcon className="h-4 w-4" />}
       />
-      <ul className="mt-6 grid gap-3 sm:grid-cols-2">
+      <MotionStagger className="mt-7 grid gap-4 sm:grid-cols-2" delay={0.04}>
         {items.map((item) => (
-          <li
-            key={item}
-            className="rounded-2xl border border-[var(--border)] bg-[var(--chip-bg)] px-5 py-4 text-[0.88rem] leading-6 text-[var(--muted-fg)]"
-          >
-            <span className="mr-2 inline-flex h-7 w-7 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--background)] align-middle text-[var(--foreground)]">
-              <CheckIcon className="h-3.5 w-3.5" />
-            </span>
-            {item}
-          </li>
+          <MotionItem key={item}>
+            <li className="flex items-start gap-3 rounded-2xl border border-[var(--border)] bg-[var(--chip-bg)] px-5 py-5 text-[0.88rem] leading-7 text-[var(--muted-fg)] transition-colors hover:border-[var(--foreground)]/10">
+              <span className="mt-0.5 inline-flex h-7 w-7 shrink-0 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--background)] text-[var(--foreground)]">
+                <CheckIcon className="h-3.5 w-3.5" />
+              </span>
+              <span>{item}</span>
+            </li>
+          </MotionItem>
         ))}
-      </ul>
+      </MotionStagger>
     </section>
   );
 }

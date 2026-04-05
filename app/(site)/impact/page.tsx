@@ -5,6 +5,7 @@ import { CaseStudiesList } from "@/components/CaseStudiesList";
 import { CoreExpertiseGroups } from "@/components/ExpertiseGrid";
 import { LeadershipHighlights } from "@/components/LeadershipHighlights";
 import { RecognitionList } from "@/components/RecognitionList";
+import { FeaturedWinsGrid } from "@/components/FeaturedWins";
 import { MotionPress, MotionReveal } from "@/components/SubtleMotion";
 import {
   accomplishments,
@@ -25,7 +26,7 @@ export default function ImpactPage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-14">
       <MotionReveal>
-        <section className="relative overflow-hidden rounded-[1.8rem] border border-[var(--border)] bg-[linear-gradient(135deg,var(--chip-bg),var(--background))] px-6 py-7 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.35)]">
+        <section className="relative overflow-hidden rounded-[1.8rem] border border-[var(--border)] bg-[linear-gradient(135deg,var(--chip-bg),var(--background))] px-6 py-8 shadow-[0_20px_60px_-40px_rgba(15,23,42,0.35)] md:px-8 md:py-9">
           <div className="absolute right-0 top-0 h-40 w-40 rounded-full bg-[var(--secondary)]/70 blur-3xl" aria-hidden />
           <div className="relative">
             <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--background)]/80 px-3 py-1 text-[0.72rem] font-semibold uppercase tracking-[0.2em] text-[var(--subtle)]">
@@ -77,24 +78,7 @@ export default function ImpactPage() {
       </MotionReveal>
 
       <MotionReveal delay={0.04}>
-        <section className="mt-6 grid gap-3 sm:grid-cols-3">
-          {featuredWins.slice(0, 3).map((win) => (
-            <article
-              key={`${win.metric}-${win.title}`}
-              className="rounded-2xl border border-[var(--border)] bg-[var(--chip-bg)] px-5 py-4"
-            >
-              <p className="text-[1.25rem] font-semibold tracking-[-0.04em] text-[var(--foreground)]">
-                {win.metric}
-              </p>
-              <p className="mt-1 text-[0.84rem] font-medium text-[var(--foreground)]">
-                {win.title}
-              </p>
-              <p className="mt-2 text-[0.78rem] leading-6 text-[var(--muted-fg)]">
-                {win.summary}
-              </p>
-            </article>
-          ))}
-        </section>
+        <FeaturedWinsGrid wins={featuredWins} />
       </MotionReveal>
 
       <MotionReveal delay={0.06}>

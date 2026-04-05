@@ -1,4 +1,3 @@
-/** Inline script string for root layout (before paint, avoids flash). */
 export const themeInitScript = `
 (function () {
   try {

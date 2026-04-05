@@ -1,12 +1,12 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { CompanyLogo } from "@/components/CompanyLogo";
-import { MotionPress, getExpandTransition } from "@/components/SubtleMotion";
-import type { ExperienceEntry } from "@/lib/portfolio-data";
-import { TechIcon } from "@/components/TechIcon";
+import { CompanyLogo } from '@/components/CompanyLogo';
+import { MotionPress, getExpandTransition } from '@/components/SubtleMotion';
+import { TechIcon } from '@/components/TechIcon';
+import type { ExperienceEntry } from '@/lib/portfolio-data';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 type Props = {
   jobs: ExperienceEntry[];
@@ -14,8 +14,7 @@ type Props = {
 };
 
 export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
-  const visible =
-    previewCount >= jobs.length ? jobs : jobs.slice(0, previewCount);
+  const visible = previewCount >= jobs.length ? jobs : jobs.slice(0, previewCount);
   const hasMore = jobs.length > visible.length;
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const reduceMotion = useReducedMotion() ?? false;
@@ -29,16 +28,12 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
         {visible.map((job, i) => {
           const isExpanded = expandedIndex === i;
           return (
-            <li key={`${job.company}-${job.period}`} className={i > 0 ? "mt-4" : ""}>
+            <li key={`${job.company}-${job.period}`} className={i > 0 ? 'mt-4' : ''}>
               <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
                 <div className="min-w-0">
                   <div className="flex items-start gap-3">
                     {job.logo ? (
-                      <CompanyLogo
-                        src={job.logo}
-                        alt={`${job.company} logo`}
-                        size="sm"
-                      />
+                      <CompanyLogo src={job.logo} alt={`${job.company} logo`} size="sm" />
                     ) : null}
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
@@ -48,24 +43,19 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                         {job.current ? (
                           <>
                             <span className="inline-flex items-center gap-1.5 rounded-full border border-[#86efac] bg-[#f0fdf4] px-2 py-0.5 text-xs font-medium text-[#166534] dark:border-[#14532d] dark:bg-[#052e16] dark:text-[#bbf7d0]">
-                              <span
-                                className="h-1.5 w-1.5 rounded-full bg-[#4ade80]"
-                                aria-hidden
-                              />
+                              <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" aria-hidden />
                               Working
                             </span>
                             <button
                               type="button"
-                              onClick={() =>
-                                setExpandedIndex(isExpanded ? null : i)
-                              }
+                              onClick={() => setExpandedIndex(isExpanded ? null : i)}
                               className="flex h-5 w-5 items-center justify-center text-[var(--muted-fg)] transition-transform hover:text-[var(--foreground)]"
-                              aria-label={isExpanded ? "Collapse" : "Expand"}
+                              aria-label={isExpanded ? 'Collapse' : 'Expand'}
                             >
                               <svg
                                 viewBox="0 0 20 20"
                                 fill="currentColor"
-                                className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? "rotate-90" : ""}`}
+                                className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
                                 aria-hidden
                               >
                                 <path
@@ -78,16 +68,12 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                           </>
                         ) : null}
                       </div>
-                      <p className="text-[0.85rem] text-[var(--muted-fg)]">
-                        {job.role}
-                      </p>
+                      <p className="text-[0.85rem] text-[var(--muted-fg)]">{job.role}</p>
                     </div>
                   </div>
                 </div>
                 <div className="shrink-0 text-left sm:text-right">
-                  <p className="text-[0.85rem] text-[var(--foreground)]">
-                    {job.period}
-                  </p>
+                  <p className="text-[0.85rem] text-[var(--foreground)]">{job.period}</p>
                   <p className="text-[0.85rem] text-[var(--muted-fg)]">
                     {job.location} ({job.workType})
                   </p>
@@ -99,7 +85,7 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                   <motion.div
                     key="details"
                     initial={reduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
-                    animate={reduceMotion ? { opacity: 1 } : { opacity: 1, height: "auto" }}
+                    animate={reduceMotion ? { opacity: 1 } : { opacity: 1, height: 'auto' }}
                     exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
                     transition={getExpandTransition(reduceMotion)}
                     className="overflow-hidden"
@@ -143,9 +129,7 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
             href="/work"
             className="rounded-lg border border-[var(--border)] px-5 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
           >
-            {hasMore
-              ? "Show all work experiences"
-              : "View full work experiences"}
+            {hasMore ? 'Show all work experiences' : 'View full work experiences'}
           </Link>
         </MotionPress>
       </div>

@@ -1,13 +1,13 @@
-"use client";
+'use client';
 
-import { useState } from "react";
-import Link from "next/link";
-import { AnimatePresence, motion } from "motion/react";
-import type { CaseStudy } from "@/lib/portfolio-data";
-import { CompanyLogo } from "@/components/CompanyLogo";
-import { TechIcon } from "@/components/TechIcon";
-import { SectionIntro } from "@/components/SectionIntro";
-import { MotionItem, MotionPress, MotionStagger } from "@/components/SubtleMotion";
+import { CompanyLogo } from '@/components/CompanyLogo';
+import { SectionIntro } from '@/components/SectionIntro';
+import { MotionItem, MotionPress, MotionStagger } from '@/components/SubtleMotion';
+import { TechIcon } from '@/components/TechIcon';
+import type { CaseStudy } from '@/lib/portfolio-data';
+import { AnimatePresence, motion } from 'motion/react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 type Props = {
   studies: CaseStudy[];
@@ -32,11 +32,7 @@ export function CaseStudiesList({ studies, compact = false }: Props) {
               <div className="flex flex-col gap-2 sm:flex-row sm:items-start sm:justify-between">
                 <div className="flex items-start gap-3">
                   {study.logo ? (
-                    <CompanyLogo
-                      src={study.logo}
-                      alt={`${study.company} logo`}
-                      size="sm"
-                    />
+                    <CompanyLogo src={study.logo} alt={`${study.company} logo`} size="sm" />
                   ) : null}
                   <div>
                     <p className="text-[0.74rem] font-semibold uppercase tracking-[0.14em] text-[var(--muted-fg)]">
@@ -45,9 +41,7 @@ export function CaseStudiesList({ studies, compact = false }: Props) {
                     <h3 className="mt-0.5 text-[1.02rem] font-bold tracking-[-0.02em] text-[var(--foreground)]">
                       {study.title}
                     </h3>
-                    <p className="mt-1 text-[0.84rem] text-[var(--muted-fg)]">
-                      {study.period}
-                    </p>
+                    <p className="mt-1 text-[0.84rem] text-[var(--muted-fg)]">{study.period}</p>
                   </div>
                 </div>
               </div>
@@ -106,9 +100,7 @@ export function CaseStudiesList({ studies, compact = false }: Props) {
                   ))}
                 </ul>
               </div>
-              {study.artifacts ? (
-                <ArtifactsList items={study.artifacts} />
-              ) : null}
+              {study.artifacts ? <ArtifactsList items={study.artifacts} /> : null}
             </article>
           </MotionItem>
         ))}
@@ -150,7 +142,7 @@ function ArtifactsList({ items }: { items: string[] }) {
             onClick={() => setExpanded((v) => !v)}
             className="text-[0.78rem] font-medium text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]"
           >
-            {expanded ? "Show less" : "Show all"}
+            {expanded ? 'Show less' : 'Show all'}
           </button>
         ) : null}
       </div>
@@ -184,7 +176,16 @@ function ArtifactsList({ items }: { items: string[] }) {
 
 function PackageIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="m16.5 9.4-9-5.19M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z" />
       <path d="M3.27 6.96 12 12.01l8.73-5.05M12 22.08V12" />
     </svg>
@@ -193,7 +194,16 @@ function PackageIcon({ className }: { className?: string }) {
 
 function BriefcaseIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <rect x="3" y="7" width="18" height="13" rx="2.5" />
       <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" />
     </svg>
@@ -202,7 +212,16 @@ function BriefcaseIcon({ className }: { className?: string }) {
 
 function CompassIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <circle cx="12" cy="12" r="8" />
       <path d="m14.5 9.5-2 5-5 2 2-5 5-2Z" />
     </svg>
@@ -211,7 +230,16 @@ function CompassIcon({ className }: { className?: string }) {
 
 function AlertIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M12 9v4" />
       <path d="M12 17h.01" />
       <path d="M10.3 3.8 2.9 16.2A2 2 0 0 0 4.6 19h14.8a2 2 0 0 0 1.7-2.8L13.7 3.8a2 2 0 0 0-3.4 0Z" />
@@ -221,7 +249,16 @@ function AlertIcon({ className }: { className?: string }) {
 
 function BuildIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-3 3-3-3 3-3Z" />
     </svg>
   );
@@ -229,7 +266,16 @@ function BuildIcon({ className }: { className?: string }) {
 
 function TrendIcon({ className }: { className?: string }) {
   return (
-    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
       <path d="M3 17 9 11l4 4 8-8" />
       <path d="M14 7h7v7" />
     </svg>

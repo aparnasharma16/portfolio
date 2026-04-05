@@ -3,7 +3,7 @@ type PageQuoteProps = {
   className?: string;
 };
 
-export function PageQuote({ quote, className = "mt-20" }: PageQuoteProps) {
+export function PageQuote({ quote, className = 'mt-20' }: PageQuoteProps) {
   return (
     <figure
       className={`relative overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--chip-bg)] px-8 py-12 text-center md:px-12 ${className}`}

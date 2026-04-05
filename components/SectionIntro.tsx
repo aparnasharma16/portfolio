@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode } from 'react';
 
 type SectionIntroProps = {
   eyebrow?: string;
@@ -7,12 +7,7 @@ type SectionIntroProps = {
   icon?: ReactNode;
 };
 
-export function SectionIntro({
-  eyebrow,
-  title,
-  description,
-  icon,
-}: SectionIntroProps) {
+export function SectionIntro({ eyebrow, title, description, icon }: SectionIntroProps) {
   return (
     <div>
       {eyebrow || icon ? (

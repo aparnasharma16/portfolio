@@ -1,82 +1,108 @@
-import { CopyEmailButton } from "@/components/CopyEmailButton";
-import { CaseStudiesList } from "@/components/CaseStudiesList";
-import { CompanyLogo } from "@/components/CompanyLogo";
-import { ExpertiseGrid } from "@/components/ExpertiseGrid";
-import { FeaturedWins } from "@/components/FeaturedWins";
-import { HomeExperiencePreview } from "@/components/HomeExperiencePreview";
-import { LeadershipHighlights } from "@/components/LeadershipHighlights";
-import { RecognitionList } from "@/components/RecognitionList";
-import Link from "next/link";
-import { PageQuote } from "@/components/PageQuote";
-import { MotionPress, MotionReveal } from "@/components/SubtleMotion";
+import { CaseStudiesList } from '@/components/CaseStudiesList';
+import { CompanyLogo } from '@/components/CompanyLogo';
+import { CopyEmailButton } from '@/components/CopyEmailButton';
+import { ExpertiseGrid } from '@/components/ExpertiseGrid';
+import { FeaturedWins } from '@/components/FeaturedWins';
+import { HomeExperiencePreview } from '@/components/HomeExperiencePreview';
+import { LeadershipHighlights } from '@/components/LeadershipHighlights';
+import { PageQuote } from '@/components/PageQuote';
+import { RecognitionList } from '@/components/RecognitionList';
+import { MotionPress, MotionReveal } from '@/components/SubtleMotion';
+import { Testimonials } from '@/components/Testimonials';
 import {
   accomplishments,
   caseStudies,
   education,
-  expertiseAreas,
   experience,
+  expertiseAreas,
   featuredWins,
   leadershipHighlights,
   profile,
   sitePageQuotes,
-} from "@/lib/portfolio-data";
+  testimonials,
+} from '@/lib/portfolio-data';
+import Link from 'next/link';
+
+export const metadata = {
+  title: `${profile.name} — ${profile.title}`,
+  description: profile.valueProposition,
+  openGraph: {
+    title: `${profile.name} — ${profile.title}`,
+    description: profile.valueProposition,
+  },
+  twitter: {
+    card: 'summary_large_image' as const,
+    title: `${profile.name} — ${profile.title}`,
+    description: profile.valueProposition,
+  },
+};
 
 export default function HomePage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-16">
       <MotionReveal>
         <div>
-        <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
-          Bengaluru, India · {profile.yearsExperience}
-        </p>
-        <h1 className="text-[1.75rem] font-bold tracking-[-0.03em] text-[var(--foreground)] md:text-[2rem]">
-          {profile.name}
-        </h1>
-        <p className="mt-1.5 text-[0.88rem] text-[var(--muted-fg)]">
-          {profile.identityLine}
-          <span className="text-[var(--subtle)]"> · </span>
-          <span className="inline-flex items-center gap-1">
-            {profile.links.emailDisplay}
-            <CopyEmailButton />
+          <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
+            Bengaluru, India · {profile.yearsExperience}
+          </p>
+          <h1 className="text-[1.75rem] font-bold tracking-[-0.03em] text-[var(--foreground)] md:text-[2rem]">
+            {profile.name}
+          </h1>
+          <p className="mt-1.5 text-[0.88rem] text-[var(--muted-fg)]">
+            {profile.identityLine}
+            <span className="text-[var(--subtle)]"> · </span>
+            <span className="inline-flex items-center gap-1">
+              {profile.links.emailDisplay}
+              <CopyEmailButton />
+            </span>
+          </p>
+          <p className="mt-4 text-[0.92rem] leading-relaxed text-[var(--muted-fg)]">
+            {profile.tagline}
+          </p>
+          <p className="mt-3 max-w-2xl text-[0.98rem] leading-7 text-[var(--foreground)]">
+            {profile.valueProposition}
+          </p>
+          <div className="mt-5 flex flex-wrap items-center gap-4">
+            <SocialLinks />
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <MotionPress className="inline-flex">
+              <Link
+                href="/resume"
+                className="inline-flex items-center gap-2 rounded-lg bg-[var(--foreground)] px-4 py-2 text-sm font-medium text-[var(--background)] transition-opacity hover:opacity-90"
+              >
+                <ResumeIcon className="h-4 w-4" />
+                View resume
+              </Link>
+            </MotionPress>
+            <MotionPress className="inline-flex">
+              <Link
+                href="/work"
+                className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+              >
+                Read work experience
+              </Link>
+            </MotionPress>
+            <MotionPress className="inline-flex">
+              <a
+                href={profile.links.email}
+                className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
+              >
+                <MailIcon className="h-4 w-4" />
+                Email me
+              </a>
+            </MotionPress>
+          </div>
+        </div>
+      </MotionReveal>
+
+      <MotionReveal delay={0.02}>
+        <div className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-[var(--border)] bg-[var(--chip-bg)] px-4 py-2 text-[0.84rem] text-[var(--muted-fg)]">
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ade80] opacity-75" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4ade80]" />
           </span>
-        </p>
-        <p className="mt-4 text-[0.92rem] leading-relaxed text-[var(--muted-fg)]">
-          {profile.tagline}
-        </p>
-        <p className="mt-3 max-w-2xl text-[0.98rem] leading-7 text-[var(--foreground)]">
-          {profile.valueProposition}
-        </p>
-        <div className="mt-5 flex flex-wrap items-center gap-4">
-          <SocialLinks />
-        </div>
-        <div className="mt-6 flex flex-wrap gap-3">
-          <MotionPress className="inline-flex">
-            <Link
-              href="/resume"
-              className="inline-flex items-center gap-2 rounded-lg bg-[var(--foreground)] px-4 py-2 text-sm font-medium text-[var(--background)] transition-opacity hover:opacity-90"
-            >
-              <ResumeIcon className="h-4 w-4" />
-              View resume
-            </Link>
-          </MotionPress>
-          <MotionPress className="inline-flex">
-            <Link
-              href="/work"
-              className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-            >
-              Read work experience
-            </Link>
-          </MotionPress>
-          <MotionPress className="inline-flex">
-            <a
-              href={profile.links.email}
-              className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-            >
-              <MailIcon className="h-4 w-4" />
-              Email me
-            </a>
-          </MotionPress>
-        </div>
+          {profile.currentStatus}
         </div>
       </MotionReveal>
 
@@ -99,20 +125,32 @@ export default function HomePage() {
         <RecognitionList items={accomplishments} />
       </MotionReveal>
 
+      <MotionReveal delay={0.15}>
+        <Testimonials items={testimonials} />
+      </MotionReveal>
+
       <MotionReveal delay={0.16}>
-        <section className="mt-8 border-t border-[var(--border)] pt-6">
-          <h2 className="text-lg font-semibold text-[var(--foreground)]">
-            Education
-          </h2>
-          <div className="mt-3 flex items-start gap-3">
-            <CompanyLogo
-              src={education.logo}
-              alt={`${education.school} logo`}
-              size="sm"
-            />
-            <p className="min-w-0 pt-0.5 text-sm text-[var(--muted-fg)]">
-              {education.degree} — {education.school} ({education.years})
+        <section className="mt-16">
+          <div className="flex items-center gap-2">
+            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--chip-bg)] text-[var(--foreground)]">
+              <GraduationIcon className="h-4 w-4" />
+            </span>
+            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
+              Education
             </p>
+          </div>
+          <h2 className="mt-3 text-[1.32rem] font-bold tracking-[-0.03em] text-[var(--foreground)]">
+            Academic background
+          </h2>
+          <div className="mt-5 flex items-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--chip-bg)] px-5 py-5">
+            <CompanyLogo src={education.logo} alt={`${education.school} logo`} size="md" />
+            <div>
+              <p className="text-[0.94rem] font-semibold text-[var(--foreground)]">
+                {education.degree}
+              </p>
+              <p className="mt-0.5 text-[0.84rem] text-[var(--muted-fg)]">{education.school}</p>
+              <p className="mt-0.5 text-[0.78rem] text-[var(--subtle)]">{education.years}</p>
+            </div>
           </div>
         </section>
       </MotionReveal>
@@ -168,11 +206,11 @@ export default function HomePage() {
 
 function SocialLinks() {
   const iconClass =
-    "group relative text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]";
+    'group relative text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]';
   const tooltipClass =
-    "pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--foreground)] px-2 py-0.5 text-[0.65rem] font-medium text-[var(--background)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100";
+    'pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--foreground)] px-2 py-0.5 text-[0.65rem] font-medium text-[var(--background)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100';
   const arrowClass =
-    "absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rotate-45 bg-[var(--foreground)]";
+    'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rotate-45 bg-[var(--foreground)]';
   return (
     <>
       <a
@@ -183,7 +221,10 @@ function SocialLinks() {
         aria-label="X / Twitter"
       >
         <XIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>X / Twitter<span className={arrowClass} /></span>
+        <span className={tooltipClass}>
+          X / Twitter
+          <span className={arrowClass} />
+        </span>
       </a>
       <a
         href={profile.links.linkedin}
@@ -193,7 +234,10 @@ function SocialLinks() {
         aria-label="LinkedIn"
       >
         <LinkedInIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>LinkedIn<span className={arrowClass} /></span>
+        <span className={tooltipClass}>
+          LinkedIn
+          <span className={arrowClass} />
+        </span>
       </a>
       <a
         href={profile.links.github}
@@ -203,7 +247,10 @@ function SocialLinks() {
         aria-label="GitHub"
       >
         <GithubIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>GitHub<span className={arrowClass} /></span>
+        <span className={tooltipClass}>
+          GitHub
+          <span className={arrowClass} />
+        </span>
       </a>
       <a
         href={profile.links.instagram}
@@ -213,15 +260,17 @@ function SocialLinks() {
         aria-label="Instagram"
       >
         <InstagramIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>Instagram<span className={arrowClass} /></span>
+        <span className={tooltipClass}>
+          Instagram
+          <span className={arrowClass} />
+        </span>
       </a>
-      <a
-        href={profile.links.email}
-        className={iconClass}
-        aria-label="Email"
-      >
+      <a href={profile.links.email} className={iconClass} aria-label="Email">
         <MailIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>Email<span className={arrowClass} /></span>
+        <span className={tooltipClass}>
+          Email
+          <span className={arrowClass} />
+        </span>
       </a>
     </>
   );
@@ -271,6 +320,25 @@ function MailIcon({ className }: { className?: string }) {
     >
       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
       <path d="m22 6-10 7L2 6" />
+    </svg>
+  );
+}
+
+function GraduationIcon({ className }: { className?: string }) {
+  return (
+    <svg
+      className={className}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.8"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden
+    >
+      <path d="m2 10 10-5 10 5-10 5Z" />
+      <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
+      <path d="M22 10v6" />
     </svg>
   );
 }

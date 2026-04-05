@@ -1,11 +1,15 @@
-import type { Metadata } from "next";
-import { PageQuote } from "@/components/PageQuote";
-import { MotionReveal, MotionPress } from "@/components/SubtleMotion";
-import { profile, sitePageQuotes } from "@/lib/portfolio-data";
+import { PageQuote } from '@/components/PageQuote';
+import { MotionPress, MotionReveal } from '@/components/SubtleMotion';
+import { profile, sitePageQuotes } from '@/lib/portfolio-data';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: `Resume — ${profile.name}`,
-  description: "View and download resume.",
+  description: 'View and download resume.',
+  openGraph: {
+    title: `Resume — ${profile.name}`,
+    description: 'View and download resume.',
+  },
 };
 
 export default function ResumePage() {
@@ -29,17 +33,13 @@ export default function ResumePage() {
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--subtle)]">
               Last updated
             </p>
-            <p className="mt-2 text-sm text-[var(--foreground)]">
-              {profile.resumeLastUpdated}
-            </p>
+            <p className="mt-2 text-sm text-[var(--foreground)]">{profile.resumeLastUpdated}</p>
           </div>
           <div className="rounded-xl border border-[var(--border)] bg-[var(--chip-bg)] px-4 py-4">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--subtle)]">
               Primary focus
             </p>
-            <p className="mt-2 text-sm text-[var(--foreground)]">
-              {profile.primaryFocus}
-            </p>
+            <p className="mt-2 text-sm text-[var(--foreground)]">{profile.primaryFocus}</p>
           </div>
           <div className="rounded-xl border border-[var(--border)] bg-[var(--chip-bg)] px-4 py-4">
             <p className="text-[0.68rem] font-semibold uppercase tracking-[0.18em] text-[var(--subtle)]">
@@ -57,9 +57,7 @@ export default function ResumePage() {
                 </a>
               </MotionPress>
             ) : (
-              <p className="mt-2 text-sm text-[var(--muted-fg)]">
-                PDF will be added soon
-              </p>
+              <p className="mt-2 text-sm text-[var(--muted-fg)]">PDF will be added soon</p>
             )}
           </div>
         </div>
@@ -68,11 +66,7 @@ export default function ResumePage() {
       <MotionReveal delay={0.06}>
         {pdf ? (
           <div className="mt-10 overflow-hidden rounded-xl border border-[var(--border)] bg-[var(--chip-bg)] shadow-lg">
-            <iframe
-              title="Resume PDF"
-              src={pdf}
-              className="h-[75vh] w-full"
-            />
+            <iframe title="Resume PDF" src={pdf} className="h-[75vh] w-full" />
             <div className="border-t border-[var(--border)] p-4 text-center">
               <MotionPress className="inline-flex">
                 <a
@@ -95,7 +89,9 @@ export default function ResumePage() {
               A polished PDF version is on the way
             </h2>
             <p className="mt-3 max-w-xl text-sm leading-7 text-[var(--muted-fg)]">
-              In the meantime, the portfolio already reflects my current role, focus areas, case studies, and delivery highlights. If you&apos;d like the resume before this page is updated, feel free to reach out directly by email or LinkedIn.
+              In the meantime, the portfolio already reflects my current role, focus areas, case
+              studies, and delivery highlights. If you&apos;d like the resume before this page is
+              updated, feel free to reach out directly by email or LinkedIn.
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <MotionPress className="inline-flex">

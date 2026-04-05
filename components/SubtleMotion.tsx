@@ -1,12 +1,7 @@
-"use client";
+'use client';
 
-import { useRef, useEffect, useState, type ReactNode } from "react";
-import {
-  motion,
-  useReducedMotion,
-  useInView,
-  type HTMLMotionProps,
-} from "motion/react";
+import { motion, useInView, useReducedMotion, type HTMLMotionProps } from 'motion/react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 const ease: [number, number, number, number] = [0.22, 1, 0.36, 1];
 
@@ -17,12 +12,7 @@ type MotionRevealProps = {
   y?: number;
 };
 
-export function MotionReveal({
-  children,
-  className,
-  delay = 0,
-  y = 16,
-}: MotionRevealProps) {
+export function MotionReveal({ children, className, delay = 0, y = 16 }: MotionRevealProps) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -44,11 +34,7 @@ type MotionStaggerProps = {
   delay?: number;
 };
 
-export function MotionStagger({
-  children,
-  className,
-  delay = 0,
-}: MotionStaggerProps) {
+export function MotionStagger({ children, className, delay = 0 }: MotionStaggerProps) {
   const reduceMotion = useReducedMotion();
 
   return (
@@ -132,12 +118,10 @@ export function MotionPress({ children, className }: MotionPressProps) {
 }
 
 export function getExpandTransition(reduceMotion: boolean) {
-  return reduceMotion
-    ? { duration: 0 }
-    : { duration: 0.28, ease };
+  return reduceMotion ? { duration: 0 } : { duration: 0.28, ease };
 }
 
-export type MotionDivProps = HTMLMotionProps<"div">;
+export type MotionDivProps = HTMLMotionProps<'div'>;
 
 type MotionCounterProps = {
   value: string;
@@ -145,15 +129,11 @@ type MotionCounterProps = {
   duration?: number;
 };
 
-export function MotionCounter({
-  value,
-  className,
-  duration = 1.6,
-}: MotionCounterProps) {
+export function MotionCounter({ value, className, duration = 1.6 }: MotionCounterProps) {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, amount: 0.5 });
   const reduceMotion = useReducedMotion();
-  const [display, setDisplay] = useState(reduceMotion ? value : "");
+  const [display, setDisplay] = useState(reduceMotion ? value : '');
 
   useEffect(() => {
     if (!inView || reduceMotion) {
@@ -169,7 +149,7 @@ export function MotionCounter({
 
     const target = parseFloat(numericMatch[1]);
     const suffix = value.slice(numericMatch[1].length);
-    const isDecimal = numericMatch[1].includes(".");
+    const isDecimal = numericMatch[1].includes('.');
     const startTime = performance.now();
 
     let raf: number;
@@ -179,9 +159,7 @@ export function MotionCounter({
       const eased = 1 - Math.pow(1 - progress, 3);
       const current = target * eased;
 
-      setDisplay(
-        `${isDecimal ? current.toFixed(1) : Math.round(current)}${suffix}`
-      );
+      setDisplay(`${isDecimal ? current.toFixed(1) : Math.round(current)}${suffix}`);
 
       if (progress < 1) {
         raf = requestAnimationFrame(animate);

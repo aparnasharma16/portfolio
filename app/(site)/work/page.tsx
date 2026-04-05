@@ -1,11 +1,15 @@
-import type { Metadata } from "next";
-import { PageQuote } from "@/components/PageQuote";
-import { WorkExperienceList } from "@/components/WorkExperienceList";
-import { experience, profile, sitePageQuotes } from "@/lib/portfolio-data";
+import { PageQuote } from '@/components/PageQuote';
+import { WorkExperienceList } from '@/components/WorkExperienceList';
+import { experience, profile, sitePageQuotes } from '@/lib/portfolio-data';
+import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: `Work — ${profile.name}`,
-  description: "Work experience across companies and roles.",
+  description: 'Work experience across companies and roles.',
+  openGraph: {
+    title: `Work — ${profile.name}`,
+    description: 'Work experience across companies and roles.',
+  },
 };
 
 export default function WorkPage() {

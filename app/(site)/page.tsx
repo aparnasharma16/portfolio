@@ -46,7 +46,7 @@ export default function HomePage() {
           <div className="flex items-center gap-4">
             <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[var(--border)] shadow-md">
               <Image
-                src="/image.jpeg"
+                src="/new_image.jpeg"
                 alt={profile.name}
                 fill
                 sizes="64px"

@@ -6,12 +6,12 @@ export const profile = {
   tagline:
     'I build reliable, high-quality products across frontend, backend, and commerce platforms, with a strong focus on delivery ownership and engineering quality.',
   valueProposition:
-    'Engineering leader and senior IC with 7+ years shipping payment and commerce experiences, improving product quality, and mentoring teams across fast-moving product organizations.',
+    'Engineering leader and senior IC with 8+ years shipping payment and commerce experiences, improving product quality, and mentoring teams across fast-moving product organizations.',
   metaDescription:
-    'Senior Software Engineer at PayPal (7+ yrs): MERN, SFCC, APIs, Jest, microservices, and e-commerce. Bengaluru.',
+    'Senior Software Engineer at PayPal (8+ yrs): MERN, SFCC, APIs, Jest, microservices, and e-commerce. Bengaluru.',
   summary:
     'Senior Software Engineer at PayPal with over 7 years of expertise in the MERN stack (MongoDB, Express.js, React.js, Node.js) and hands-on experience with SFCC (Salesforce Commerce Cloud), HTML, JavaScript, TypeScript, CSS, RWD, Shopify, PHP, and MySQL. Proficient in API development and integration. Adept at writing test cases using Jest and committed to ensuring high code quality. Familiar with Kafka for event-driven architecture and a solid understanding of basic AWS services. Demonstrated strong leadership abilities through mentoring teams, conducting code reviews, and optimizing performance. Passionate about building scalable, high-performance applications and delivering robust solutions in payments, e-commerce, and full-stack development while staying updated with the latest technologies.',
-  yearsExperience: '7+ years',
+  yearsExperience: '8+ years',
   primaryFocus: 'Frontend systems, full-stack delivery, payments, and commerce',
   availabilityNote:
     'Open to senior frontend and full-stack engineering roles with strong product ownership, quality focus, and mentoring opportunities.',

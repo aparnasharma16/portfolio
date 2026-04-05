@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { CaseStudiesList } from '@/components/CaseStudiesList';
 import { CompanyLogo } from '@/components/CompanyLogo';
 import { CopyEmailButton } from '@/components/CopyEmailButton';
@@ -42,12 +43,26 @@ export default function HomePage() {
     <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-16">
       <MotionReveal>
         <div>
-          <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
-            Bengaluru, India · {profile.yearsExperience}
-          </p>
-          <h1 className="text-[1.75rem] font-bold tracking-[-0.03em] text-[var(--foreground)] md:text-[2rem]">
-            {profile.name}
-          </h1>
+          <div className="flex items-center gap-4">
+            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[var(--border)] shadow-md">
+              <Image
+                src="/image.jpeg"
+                alt={profile.name}
+                fill
+                sizes="64px"
+                className="object-cover object-top"
+                priority
+              />
+            </div>
+            <div>
+              <h1 className="text-[1.75rem] font-bold tracking-[-0.03em] text-[var(--foreground)] md:text-[2rem]">
+                {profile.name}
+              </h1>
+              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
+                Bengaluru, India · {profile.yearsExperience}
+              </p>
+            </div>
+          </div>
           <p className="mt-1.5 text-[0.88rem] text-[var(--muted-fg)]">
             {profile.identityLine}
             <span className="text-[var(--subtle)]"> · </span>

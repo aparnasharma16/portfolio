@@ -30,12 +30,12 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
           const isExpanded = expandedIndex === i;
           return (
             <li key={`${group.company}-${group.period}`} className={i > 0 ? 'mt-4' : ''}>
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                <div className="min-w-0">
-                  <div className="flex items-start gap-3">
-                    {group.logo ? (
-                      <CompanyLogo src={group.logo} alt={`${group.company} logo`} size="sm" />
-                    ) : null}
+              <div className="flex items-start gap-3">
+                {group.logo ? (
+                  <CompanyLogo src={group.logo} alt={`${group.company} logo`} size="sm" />
+                ) : null}
+                <div className="min-w-0 flex-1">
+                  <div className="flex items-start justify-between gap-2">
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="text-[0.95rem] font-semibold text-[var(--foreground)]">
@@ -70,26 +70,29 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                         ) : null}
                       </div>
                       {group.roles.length === 1 ? (
-                        <p className="text-[0.85rem] text-[var(--muted-fg)]">
+                        <p className="text-[0.82rem] text-[var(--muted-fg)]">
                           {group.roles[0].role}
                         </p>
                       ) : (
                         <div className="mt-1 space-y-0.5">
                           {group.roles.map((role) => (
-                            <p key={role.period} className="text-[0.82rem] text-[var(--muted-fg)]">
+                            <p key={role.period} className="text-[0.78rem] text-[var(--muted-fg)]">
                               <span className="font-medium text-[var(--foreground)]">{role.role}</span>
-                              <span className="text-[var(--subtle)]"> · {role.periodShort}</span>
+                              <span className="hidden text-[var(--subtle)] sm:inline"> · {role.periodShort}</span>
                             </p>
                           ))}
                         </div>
                       )}
                     </div>
+                    <div className="hidden shrink-0 text-right sm:block">
+                      <p className="text-[0.82rem] text-[var(--foreground)]">{group.period}</p>
+                      <p className="text-[0.78rem] text-[var(--muted-fg)]">
+                        {group.location} ({group.workType})
+                      </p>
+                    </div>
                   </div>
-                </div>
-                <div className="shrink-0 text-left sm:text-right">
-                  <p className="text-[0.85rem] text-[var(--foreground)]">{group.period}</p>
-                  <p className="text-[0.85rem] text-[var(--muted-fg)]">
-                    {group.location} ({group.workType})
+                  <p className="mt-0.5 text-[0.75rem] text-[var(--subtle)] sm:hidden">
+                    {group.periodShort} · {group.location}
                   </p>
                 </div>
               </div>

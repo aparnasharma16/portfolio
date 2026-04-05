@@ -416,6 +416,7 @@ export const experience: ExperienceEntry[] = [
     workType: 'On-Site',
     period: 'August 2018 – July 2021',
     periodShort: 'Aug 2018 – Jul 2021',
+    group: 'onstech',
     tech: ['PHP', 'MySQL', 'React Native', 'JavaScript', 'CodeIgniter'],
     highlights: [
       'Delivered end-to-end web applications using PHP, CodeIgniter, and MySQL, serving 10K+ users across 5 client projects.',
@@ -432,6 +433,7 @@ export const experience: ExperienceEntry[] = [
     workType: 'On-Site',
     period: 'January 2018 – July 2018',
     periodShort: 'Jan 2018 – Jul 2018',
+    group: 'onstech',
     tech: ['PHP', 'MySQL', 'JavaScript'],
     highlights: [
       'Built a project management system with P&L reporting using PHP and MySQL, handling 500+ active projects.',
@@ -466,7 +468,7 @@ export function groupExperience(jobs: ExperienceEntry[]): GroupedExperience[] {
       const first = groupJobs[0];
       const last = groupJobs[groupJobs.length - 1];
       result.push({
-        company: 'Dentsu / Merkle',
+        company: [...new Set(groupJobs.map((j) => j.company))].join(' / '),
         logo: first.logo,
         location: first.location,
         workType: first.workType,

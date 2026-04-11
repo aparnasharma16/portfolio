@@ -173,7 +173,7 @@ export const caseStudies: CaseStudy[] = [
     title: 'Checkout and payment experience improvements',
     company: 'PayPal',
     logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s',
-    period: '2026 – Present',
+    period: '2025 – Present',
     context:
       'Worked on payment experiences used in high-traffic checkout journeys where stability and speed directly affect customer trust.',
     problem:
@@ -320,8 +320,8 @@ export const experience: ExperienceEntry[] = [
     logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s',
     location: 'Bengaluru, India',
     workType: 'On-Site',
-    period: 'January 2026 – Present',
-    periodShort: 'Jan 2026 – Present',
+    period: 'October 2025 – Present',
+    periodShort: 'Oct 2025 – Present',
     current: true,
     tech: [
       'TypeScript',
@@ -348,8 +348,8 @@ export const experience: ExperienceEntry[] = [
     logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
     location: 'Bengaluru, India',
     workType: 'On-Site',
-    period: 'November 2024 – December 2025',
-    periodShort: 'Nov 2024 – Dec 2025',
+    period: 'November 2024 – October 2025',
+    periodShort: 'Nov 2024 – Oct 2025',
     group: 'dentsu',
     tech: [
       'MongoDB',

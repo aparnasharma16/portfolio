@@ -18,15 +18,32 @@ export default function ResumePage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-5 py-16 md:py-20">
       <MotionReveal>
-        <>
-          <h1 className="text-3xl font-semibold tracking-tight text-[var(--foreground)] md:text-4xl">
-            Resume
-          </h1>
-          <p className="mt-3 text-sm text-[var(--muted-fg)] md:text-base">
-            View and download my professional resume.
-          </p>
-        </>
+        <section className="relative overflow-hidden rounded-[1.6rem] border border-[var(--border)] bg-[linear-gradient(135deg,var(--chip-bg),var(--background))] px-6 py-7 shadow-[0_16px_48px_-32px_rgba(15,23,42,0.25)] md:px-8 md:py-8">
+          <div
+            className="absolute -left-8 -top-8 h-36 w-36 rounded-full bg-[var(--secondary)]/60 blur-3xl"
+            aria-hidden
+          />
+          <div className="relative">
+            <div className="inline-flex items-center gap-2 rounded-full border border-[var(--border)] bg-[var(--background)]/80 px-3 py-1 text-[0.68rem] font-semibold uppercase tracking-[0.2em] text-[var(--subtle)]">
+              <svg className="h-3.5 w-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M7 3.5h7l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V5A1.5 1.5 0 0 1 7.5 3.5Z" />
+                <path d="M14 3.5V8h4" />
+                <path d="M9 12h6M9 16h6" />
+              </svg>
+              Professional Resume
+            </div>
+            <h1 className="mt-4 text-[1.65rem] font-bold leading-tight tracking-[-0.04em] text-[var(--foreground)] md:text-[2rem]">
+              Resume
+            </h1>
+            <p className="mt-3 max-w-xl text-[0.9rem] leading-7 text-[var(--muted-fg)]">
+              View and download my professional resume — {profile.yearsExperience} of
+              building scalable full-stack applications across payments, commerce, and
+              campaign management platforms.
+            </p>
+          </div>
+        </section>
       </MotionReveal>
+
       <MotionReveal delay={0.04}>
         <div className="mt-8 grid gap-3 sm:grid-cols-3">
           <div className="rounded-xl border border-[var(--border)] bg-[var(--chip-bg)] px-4 py-4">

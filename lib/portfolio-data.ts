@@ -2,7 +2,7 @@ export const profile = {
   name: 'Aparna Sharma',
   title: 'Senior Software Engineer',
   location: 'Bengaluru, India',
-  identityLine: 'Senior Software Engineer · MERN · payments · commerce',
+  identityLine: 'Senior Software Engineer · MERN · campaigns · full-stack systems',
   tagline:
     'I build reliable, high-quality products across frontend, backend, and commerce platforms, with a strong focus on delivery ownership and engineering quality.',
   valueProposition:
@@ -15,7 +15,7 @@ export const profile = {
   primaryFocus: 'Frontend systems, full-stack delivery, payments, and commerce',
   availabilityNote:
     'Open to senior frontend and full-stack engineering roles with strong product ownership, quality focus, and mentoring opportunities.',
-  resumeLastUpdated: 'April 2026',
+  resumeLastUpdated: 'May 2025',
   links: {
     email: 'mailto:aparnasharma157@gmail.com',
     emailDisplay: 'aparnasharma157@gmail.com',
@@ -24,8 +24,8 @@ export const profile = {
     twitter: 'https://x.com/aparna1697',
     instagram: 'https://www.instagram.com/aparnasharma1601',
   },
-  resumePdfPath: '',
-  currentStatus: 'Building checkout & payment experiences at PayPal',
+  resumePdfPath: '/Aparna_Sharma_FullStack_Developer.pdf',
+  currentStatus: 'Building campaign workflow systems at PayPal',
   siteUrl: 'https://aparnasharma.dev',
 };
 
@@ -90,34 +90,34 @@ export type FeaturedWin = {
 
 export const featuredWins: FeaturedWin[] = [
   {
-    metric: '35%',
-    title: 'Lower API latency',
+    metric: '40%',
+    title: 'Faster API response',
     summary:
-      'Improved payment-service response times through query optimization and smarter caching strategies.',
+      'Reduced campaign workflow API response times through Redis caching, optimized data models, and Node.js performance tuning.',
   },
   {
-    metric: '90%+',
-    title: 'Coverage on critical flows',
+    metric: '80K+',
+    title: 'Users served',
     summary:
-      'Built Playwright and Jest coverage for high-value checkout journeys to raise release confidence.',
+      'Led development of Campaign Management (V2) UI using React.js and Redux, serving 80K+ users with improved workflow efficiency.',
   },
   {
     metric: '8 engineers',
     title: 'Led delivery teams',
     summary:
-      'Managed execution, architecture direction, and engineering standards while shipping MERN products.',
+      'Managed execution, architecture direction, and engineering standards while shipping MERN products at Dentsu.',
   },
   {
-    metric: '45%',
-    title: 'Fewer production bugs',
+    metric: '30%',
+    title: 'Fewer production issues',
     summary:
-      'Introduced stronger E2E and unit testing practices that materially reduced release regressions.',
+      'Engineered backend systems with approval workflows, RBAC, and audit-ready APIs, reducing production issues by 30%.',
   },
   {
-    metric: '50K+',
-    title: 'Daily active users served',
+    metric: '5K+',
+    title: 'API requests/min',
     summary:
-      'Built commerce experiences at scale across multi-site storefronts used across North American markets.',
+      'Architected scalable campaign workflow architecture supporting 5K+ API requests/min with optimized Node.js and Redis caching.',
   },
 ];
 
@@ -170,19 +170,19 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
-    title: 'Checkout and payment experience improvements',
+    title: 'Campaign workflow architecture & management platform',
     company: 'PayPal',
     logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s',
     period: '2025 – Present',
     context:
-      'Worked on payment experiences used in high-traffic checkout journeys where stability and speed directly affect customer trust.',
+      'PayPal\'s campaign management system needed a complete V2 rebuild to support growing team scale, complex approval workflows, and high-throughput API requirements.',
     problem:
-      'Critical transaction flows needed stronger reliability, faster API performance, and better release confidence across environments.',
+      'The existing system couldn\'t handle 5K+ API requests/min, lacked RBAC and audit controls, and had no version history or rollback capabilities — leading to campaign errors and workflow inefficiencies.',
     ownership:
-      'Owned full-stack feature delivery across React, Node.js, and GraphQL, and built automated test coverage for critical checkout paths.',
+      'Architected the full-stack campaign platform using React.js, Redux, Node.js (Express), and Redis. Owned approval workflows, RBAC, Publish History, version diff, and rollback features.',
     outcome:
-      'Reduced API latency by 35%, improved confidence with 90%+ coverage on key flows, and supported zero-downtime releases with production-ready delivery practices.',
-    tech: ['React', 'TypeScript', 'Node.js', 'GraphQL', 'Jest', 'Playwright', 'AWS'],
+      'Reduced API response time by 40%, cut production issues by 30%, improved workflow efficiency by 30% for 80K+ users, and reduced campaign errors by 25% across 10K+ campaigns/month.',
+    tech: ['React', 'TypeScript', 'Redux', 'Node.js', 'Express', 'Redis', 'REST'],
   },
   {
     title: 'Monolith to microservices migration leadership',
@@ -315,7 +315,7 @@ export type ExperienceEntry = {
 
 export const experience: ExperienceEntry[] = [
   {
-    role: 'Senior Software Engineer',
+    role: 'Senior Software Engineer - Full Stack Developer',
     company: 'PayPal',
     logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s',
     location: 'Bengaluru, India',
@@ -324,26 +324,25 @@ export const experience: ExperienceEntry[] = [
     periodShort: 'Oct 2025 – Present',
     current: true,
     tech: [
-      'TypeScript',
       'React',
-      'Next.js',
+      'Redux',
+      'TypeScript',
       'Node',
+      'Express',
+      'Redis',
       'REST',
-      'Jest',
-      'GraphQL',
       'AWS',
-      'Playwright',
-      'Claude',
     ],
     highlights: [
-      'Architected and shipped full-stack payment features using React, Node.js, and GraphQL, serving millions of daily transactions globally.',
-      'Built end-to-end integration and unit test suites with Playwright and Jest, achieving 90%+ code coverage across critical checkout flows.',
-      'Designed RESTful microservices handling real-time payment processing, reducing API latency by 35% through query optimization and caching.',
-      'Led deployments across staging and production environments with CI/CD pipelines, zero-downtime releases, and automated rollback strategies.',
+      'Architected scalable campaign workflow architecture using Node.js (Express), Redis caching, and optimized data models, supporting 5K+ API requests/min and reducing response time by 40%.',
+      'Engineered backend systems with approval workflows, RBAC, and audit-ready APIs, handling 50K+ transactions/day and improving system reliability while reducing production issues by 30%.',
+      'Led development of Campaign Management (V2) UI using React.js and Redux, serving 80K+ users and improving workflow efficiency by 30%.',
+      'Built advanced features like Publish History, version diff, and rollback flows, reducing campaign errors by 25% across 10K+ campaigns/month.',
+      'Improved frontend performance by 35% through Redux caching and optimized state management for large datasets (100K+ records).',
     ],
   },
   {
-    role: 'Technical Lead',
+    role: 'Technical Lead - Full Stack Developer',
     company: 'Dentsu',
     logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
     location: 'Bengaluru, India',
@@ -357,21 +356,19 @@ export const experience: ExperienceEntry[] = [
       'React',
       'Node',
       'TypeScript',
-      'Jest',
-      'Cypress',
       'Kafka',
+      'Redis',
       'MySQL',
     ],
     highlights: [
-      'Led a team of 8 engineers delivering MERN stack applications with end-to-end ownership from architecture to production deployment.',
-      'Drove monolith-to-microservices migration using Kafka for event-driven architecture, reducing system downtime by 30%.',
-      'Implemented comprehensive E2E testing with Cypress and unit testing with Jest, cutting production bugs by 45%.',
-      'Integrated third-party payment gateways and built MySQL-backed reporting dashboards for real-time business analytics.',
-      'Established code review standards, Swagger-based API documentation, and CI/CD best practices across the engineering org.',
+      'Led scalable application development using MERN, driving architecture and best practices.',
+      'Migrated monolith to microservices with Kafka, reducing downtime by 30%.',
+      'Implemented Redis caching and optimized backend services using Node.js.',
+      'Standardized APIs with Swagger and mentored developers across teams.',
     ],
   },
   {
-    role: 'Senior Software Developer',
+    role: 'Senior Software Developer - Full Stack Developer',
     company: 'Merkle, a dentsu company',
     logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
     location: 'Bengaluru, India',
@@ -379,18 +376,16 @@ export const experience: ExperienceEntry[] = [
     period: 'April 2023 – October 2024',
     periodShort: 'Apr 2023 – Oct 2024',
     group: 'dentsu',
-    tech: ['React', 'Redux', 'TypeScript', 'Shopify', 'GraphQL', 'Tailwind', 'Cypress', 'Figma'],
+    tech: ['React', 'Redux', 'TypeScript', 'GraphQL', 'Node', 'Formik', 'RTK Query'],
     highlights: [
-      'Built reusable React and TypeScript components used across 3 product teams, cutting feature delivery time by 40%.',
-      'Developed checkout, order, and mini cart pages with Shopify and GraphQL, improving page load by 2 seconds.',
-      'Integrated Razorpay payment gateway for seamless transactions across multiple storefronts.',
-      'Built Node.js APIs for product catalog and inventory sync between Shopify and internal systems.',
-      'Wrote Cypress E2E tests for all critical user flows, reaching 95% regression coverage before each release.',
-      'Mentored 5 junior developers on React patterns, testing, and responsive design with Tailwind CSS.',
+      'Designed and built a reusable component library, standardizing UI patterns and accelerating development across multiple projects.',
+      'Implemented scalable state management using Redux, RTK Query, and Formik, optimizing data flow and reducing redundant API calls.',
+      'Optimized frontend performance by improving Core Web Vitals, reducing load time and enhancing user experience across enterprise applications.',
+      'Contributed to API design and integration using GraphQL and Node.js, improving data flow efficiency and enabling scalable full-stack architecture.',
     ],
   },
   {
-    role: 'Software Developer',
+    role: 'Frontend Developer',
     company: 'Merkle, a dentsu company',
     logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
     location: 'Bengaluru, India',
@@ -398,14 +393,11 @@ export const experience: ExperienceEntry[] = [
     period: 'August 2021 – March 2023',
     periodShort: 'Aug 2021 – Mar 2023',
     group: 'dentsu',
-    tech: ['React', 'WordPress', 'PHP', 'MySQL', 'Algolia', 'JavaScript', 'HTML', 'CSS'],
+    tech: ['React', 'JavaScript', 'Node', 'Algolia', 'HTML', 'CSS'],
     highlights: [
-      'Built and maintained e-commerce storefronts for US and Canada markets, serving 50K+ daily active users.',
-      'Developed checkout and order flows with WooCommerce, PHP, and MySQL for multi-site platforms.',
-      'Built custom WordPress plugins to automate inventory sync and reduce manual work by 60%.',
-      'Integrated Algolia search with filters, improving product discovery and boosting conversions by 15%.',
-      'Created REST APIs with PHP for order management, reporting, and third-party service integrations.',
-      'Built real-time sales dashboards with React and MySQL, helping stakeholders make data-driven decisions.',
+      'Led frontend for multi-region eCommerce platforms (USA & Canada).',
+      'Built dashboards and improved UX with Algolia search.',
+      'Collaborated on Node.js APIs and improved accessibility standards.',
     ],
   },
   {
@@ -417,12 +409,11 @@ export const experience: ExperienceEntry[] = [
     period: 'August 2018 – July 2021',
     periodShort: 'Aug 2018 – Jul 2021',
     group: 'onstech',
-    tech: ['PHP', 'MySQL', 'React Native', 'JavaScript', 'CodeIgniter'],
+    tech: ['PHP', 'MySQL', 'Redis', 'JavaScript', 'CMS'],
     highlights: [
-      'Delivered end-to-end web applications using PHP, CodeIgniter, and MySQL, serving 10K+ users across 5 client projects.',
-      'Built a React Native admin app with real-time reporting and push notifications, adopted by 3 enterprise clients.',
-      'Migrated legacy PHP applications to modern architecture, improving page load performance by 40%.',
-      'Automated CRM workflows with CRON jobs and MySQL stored procedures, saving 20 hours/week of manual processing.',
+      'Developed web solutions using PHP and CMS platforms.',
+      'Implemented Redis caching, improving performance by 40%.',
+      'Built internal tools and automated workflows for CRM systems.',
     ],
   },
   {
@@ -436,9 +427,7 @@ export const experience: ExperienceEntry[] = [
     group: 'onstech',
     tech: ['PHP', 'MySQL', 'JavaScript'],
     highlights: [
-      'Built a project management system with P&L reporting using PHP and MySQL, handling 500+ active projects.',
-      'Developed admin modules with Grocery CRUD and complex relational database schemas for multi-tenant data.',
-      'Created reusable PHP templates and UI components, establishing consistent design patterns across 4 internal tools.',
+      'Developed a project management system with reporting and database design.',
     ],
   },
 ];

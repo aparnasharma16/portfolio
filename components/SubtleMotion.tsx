@@ -42,7 +42,7 @@ export function MotionStagger({ children, className, delay = 0 }: MotionStaggerP
       className={className}
       initial="hidden"
       whileInView="show"
-      viewport={{ once: true, amount: 0.18 }}
+      viewport={{ once: true, amount: 0.05 }}
       variants={
         reduceMotion
           ? {

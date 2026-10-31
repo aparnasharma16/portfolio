@@ -1,7 +1,10 @@
+/** localStorage key for the chosen theme. Kept here (server-safe) so the root layout can use it. */
+export const THEME_STORAGE_KEY = 'portfolio-theme';
+
 export const themeInitScript = `
 (function () {
   try {
-    var k = "portfolio-theme";
+    var k = "${THEME_STORAGE_KEY}";
     var t = localStorage.getItem(k);
     var root = document.documentElement;
     if (t === "dark") root.classList.add("dark");

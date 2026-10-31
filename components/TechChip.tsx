@@ -5,20 +5,12 @@ type IconDef = {
   glyph: ReactNode;
 };
 
-const chipClassName =
-  'group inline-flex h-11 items-center overflow-hidden rounded-xl border border-dashed border-[var(--border-strong)] bg-[var(--chip-bg)] px-3 text-[var(--foreground)] shadow-[0_1px_0_rgba(0,0,0,0.02)] transition-[border-color,background-color,box-shadow] duration-200 hover:border-[var(--border)] hover:bg-[var(--background)] hover:shadow-[0_8px_24px_rgba(15,23,42,0.06)]';
-
-const labelClassName =
-  'max-w-0 overflow-hidden whitespace-nowrap text-sm font-medium opacity-0 transition-all duration-200 group-hover:ml-2 group-hover:max-w-24 group-hover:opacity-100 group-focus-visible:ml-2 group-focus-visible:max-w-24 group-focus-visible:opacity-100';
-
-const iconWrapClassName = 'flex h-5 w-5 shrink-0 items-center justify-center';
-
 function Svg({ children, viewBox = '0 0 24 24' }: { children: ReactNode; viewBox?: string }) {
   return (
     <svg
       aria-hidden
       viewBox={viewBox}
-      className="h-5 w-5 shrink-0"
+      className="h-full w-full"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
@@ -110,15 +102,6 @@ const icons: Record<string, IconDef> = {
     ),
   },
   Node: {
-    label: 'Node.js',
-    glyph: (
-      <Svg>
-        <path d="M12 1.8 20.4 6.7v10.6L12 22.2 3.6 17.3V6.7L12 1.8Z" fill="#539E43" />
-        <path d="M9.1 15.9V8.1h1.7l3.3 4.2V8.1h1.8v7.8h-1.6L10.9 11v4.9H9.1Z" fill="#ffffff" />
-      </Svg>
-    ),
-  },
-  'Node.js': {
     label: 'Node.js',
     glyph: (
       <Svg>
@@ -556,29 +539,142 @@ const icons: Record<string, IconDef> = {
       </Svg>
     ),
   },
+  Redis: {
+    label: 'Redis',
+    glyph: (
+      <Svg>
+        <path d="M2.5 8.2 12 4l9.5 4.2L12 12.4 2.5 8.2Z" fill="#DC382D" />
+        <path
+          d="M2.5 12 12 16.2l9.5-4.2"
+          stroke="#DC382D"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+        <path
+          d="M2.5 15.8 12 20l9.5-4.2"
+          stroke="#DC382D"
+          strokeWidth="1.8"
+          strokeLinejoin="round"
+        />
+      </Svg>
+    ),
+  },
+  Git: {
+    label: 'Git',
+    glyph: (
+      <Svg>
+        <rect
+          x="4.2"
+          y="4.2"
+          width="15.6"
+          height="15.6"
+          rx="2.6"
+          transform="rotate(45 12 12)"
+          fill="#F05032"
+        />
+        <path
+          d="M9.5 8.5v7M9.5 11.5c3 0 5-1 5-3"
+          stroke="#fff"
+          strokeWidth="1.6"
+          strokeLinecap="round"
+        />
+        <circle cx="9.5" cy="15.5" r="1.3" fill="#fff" />
+        <circle cx="14.5" cy="8.5" r="1.3" fill="#fff" />
+      </Svg>
+    ),
+  },
+  PayPal: {
+    label: 'PayPal',
+    glyph: (
+      <Svg>
+        <path
+          d="M8 3h6.2c3.2 0 5 1.7 4.5 4.6-.6 3.3-3 4.9-6.3 4.9h-2l-1 6.5H5.5L8 3Z"
+          fill="#003087"
+        />
+        <path
+          d="M10.3 6.5h3.4c2.6 0 3.9 1.4 3.4 3.8-.5 2.8-2.5 4.1-5.2 4.1h-1.6l-.8 5.1H6.9l3.4-13Z"
+          fill="#009CDE"
+        />
+      </Svg>
+    ),
+  },
+  SFCC: {
+    label: 'Salesforce Commerce',
+    glyph: (
+      <Svg>
+        <path
+          d="M10 6.2a4 4 0 0 1 6.6 1 3.4 3.4 0 0 1 4.4 3.3 3.5 3.5 0 0 1-3.5 3.5h-.4a3.4 3.4 0 0 1-5.2 1.6 3.9 3.9 0 0 1-6.9-.6A3.3 3.3 0 0 1 2.5 11 3.3 3.3 0 0 1 7 8a4 4 0 0 1 3-1.8Z"
+          fill="#00A1E0"
+        />
+      </Svg>
+    ),
+  },
+  PostgreSQL: {
+    label: 'PostgreSQL',
+    glyph: <LetterBadge text="PG" bg="#336791" />,
+  },
+  WooCommerce: {
+    label: 'WooCommerce',
+    glyph: <LetterBadge text="Woo" bg="#7F54B3" />,
+  },
 };
 
-function fallbackLabel(name: string) {
-  return name
-    .split(/[\s.-]+/)
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-}
+/** Data names that reuse another entry's glyph (the data name is kept as the label). */
+const aliases: Record<string, string> = {
+  'Node.js': 'Node',
+  'Tailwind CSS': 'Tailwind',
+  'Express.js': 'Express',
+  'REST APIs': 'REST',
+  'RTK Query': 'Redux',
+};
 
-export function TechIcon({ name }: { name: string }) {
-  const icon = icons[name];
-  const label = icon?.label ?? name;
+const sizes = {
+  md: { chip: 'h-8 gap-2 px-3 text-[0.8rem]', icon: 'h-4 w-4' },
+  sm: { chip: 'h-7 gap-1.5 px-2.5 text-[0.75rem]', icon: 'h-3.5 w-3.5' },
+} as const;
+
+/**
+ * Static technology chip: brand glyph + always-visible name. Concepts without a
+ * brand mark (e.g. "Code reviews") render as a text-only chip.
+ */
+export function TechChip({ name, size = 'md' }: { name: string; size?: keyof typeof sizes }) {
+  const icon = icons[aliases[name] ?? name];
+  const label = name in aliases ? name : (icon?.label ?? name);
+  const variant = sizes[size];
 
   return (
-    <span className={chipClassName} title={label}>
-      <span className={iconWrapClassName}>
-        {icon?.glyph ?? (
-          <span className="text-[10px] font-semibold tracking-tight">{fallbackLabel(name)}</span>
-        )}
-      </span>
-      <span className={labelClassName}>{label}</span>
+    <span
+      className={`inline-flex items-center rounded-full border border-[var(--border)] bg-[var(--chip-bg)] leading-none font-medium text-[var(--foreground)] ${variant.chip}`}
+    >
+      {icon ? (
+        <span className={`flex shrink-0 items-center justify-center ${variant.icon}`}>
+          {icon.glyph}
+        </span>
+      ) : null}
+      {label}
     </span>
+  );
+}
+
+/** Wrapping row of chips, e.g. a role's or a stack group's technologies. */
+export function TechChipList({
+  items,
+  label = 'Technologies',
+  size = 'md',
+  className = '',
+}: {
+  items: readonly string[];
+  label?: string;
+  size?: keyof typeof sizes;
+  className?: string;
+}) {
+  return (
+    <ul className={`flex flex-wrap gap-1.5 ${className}`} aria-label={label}>
+      {items.map((item) => (
+        <li key={item}>
+          <TechChip name={item} size={size} />
+        </li>
+      ))}
+    </ul>
   );
 }

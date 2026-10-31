@@ -1,62 +1,60 @@
-'use client';
-
 import { SectionIntro } from '@/components/SectionIntro';
-import { MotionItem, MotionStagger } from '@/components/SubtleMotion';
+import { TestimonialList } from '@/components/Testimonials';
+import type { Testimonial } from '@/lib/portfolio-data';
 
-type Item = {
+type Award = {
   title: string;
   org: string;
   date: string;
   note: string;
 };
 
-export function RecognitionList({ items }: { items: readonly Item[] }) {
+/** Other people vouching: certifications and awards, then words from colleagues (if any). */
+export function Recognition({
+  awards,
+  testimonials,
+}: {
+  awards: readonly Award[];
+  testimonials: readonly Testimonial[];
+}) {
   return (
-    <section className="mt-16">
-      <SectionIntro
-        eyebrow="Recognition"
-        title="Certifications and awards"
-        description="Signals of consistency matter too. These recognitions support the delivery and ownership story shown across the rest of the portfolio."
-        icon={<AwardIcon className="h-4 w-4" />}
-      />
-      <MotionStagger className="mt-7 space-y-4" delay={0.04}>
-        {items.map((item) => (
-          <MotionItem key={`${item.title}-${item.date}`}>
-            <article className="rounded-2xl border border-[var(--border)] bg-[var(--background)] px-5 py-5 transition-colors hover:border-[var(--foreground)]/10">
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                <div>
-                  <h3 className="text-[0.94rem] font-semibold text-[var(--foreground)]">
-                    {item.title}
-                  </h3>
-                  <p className="mt-1 text-[0.82rem] text-[var(--muted-fg)]">{item.org}</p>
-                </div>
-                <p className="shrink-0 text-[0.78rem] font-medium text-[var(--subtle)] sm:text-right">
-                  {item.date}
-                </p>
-              </div>
-              <p className="mt-3 text-[0.85rem] leading-6 text-[var(--muted-fg)]">{item.note}</p>
-            </article>
-          </MotionItem>
-        ))}
-      </MotionStagger>
-    </section>
-  );
-}
+    <section id="recognition" aria-labelledby="recognition-title" className="scroll-mt-20">
+      <SectionIntro id="recognition-title" title="Recognition" />
 
-function AwardIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <circle cx="12" cy="8" r="5" />
-      <path d="m8.5 13.5-1.5 7 5-2.8 5 2.8-1.5-7" />
-    </svg>
+      <h3 className="mt-6 text-[0.95rem] font-semibold text-[var(--foreground)]">
+        Certifications and awards
+      </h3>
+      <ul className="mt-3 divide-y divide-[var(--border)] border-y border-[var(--border)]">
+        {awards.map((award) => (
+          <li
+            key={`${award.title}-${award.date}`}
+            className="grid gap-1 py-4 sm:grid-cols-[1fr_auto] sm:gap-6"
+          >
+            <div>
+              <p className="text-[0.92rem] font-semibold text-[var(--foreground)]">{award.title}</p>
+              <p className="text-[0.8rem] font-medium text-[var(--muted-fg)]">{award.org}</p>
+              <p className="mt-1 text-[0.84rem] leading-6 text-[var(--muted-fg)]">{award.note}</p>
+            </div>
+            <p className="text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:pt-0.5 sm:text-right">
+              {award.date}
+            </p>
+          </li>
+        ))}
+      </ul>
+
+      {testimonials.length > 0 ? (
+        <>
+          <h3
+            id="testimonials"
+            className="mt-10 scroll-mt-20 text-[0.95rem] font-semibold text-[var(--foreground)]"
+          >
+            Kind words
+          </h3>
+          <div className="mt-4">
+            <TestimonialList items={testimonials} />
+          </div>
+        </>
+      ) : null}
+    </section>
   );
 }

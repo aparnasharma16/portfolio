@@ -1,378 +1,123 @@
-import Image from 'next/image';
-import { CaseStudiesList } from '@/components/CaseStudiesList';
-import { CompanyLogo } from '@/components/CompanyLogo';
-import { CopyEmailButton } from '@/components/CopyEmailButton';
-import { ExpertiseGrid } from '@/components/ExpertiseGrid';
-import { FeaturedWins } from '@/components/FeaturedWins';
+import { ButtonLink } from '@/components/ButtonLink';
+import { EmailPill } from '@/components/EmailPill';
 import { HomeExperiencePreview } from '@/components/HomeExperiencePreview';
-import { LeadershipHighlights } from '@/components/LeadershipHighlights';
+import { FileIcon } from '@/components/icons';
 import { PageQuote } from '@/components/PageQuote';
-import { RecognitionList } from '@/components/RecognitionList';
-import { MotionPress, MotionReveal } from '@/components/SubtleMotion';
-import { Testimonials } from '@/components/Testimonials';
+import { SocialLinks } from '@/components/SocialLinks';
+import { StatusDot } from '@/components/StatusDot';
+import { MotionReveal } from '@/components/SubtleMotion';
+import { StackPreview } from '@/components/Stack';
+import { TestimonialsPreview } from '@/components/Testimonials';
 import {
-  accomplishments,
-  caseStudies,
+  currentRole,
   education,
   experience,
-  expertiseAreas,
-  featuredWins,
-  leadershipHighlights,
   profile,
   sitePageQuotes,
-  testimonials,
+  stack,
+  publishedTestimonials,
 } from '@/lib/portfolio-data';
-import Link from 'next/link';
+import { pageMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
+import Image from 'next/image';
 
-export const metadata = {
-  title: `${profile.name} — ${profile.title}`,
+const pageTitle = `${profile.name} — ${profile.title}`;
+
+export const metadata: Metadata = pageMetadata({
+  title: pageTitle,
   description: profile.valueProposition,
-  openGraph: {
-    title: `${profile.name} — ${profile.title}`,
-    description: profile.valueProposition,
-  },
-  twitter: {
-    card: 'summary_large_image' as const,
-    title: `${profile.name} — ${profile.title}`,
-    description: profile.valueProposition,
-  },
-};
+});
 
 export default function HomePage() {
   return (
-    <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-16">
+    <main id="main" className="mx-auto max-w-2xl px-5 pt-10 pb-16 md:pt-16">
+      {/* The page's one orchestrated moment: the hero settles in on load. */}
       <MotionReveal>
-        <div>
-          <div className="flex items-center gap-4">
-            <div className="relative h-16 w-16 shrink-0 overflow-hidden rounded-full border-2 border-[var(--border)] shadow-md">
-              <Image
-                src="/new_image.jpeg"
-                alt={profile.name}
-                fill
-                sizes="64px"
-                className="object-cover object-top"
-                priority
-              />
-            </div>
-            <div>
-              <h1 className="text-[1.75rem] font-bold tracking-[-0.03em] text-[var(--foreground)] md:text-[2rem]">
-                {profile.name}
-              </h1>
-              <p className="text-[0.72rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
-                Bengaluru, India · {profile.yearsExperience}
-              </p>
-            </div>
-          </div>
-          <p className="mt-1.5 text-[0.88rem] text-[var(--muted-fg)]">
-            {profile.identityLine}
-            <span className="text-[var(--subtle)]"> · </span>
-            <span className="inline-flex items-center gap-1">
-              {profile.links.emailDisplay}
-              <CopyEmailButton />
-            </span>
-          </p>
-          <p className="mt-4 text-[0.92rem] leading-relaxed text-[var(--muted-fg)]">
-            {profile.tagline}
-          </p>
-          <p className="mt-3 max-w-2xl text-[0.98rem] leading-7 text-[var(--foreground)]">
-            {profile.valueProposition}
-          </p>
-          <div className="mt-5 flex flex-wrap items-center gap-4">
-            <SocialLinks />
-          </div>
-          <div className="mt-6 flex flex-wrap gap-3">
-            <MotionPress className="inline-flex">
-              <Link
-                href="/resume"
-                className="inline-flex items-center gap-2 rounded-lg bg-[var(--foreground)] px-4 py-2 text-sm font-medium text-[var(--background)] transition-opacity hover:opacity-90"
-              >
-                <ResumeIcon className="h-4 w-4" />
-                View resume
-              </Link>
-            </MotionPress>
-            <MotionPress className="inline-flex">
-              <Link
-                href="/work"
-                className="rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-              >
-                Read work experience
-              </Link>
-            </MotionPress>
-            <MotionPress className="inline-flex">
-              <a
-                href={profile.links.email}
-                className="inline-flex items-center gap-2 rounded-lg border border-[var(--border)] px-4 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-              >
-                <MailIcon className="h-4 w-4" />
-                Email me
-              </a>
-            </MotionPress>
-          </div>
-        </div>
+        <Hero />
       </MotionReveal>
 
-      <MotionReveal delay={0.02}>
-        <div className="mt-8 inline-flex items-center gap-2.5 rounded-full border border-[var(--border)] bg-[var(--chip-bg)] px-4 py-2 text-[0.84rem] text-[var(--muted-fg)]">
-          <span className="relative flex h-2 w-2">
-            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ade80] opacity-75" />
-            <span className="relative inline-flex h-2 w-2 rounded-full bg-[#4ade80]" />
-          </span>
-          {profile.currentStatus}
-        </div>
-      </MotionReveal>
+      <div className="mt-16 space-y-16">
+        <HomeExperiencePreview jobs={experience} education={education} />
+        <StackPreview groups={stack} href="/impact#stack" />
+        <TestimonialsPreview items={publishedTestimonials} href="/impact#testimonials" />
+        <ContactCard />
+      </div>
 
-      <MotionReveal delay={0.04}>
-        <HomeExperiencePreview jobs={experience} previewCount={3} />
-      </MotionReveal>
-      <MotionReveal delay={0.06}>
-        <ExpertiseGrid items={expertiseAreas} />
-      </MotionReveal>
-      <MotionReveal delay={0.08}>
-        <FeaturedWins wins={featuredWins} />
-      </MotionReveal>
-      <MotionReveal delay={0.1}>
-        <CaseStudiesList studies={caseStudies} compact />
-      </MotionReveal>
-      <MotionReveal delay={0.12}>
-        <LeadershipHighlights items={leadershipHighlights} />
-      </MotionReveal>
-      <MotionReveal delay={0.14}>
-        <RecognitionList items={accomplishments} />
-      </MotionReveal>
-
-      <MotionReveal delay={0.15}>
-        <Testimonials items={testimonials} />
-      </MotionReveal>
-
-      <MotionReveal delay={0.16}>
-        <section className="mt-16">
-          <div className="flex items-center gap-2">
-            <span className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border)] bg-[var(--chip-bg)] text-[var(--foreground)]">
-              <GraduationIcon className="h-4 w-4" />
-            </span>
-            <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
-              Education
-            </p>
-          </div>
-          <h2 className="mt-3 text-[1.32rem] font-bold tracking-[-0.03em] text-[var(--foreground)]">
-            Academic background
-          </h2>
-          <div className="mt-5 flex items-center gap-4 rounded-2xl border border-[var(--border)] bg-[var(--chip-bg)] px-5 py-5">
-            <CompanyLogo src={education.logo} alt={`${education.school} logo`} size="md" />
-            <div>
-              <p className="text-[0.94rem] font-semibold text-[var(--foreground)]">
-                {education.degree}
-              </p>
-              <p className="mt-0.5 text-[0.84rem] text-[var(--muted-fg)]">{education.school}</p>
-              <p className="mt-0.5 text-[0.78rem] text-[var(--subtle)]">{education.years}</p>
-            </div>
-          </div>
-        </section>
-      </MotionReveal>
-
-      <MotionReveal delay={0.18}>
-        <section className="mt-14 rounded-[1.5rem] border border-[var(--border)] bg-[var(--chip-bg)] px-6 py-7">
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.22em] text-[var(--subtle)]">
-            Contact
-          </p>
-          <h2 className="mt-2 text-[1.25rem] font-semibold tracking-[-0.03em] text-[var(--foreground)]">
-            Let&apos;s talk about impactful product engineering
-          </h2>
-          <p className="mt-3 max-w-xl text-[0.9rem] leading-7 text-[var(--muted-fg)]">
-            {profile.availabilityNote}
-          </p>
-          <div className="mt-5 flex flex-wrap gap-3 text-sm">
-            <MotionPress className="inline-flex">
-              <a
-                href={profile.links.email}
-                className="rounded-lg bg-[var(--foreground)] px-4 py-2 font-medium text-[var(--background)] transition-opacity hover:opacity-90"
-              >
-                {profile.links.emailDisplay}
-              </a>
-            </MotionPress>
-            <MotionPress className="inline-flex">
-              <a
-                href={profile.links.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-              >
-                LinkedIn
-              </a>
-            </MotionPress>
-            <MotionPress className="inline-flex">
-              <Link
-                href="/impact"
-                className="rounded-lg border border-[var(--border)] px-4 py-2 font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-              >
-                View impact highlights
-              </Link>
-            </MotionPress>
-          </div>
-        </section>
-      </MotionReveal>
-
-      <MotionReveal delay={0.2}>
-        <PageQuote quote={sitePageQuotes.home} />
-      </MotionReveal>
+      <PageQuote quote={sitePageQuotes.home} />
     </main>
   );
 }
 
-function SocialLinks() {
-  const iconClass =
-    'group relative text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]';
-  const tooltipClass =
-    'pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap rounded-md bg-[var(--foreground)] px-2 py-0.5 text-[0.65rem] font-medium text-[var(--background)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100';
-  const arrowClass =
-    'absolute -bottom-0.5 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rotate-45 bg-[var(--foreground)]';
+function Hero() {
   return (
-    <>
-      <a
-        href={profile.links.twitter}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={iconClass}
-        aria-label="X / Twitter"
+    <header>
+      <div className="flex items-center gap-3.5">
+        <div className="relative shrink-0">
+          <div className="relative h-14 w-14 overflow-hidden rounded-full border border-[var(--border)]">
+            <Image
+              src="/new_image.jpeg"
+              alt={profile.name}
+              fill
+              sizes="56px"
+              className="object-cover object-top"
+              priority
+            />
+          </div>
+          <span
+            className="absolute -right-0.5 -bottom-0.5 flex rounded-full ring-2 ring-[var(--background)]"
+            title={profile.availabilityNote}
+          >
+            <StatusDot className="h-3 w-3" />
+          </span>
+        </div>
+        <div className="min-w-0">
+          <h1 className="text-[1.05rem] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
+            {profile.name}
+          </h1>
+          <p className="text-[0.84rem] text-[var(--muted-fg)]">
+            {profile.title}
+            {currentRole ? ` at ${currentRole.company}` : null}, {profile.location}
+          </p>
+        </div>
+      </div>
+
+      <p className="mt-8 max-w-[18ch] text-[2.1rem] leading-[1.08] font-semibold tracking-[-0.045em] text-balance text-[var(--foreground)] sm:max-w-none md:text-[2.6rem]">
+        {profile.headline}
+      </p>
+      <p className="mt-4 max-w-lg text-[1rem] leading-7 text-pretty text-[var(--muted-fg)]">
+        {profile.subhead}
+      </p>
+
+      <div className="mt-7 flex flex-wrap items-center gap-3">
+        <ButtonLink href="/resume">
+          <FileIcon className="h-4 w-4" />
+          View resume
+        </ButtonLink>
+        <EmailPill />
+      </div>
+      <SocialLinks className="mt-4 -ml-1.5" />
+    </header>
+  );
+}
+
+function ContactCard() {
+  return (
+    <section aria-labelledby="home-contact" className="rounded-xl bg-[var(--secondary)] px-6 py-6">
+      <h2
+        id="home-contact"
+        className="text-[1.1rem] font-semibold tracking-[-0.02em] text-[var(--foreground)]"
       >
-        <XIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>
-          X / Twitter
-          <span className={arrowClass} />
-        </span>
-      </a>
-      <a
-        href={profile.links.linkedin}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={iconClass}
-        aria-label="LinkedIn"
-      >
-        <LinkedInIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>
+        Hiring for a senior frontend or full-stack role?
+      </h2>
+      <p className="mt-2 max-w-lg text-[0.88rem] leading-6 text-[var(--muted-fg)]">
+        {profile.availabilityNote}
+      </p>
+      <div className="mt-4 flex flex-wrap items-center gap-3">
+        <EmailPill />
+        <ButtonLink href={profile.links.linkedin} variant="outline" external>
           LinkedIn
-          <span className={arrowClass} />
-        </span>
-      </a>
-      <a
-        href={profile.links.github}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={iconClass}
-        aria-label="GitHub"
-      >
-        <GithubIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>
-          GitHub
-          <span className={arrowClass} />
-        </span>
-      </a>
-      <a
-        href={profile.links.instagram}
-        target="_blank"
-        rel="noopener noreferrer"
-        className={iconClass}
-        aria-label="Instagram"
-      >
-        <InstagramIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>
-          Instagram
-          <span className={arrowClass} />
-        </span>
-      </a>
-      <a href={profile.links.email} className={iconClass} aria-label="Email">
-        <MailIcon className="h-[1.1rem] w-[1.1rem]" />
-        <span className={tooltipClass}>
-          Email
-          <span className={arrowClass} />
-        </span>
-      </a>
-    </>
-  );
-}
-
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
-function LinkedInIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
-    </svg>
-  );
-}
-
-function GithubIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-    </svg>
-  );
-}
-
-function InstagramIcon({ className }: { className?: string }) {
-  return (
-    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z" />
-    </svg>
-  );
-}
-
-function MailIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      aria-hidden
-    >
-      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-      <path d="m22 6-10 7L2 6" />
-    </svg>
-  );
-}
-
-function GraduationIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="m2 10 10-5 10 5-10 5Z" />
-      <path d="M6 12v5c0 1.7 2.7 3 6 3s6-1.3 6-3v-5" />
-      <path d="M22 10v6" />
-    </svg>
-  );
-}
-
-function ResumeIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M7 3.5h7l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V5A1.5 1.5 0 0 1 7.5 3.5Z" />
-      <path d="M14 3.5V8h4" />
-      <path d="M9 12h6M9 16h6" />
-    </svg>
+        </ButtonLink>
+      </div>
+    </section>
   );
 }

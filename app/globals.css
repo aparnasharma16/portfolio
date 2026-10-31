@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /*
   Color system aligned with ramx.in / sleek-portfolio (oklch neutrals).
@@ -38,6 +38,12 @@
   --working-bg: oklch(0.94 0 0);
   --working-fg: oklch(0.35 0 0);
   --working-dot: oklch(0.45 0 0);
+  /* Single accent ("checkout blue"): focus rings and link states only */
+  --accent-ink: oklch(0.52 0.2 264);
+  /* Availability / "current" indicator */
+  --status: oklch(0.72 0.17 150);
+  --status-bg: oklch(0.72 0.17 150 / 0.12);
+  --status-fg: oklch(0.45 0.13 150);
 }
 
 .dark {
@@ -70,6 +76,10 @@
   --working-bg: oklch(1 0 0 / 8%);
   --working-fg: oklch(0.92 0 0);
   --working-dot: oklch(0.65 0 0);
+  --accent-ink: oklch(0.72 0.14 264);
+  --status: oklch(0.76 0.17 150);
+  --status-bg: oklch(0.76 0.17 150 / 0.14);
+  --status-fg: oklch(0.86 0.12 150);
 }
 
 @theme inline {
@@ -83,8 +93,7 @@
   --color-border: var(--border);
   --color-card: var(--card);
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", monospace;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
 }
 
 body {
@@ -92,7 +101,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
   font-optical-sizing: auto;
-  font-feature-settings: "ss01" 1, "cv11" 1, "kern" 1;
+  font-feature-settings:
+    'ss01' 1,
+    'cv11' 1,
+    'kern' 1;
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -103,4 +115,57 @@ body {
 /* ramx.in — subdued text in both modes */
 .text-secondary {
   color: #909092;
+}
+
+/* Visible, consistent keyboard focus everywhere. It lives in the base layer so utilities
+   (e.g. `focus-visible:outline-none` on the search input) can override it; unlayered CSS
+   would beat every utility regardless of specificity. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 2px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* First-visit splash (components/SplashScreen.tsx): shows briefly, then fades itself out */
+.splash {
+  animation: splash-out 280ms ease-out 420ms forwards;
+}
+
+.splash-mark {
+  animation: splash-in 240ms ease-out both;
+}
+
+@keyframes splash-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+
+@keyframes splash-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+html[data-splash-seen] .splash {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .splash {
+    display: none;
+  }
 }

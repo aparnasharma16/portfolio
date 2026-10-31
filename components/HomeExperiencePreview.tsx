@@ -1,105 +1,86 @@
 'use client';
 
 import { CompanyLogo } from '@/components/CompanyLogo';
-import { MotionPress, getExpandTransition } from '@/components/SubtleMotion';
-import { TechIcon } from '@/components/TechIcon';
+import { ChevronRightIcon } from '@/components/icons';
+import { SectionHeading } from '@/components/SectionHeading';
+import { StatusBadge } from '@/components/StatusDot';
+import { getExpandTransition } from '@/components/SubtleMotion';
+import { TechChipList } from '@/components/TechChip';
 import { type ExperienceEntry, groupExperience } from '@/lib/portfolio-data';
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import Link from 'next/link';
-import { useState } from 'react';
+import { useId, useState } from 'react';
+
+type Education = {
+  readonly degree: string;
+  readonly school: string;
+  readonly logo: string;
+  readonly years: string;
+};
 
 type Props = {
   jobs: ExperienceEntry[];
+  education?: Education;
   previewCount?: number;
 };
 
-export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
-  const grouped = groupExperience(jobs);
-  const visible = previewCount >= grouped.length ? grouped : grouped.slice(0, previewCount);
-  const hasMore = grouped.length > visible.length;
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Props) {
+  const grouped = groupExperience(jobs).slice(0, previewCount);
+  const [expanded, setExpanded] = useState<number | null>(0);
   const reduceMotion = useReducedMotion() ?? false;
+  const baseId = useId();
 
   return (
-    <section className="mt-10">
-      <h2 className="text-[1.35rem] font-semibold tracking-[-0.03em] text-[var(--foreground)]">
-        Experience
-      </h2>
-      <ul className="mt-5">
-        {visible.map((group, i) => {
-          const isExpanded = expandedIndex === i;
+    <section aria-labelledby="home-experience">
+      <SectionHeading
+        id="home-experience"
+        title="Experience"
+        action={{ href: '/work', subject: 'roles', count: jobs.length }}
+      />
+
+      <ol className="relative mt-5">
+        {/* timeline rail */}
+        <span className="absolute top-4 bottom-4 left-4 w-px bg-[var(--border)]" aria-hidden />
+        {grouped.map((group, i) => {
+          const isOpen = expanded === i;
+          const panelId = `${baseId}-panel-${i}`;
+          const latest = group.roles[0];
           return (
-            <li key={`${group.company}-${group.period}`} className={i > 0 ? 'mt-4' : ''}>
-              <div className="flex items-start gap-3">
-                {group.logo ? (
-                  <CompanyLogo src={group.logo} alt={`${group.company} logo`} size="sm" />
-                ) : null}
-                <div className="min-w-0 flex-1">
-                  <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <span className="text-[0.95rem] font-semibold text-[var(--foreground)]">
-                          {group.company}
-                        </span>
-                        {group.current ? (
-                          <>
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-[#86efac] bg-[#f0fdf4] px-2 py-0.5 text-xs font-medium text-[#166534] dark:border-[#14532d] dark:bg-[#052e16] dark:text-[#bbf7d0]">
-                              <span className="h-1.5 w-1.5 rounded-full bg-[#4ade80]" aria-hidden />
-                              Working
-                            </span>
-                            <button
-                              type="button"
-                              onClick={() => setExpandedIndex(isExpanded ? null : i)}
-                              className="flex h-5 w-5 items-center justify-center text-[var(--muted-fg)] transition-transform hover:text-[var(--foreground)]"
-                              aria-label={isExpanded ? 'Collapse' : 'Expand'}
-                            >
-                              <svg
-                                viewBox="0 0 20 20"
-                                fill="currentColor"
-                                className={`h-4 w-4 transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`}
-                                aria-hidden
-                              >
-                                <path
-                                  fillRule="evenodd"
-                                  d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                                  clipRule="evenodd"
-                                />
-                              </svg>
-                            </button>
-                          </>
-                        ) : null}
-                      </div>
-                      {group.roles.length === 1 ? (
-                        <p className="text-[0.82rem] text-[var(--muted-fg)]">
-                          {group.roles[0].role}
-                        </p>
-                      ) : (
-                        <div className="mt-1 space-y-0.5">
-                          {group.roles.map((role) => (
-                            <p key={role.period} className="text-[0.78rem] text-[var(--muted-fg)]">
-                              <span className="font-medium text-[var(--foreground)]">{role.role}</span>
-                              <span className="hidden text-[var(--subtle)] sm:inline"> · {role.periodShort}</span>
-                            </p>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                    <div className="hidden shrink-0 text-right sm:block">
-                      <p className="text-[0.82rem] text-[var(--foreground)]">{group.period}</p>
-                      <p className="text-[0.78rem] text-[var(--muted-fg)]">
-                        {group.location} ({group.workType})
-                      </p>
-                    </div>
-                  </div>
-                  <p className="mt-0.5 text-[0.75rem] text-[var(--subtle)] sm:hidden">
-                    {group.periodShort} · {group.location}
-                  </p>
-                </div>
-              </div>
+            <li key={`${group.company}-${group.period}`} className="relative">
+              <button
+                type="button"
+                onClick={() => setExpanded(isOpen ? null : i)}
+                aria-expanded={isOpen}
+                aria-controls={panelId}
+                className="group flex w-full items-start gap-4 rounded-xl py-3 text-left"
+              >
+                <span className="relative z-[1] rounded-lg bg-[var(--background)]">
+                  <CompanyLogo src={group.logo} name={group.company} size="sm" />
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                    <span className="text-[0.93rem] font-semibold text-[var(--foreground)] underline-offset-4 group-hover:underline">
+                      {group.company}
+                    </span>
+                    {group.current ? <StatusBadge>Current</StatusBadge> : null}
+                  </span>
+                  <span className="mt-0.5 block text-[0.8rem] text-[var(--muted-fg)]">
+                    {latest.role}
+                  </span>
+                </span>
+                <span className="flex shrink-0 items-center gap-2 pt-0.5">
+                  <span className="hidden text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:inline">
+                    {group.periodShort}
+                  </span>
+                  <ChevronRightIcon
+                    className={`h-4 w-4 text-[var(--subtle)] transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`}
+                  />
+                </span>
+              </button>
 
               <AnimatePresence initial={false}>
-                {isExpanded ? (
+                {isOpen ? (
                   <motion.div
+                    id={panelId}
                     key="details"
                     initial={reduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
                     animate={reduceMotion ? { opacity: 1 } : { opacity: 1, height: 'auto' }}
@@ -107,31 +88,22 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
                     transition={getExpandTransition(reduceMotion)}
                     className="overflow-hidden"
                   >
-                    <div className="mt-3 border-t border-[var(--border)] pt-3">
-                      <h4 className="text-[0.82rem] font-semibold text-[var(--foreground)]">
-                        Technologies &amp; Tools
-                      </h4>
-                      <ul className="mt-2 flex flex-wrap gap-1.5" aria-label="Technologies">
-                        {group.roles[0].tech.map((t) => (
-                          <li key={t}>
-                            <TechIcon name={t} />
-                          </li>
-                        ))}
-                      </ul>
-                      <h4 className="mt-3 text-[0.82rem] font-semibold text-[var(--foreground)]">
-                        What I&apos;ve done
-                      </h4>
-                      <ul className="mt-1.5 space-y-1 text-[0.82rem] leading-6 text-[var(--muted-fg)]">
-                        {group.roles[0].highlights.map((h) => (
+                    <div className="pb-4 pl-12">
+                      <p className="text-[0.75rem] text-[var(--subtle)] tabular-nums sm:hidden">
+                        {group.periodShort}, {group.location}
+                      </p>
+                      <ul className="mt-1 space-y-1.5 text-[0.84rem] leading-6 text-[var(--muted-fg)]">
+                        {latest.highlights.slice(0, 2).map((h) => (
                           <li key={h} className="relative pl-3.5">
                             <span
-                              className="absolute left-0 top-[0.6rem] h-1 w-1 rounded-full bg-[var(--subtle)]"
+                              className="absolute top-[0.65rem] left-0 h-1 w-1 rounded-full bg-[var(--subtle)]"
                               aria-hidden
                             />
                             {h}
                           </li>
                         ))}
                       </ul>
+                      <TechChipList items={latest.tech.slice(0, 6)} size="sm" className="mt-3" />
                     </div>
                   </motion.div>
                 ) : null}
@@ -139,17 +111,26 @@ export function HomeExperiencePreview({ jobs, previewCount = 3 }: Props) {
             </li>
           );
         })}
-      </ul>
-      <div className="mt-6 flex justify-center">
-        <MotionPress className="inline-flex">
-          <Link
-            href="/work"
-            className="rounded-lg border border-[var(--border)] px-5 py-2 text-sm font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)]"
-          >
-            {hasMore ? 'Show all work experiences' : 'View full work experiences'}
-          </Link>
-        </MotionPress>
-      </div>
+
+        {education ? (
+          <li className="relative flex items-start gap-4 py-3">
+            <span className="relative z-[1] rounded-lg bg-[var(--background)]">
+              <CompanyLogo src={education.logo} name={education.school} size="sm" />
+            </span>
+            <span className="min-w-0 flex-1">
+              <span className="block text-[0.93rem] font-semibold text-[var(--foreground)]">
+                {education.school}
+              </span>
+              <span className="mt-0.5 block text-[0.8rem] text-[var(--muted-fg)]">
+                {education.degree}
+              </span>
+            </span>
+            <span className="hidden shrink-0 pt-0.5 pr-6 text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:inline">
+              {education.years}
+            </span>
+          </li>
+        ) : null}
+      </ol>
     </section>
   );
 }

@@ -1,145 +1,91 @@
 'use client';
 
+import { isActivePath } from '@/components/navIcons';
 import { SearchCommand } from '@/components/SearchCommand';
 import { ThemeToggle } from '@/components/ThemeToggle';
+import { profile, siteNav } from '@/lib/portfolio-data';
+import { motion, useReducedMotion } from 'motion/react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useSyncExternalStore } from 'react';
 
-const nav = [
-  { href: '/', label: 'Home' },
-  { href: '/work', label: 'Work' },
-  { href: '/impact', label: 'Impact' },
-  { href: '/blog', label: 'Blog' },
-  { href: '/hobbies', label: 'Hobbies' },
-  { href: '/resume', label: 'Resume' },
-] as const;
+function subscribeToScroll(onChange: () => void) {
+  window.addEventListener('scroll', onChange, { passive: true });
+  return () => window.removeEventListener('scroll', onChange);
+}
 
+/** True once the page has scrolled, so the header can show its divider. */
+function useScrolled() {
+  return useSyncExternalStore(
+    subscribeToScroll,
+    () => window.scrollY > 4,
+    () => false
+  );
+}
+
+/**
+ * Top bar. Desktop shows the primary nav inline; on mobile the nav lives in the
+ * bottom `MobileDock`, so the bar only carries the name, search, and theme.
+ */
 export function SiteHeader() {
   const pathname = usePathname();
-  const [menuOpen, setMenuOpen] = useState(false);
-
-  // Close menu on route change + lock body scroll
-  useEffect(() => {
-    setMenuOpen(false);
-  }, [pathname]);
-
-  useEffect(() => {
-    if (!menuOpen) return;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [menuOpen]);
+  const scrolled = useScrolled();
+  const reduceMotion = useReducedMotion();
 
   return (
-    <>
-      <header className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--background)]/88 backdrop-blur-md">
-        <div className="mx-auto flex max-w-2xl items-center px-5 py-4">
-          <nav
-            className="hidden flex-wrap items-center gap-x-8 gap-y-2 text-[0.92rem] font-medium tracking-[-0.015em] sm:flex"
-            aria-label="Primary"
-          >
-            {nav.map((item) => {
-              const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={
-                    active
-                      ? 'text-[var(--foreground)]'
-                      : 'text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]'
-                  }
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-
-          <button
-            type="button"
-            onClick={() => setMenuOpen((v) => !v)}
-            className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--control-bg)] text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)] sm:hidden"
-            aria-label={menuOpen ? 'Close menu' : 'Open menu'}
-          >
-            {menuOpen ? <XIcon className="h-4 w-4" /> : <MenuIcon className="h-4 w-4" />}
-          </button>
-
-          <div className="ml-auto flex items-center gap-2">
-            <SearchCommand />
-            <ThemeToggle />
-          </div>
-        </div>
-      </header>
-
-      {menuOpen ? (
-        <div className="fixed inset-0 z-[55] bg-[var(--background)] sm:hidden">
-          <div className="flex items-center justify-between border-b border-[var(--border)] px-5 py-4">
-            <span className="text-[0.92rem] font-semibold text-[var(--foreground)]">Menu</span>
-            <button
-              type="button"
-              onClick={() => setMenuOpen(false)}
-              className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--control-bg)] text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]"
-              aria-label="Close menu"
-            >
-              <XIcon className="h-4 w-4" />
-            </button>
-          </div>
-          <nav className="flex flex-col px-6 py-4" aria-label="Mobile navigation">
-            {nav.map((item) => {
-              const active = item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
-              return (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setMenuOpen(false)}
-                  className={`border-b border-[var(--border)] py-3.5 text-[1rem] font-medium ${
-                    active
-                      ? 'text-[var(--foreground)]'
-                      : 'text-[var(--muted-fg)] transition-colors hover:text-[var(--foreground)]'
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              );
-            })}
-          </nav>
-        </div>
-      ) : null}
-    </>
-  );
-}
-
-function MenuIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      aria-hidden
+    <header
+      className={`sticky top-0 z-50 border-b bg-[var(--background)] transition-colors duration-200 ${
+        scrolled ? 'border-[var(--border)]' : 'border-transparent'
+      }`}
     >
-      <path d="M4 6h16M4 12h16M4 18h16" />
-    </svg>
-  );
-}
+      <div className="mx-auto flex h-14 max-w-2xl items-center gap-4 px-5">
+        {/* Mobile brand; skipped on home, where the hero already shows the name. */}
+        {pathname === '/' ? null : (
+          <Link
+            href="/"
+            className="text-[0.95rem] font-semibold tracking-[-0.02em] text-[var(--foreground)] sm:hidden"
+          >
+            {profile.name}
+          </Link>
+        )}
 
-function XIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      aria-hidden
-    >
-      <path d="M18 6 6 18M6 6l12 12" />
-    </svg>
+        <nav className="hidden items-center sm:flex" aria-label="Primary">
+          {siteNav.map((item) => {
+            const active = isActivePath(pathname, item.href);
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={active ? 'page' : undefined}
+                className={`relative inline-flex h-8 items-center rounded-lg px-3 text-[0.88rem] tracking-[-0.01em] transition-colors ${
+                  active
+                    ? 'font-semibold text-[var(--foreground)]'
+                    : 'font-medium text-[var(--muted-fg)] hover:bg-[var(--secondary)] hover:text-[var(--foreground)]'
+                }`}
+              >
+                {item.label}
+                {active ? (
+                  <motion.span
+                    layoutId="nav-active"
+                    className="absolute inset-x-3 -bottom-3 h-0.5 rounded-full bg-[var(--foreground)]"
+                    transition={
+                      reduceMotion
+                        ? { duration: 0 }
+                        : { type: 'spring', stiffness: 500, damping: 38 }
+                    }
+                    aria-hidden
+                  />
+                ) : null}
+              </Link>
+            );
+          })}
+        </nav>
+
+        <div className="ml-auto flex items-center gap-2">
+          <SearchCommand />
+          <ThemeToggle />
+        </div>
+      </div>
+    </header>
   );
 }

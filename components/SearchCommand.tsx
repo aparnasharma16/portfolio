@@ -1,419 +1,394 @@
 'use client';
 
-import Link from 'next/link';
-import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
+import {
+  CopyIcon,
+  DownloadIcon,
+  GithubIcon,
+  LinkedInIcon,
+  MoonIcon,
+  SearchIcon,
+  SunIcon,
+} from '@/components/icons';
+import { navIcons } from '@/components/navIcons';
+import { Toast, useToast } from '@/components/Toast';
+import { profile, siteNav } from '@/lib/portfolio-data';
+import { toggleTheme, useIsDark } from '@/lib/theme';
+import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
+import { useRouter } from 'next/navigation';
+import {
+  useCallback,
+  useEffect,
+  useId,
+  useMemo,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type ComponentType,
+} from 'react';
 import { createPortal } from 'react-dom';
 
-const commands = [
-  {
-    href: '/',
-    title: 'Go to Home',
-    description: 'Navigate to the homepage',
-    keywords: ['home', 'landing', 'index'],
-    shortcut: 'H',
-    icon: HomeIcon,
-  },
-  {
-    href: '/work',
-    title: 'Go to Work',
-    description: 'View work experience',
-    keywords: ['work', 'experience', 'career'],
-    shortcut: 'W',
-    icon: BriefcaseIcon,
-  },
-  {
-    href: '/impact',
-    title: 'Go to Impact',
-    description: 'View case studies and impact highlights',
-    keywords: ['impact', 'case studies', 'proof', 'highlights'],
-    shortcut: 'I',
-    icon: SparklesIcon,
-  },
-  {
-    href: '/blog',
-    title: 'Go to Blog',
-    description: 'Browse all blog posts',
-    keywords: ['blog', 'writing', 'articles'],
-    shortcut: 'B',
-    icon: BookOpenIcon,
-  },
-  {
-    href: '/hobbies',
-    title: 'Go to Hobbies',
-    description: 'Things beyond code',
-    keywords: ['hobbies', 'beyond work', 'interests', 'personal', 'painting', 'music', 'coffee'],
-    shortcut: 'Y',
-    icon: HeartIcon,
-  },
-  {
-    href: '/resume',
-    title: 'Go to Resume',
-    description: 'View and download resume',
-    keywords: ['resume', 'cv', 'profile'],
-    shortcut: 'R',
-    icon: FileTextIcon,
-  },
-] as const;
+type Command = {
+  id: string;
+  group: 'Pages' | 'Actions';
+  title: string;
+  description: string;
+  keywords: readonly string[];
+  Icon: ComponentType<{ className?: string }>;
+  run: () => void;
+};
 
+const RECENT_KEY = 'portfolio-recent-commands';
+const RECENT_LIMIT = 2;
+
+function readRecent(): string[] {
+  try {
+    return JSON.parse(localStorage.getItem(RECENT_KEY) ?? '[]');
+  } catch {
+    return [];
+  }
+}
+
+function rememberRecent(id: string) {
+  try {
+    const next = [id, ...readRecent().filter((item) => item !== id)].slice(0, 5);
+    localStorage.setItem(RECENT_KEY, JSON.stringify(next));
+  } catch {
+    /* storage unavailable: recents are a nicety */
+  }
+}
+
+const subscribeNever = () => () => {};
+
+/**
+ * ⌘K palette: jump to a page or run a quick action (copy email, download resume,
+ * switch theme, open profiles). Recent picks surface first when the query is empty.
+ */
 export function SearchCommand() {
-  const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState('');
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
+  const isDark = useIsDark();
+  const reduceMotion = useReducedMotion();
+  const { message: toastMessage, show: showToast } = useToast();
+  const listId = useId();
   const mounted = useSyncExternalStore(
-    () => () => {},
+    subscribeNever,
     () => true,
     () => false
   );
 
-  const close = useCallback(() => {
-    setOpen(false);
+  const [open, setOpen] = useState(false);
+  const [query, setQuery] = useState('');
+  const [active, setActive] = useState(0);
+  const [recent, setRecent] = useState<string[]>([]);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const listRef = useRef<HTMLUListElement>(null);
+
+  const openPalette = useCallback(() => {
+    setRecent(readRecent());
     setQuery('');
-    setSelectedIndex(0);
+    setActive(0);
+    setOpen(true);
   }, []);
 
-  useEffect(() => {
-    if (open) {
-      const scrollY = window.scrollY;
-      document.body.style.position = 'fixed';
-      document.body.style.top = `-${scrollY}px`;
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.overflow = 'hidden';
-      return () => {
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.left = '';
-        document.body.style.right = '';
-        document.body.style.overflow = '';
-        window.scrollTo(0, scrollY);
-      };
-    }
-  }, [open]);
+  const close = useCallback(() => {
+    setOpen(false);
+    triggerRef.current?.focus();
+  }, []);
 
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        setOpen((v) => !v);
-      }
-      if (e.key === 'Escape' && open) {
-        e.preventDefault();
-        close();
-      }
-    };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [open, close]);
+  const commands = useMemo<Command[]>(
+    () => [
+      ...siteNav.map((item) => ({
+        id: `page:${item.href}`,
+        group: 'Pages' as const,
+        title: item.label,
+        description: item.description,
+        keywords: item.keywords,
+        Icon: navIcons[item.href],
+        run: () => router.push(item.href),
+      })),
+      {
+        id: 'copy-email',
+        group: 'Actions',
+        title: 'Copy email',
+        description: profile.links.emailDisplay,
+        keywords: ['email', 'contact', 'mail', 'hire'],
+        Icon: CopyIcon,
+        run: async () => {
+          try {
+            await navigator.clipboard.writeText(profile.links.emailDisplay);
+            showToast('Email copied');
+          } catch {
+            showToast('Copy failed. Use the email link instead');
+          }
+        },
+      },
+      {
+        id: 'download-resume',
+        group: 'Actions',
+        title: 'Download resume',
+        description: 'PDF',
+        keywords: ['resume', 'cv', 'pdf', 'download'],
+        Icon: DownloadIcon,
+        run: () => {
+          const link = document.createElement('a');
+          link.href = profile.resumePdfPath;
+          link.download = '';
+          link.click();
+        },
+      },
+      {
+        id: 'theme',
+        group: 'Actions',
+        title: isDark ? 'Switch to light theme' : 'Switch to dark theme',
+        description: 'Appearance',
+        keywords: ['theme', 'dark', 'light', 'mode', 'appearance'],
+        Icon: isDark ? SunIcon : MoonIcon,
+        run: toggleTheme,
+      },
+      {
+        id: 'linkedin',
+        group: 'Actions',
+        title: 'Open LinkedIn',
+        description: 'New tab',
+        keywords: ['linkedin', 'profile', 'social'],
+        Icon: LinkedInIcon,
+        run: () => window.open(profile.links.linkedin, '_blank', 'noopener,noreferrer'),
+      },
+      {
+        id: 'github',
+        group: 'Actions',
+        title: 'Open GitHub',
+        description: 'New tab',
+        keywords: ['github', 'code', 'social'],
+        Icon: GithubIcon,
+        run: () => window.open(profile.links.github, '_blank', 'noopener,noreferrer'),
+      },
+    ],
+    [router, isDark, showToast]
+  );
 
-  useEffect(() => {
-    if (!open) return;
-    const frame = requestAnimationFrame(() => inputRef.current?.focus());
-    return () => cancelAnimationFrame(frame);
-  }, [open]);
-
-  const filtered = useMemo(() => {
+  /** Groups in display order; `results` is the same items flattened for keyboard nav. */
+  const groups = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (!q) return commands;
-    return commands.filter((c) => {
-      const hay = [c.title, c.description, c.shortcut, ...c.keywords].join(' ').toLowerCase();
-      return hay.includes(q);
-    });
-  }, [query]);
+    const matches = q
+      ? commands.filter((command) =>
+          [command.title, command.description, ...command.keywords]
+            .join(' ')
+            .toLowerCase()
+            .includes(q)
+        )
+      : commands;
 
+    const recentCommands = q
+      ? []
+      : recent
+          .map((id) => commands.find((command) => command.id === id))
+          .filter((command): command is Command => command !== undefined)
+          .slice(0, RECENT_LIMIT);
+    const recentIds = new Set(recentCommands.map((command) => command.id));
+
+    return [
+      { title: 'Recent', items: recentCommands },
+      { title: 'Pages', items: matches.filter((c) => c.group === 'Pages' && !recentIds.has(c.id)) },
+      {
+        title: 'Actions',
+        items: matches.filter((c) => c.group === 'Actions' && !recentIds.has(c.id)),
+      },
+    ].filter((group) => group.items.length > 0);
+  }, [commands, query, recent]);
+
+  const results = useMemo(() => groups.flatMap((group) => group.items), [groups]);
+  const activeCommand = results[Math.min(active, results.length - 1)];
+
+  const runCommand = useCallback((command: Command) => {
+    rememberRecent(command.id);
+    setOpen(false);
+    command.run();
+  }, []);
+
+  // ⌘K / Ctrl+K toggles the palette from anywhere.
   useEffect(() => {
-    if (!open) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        setSelectedIndex((i) => Math.min(i + 1, filtered.length - 1));
-      } else if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        setSelectedIndex((i) => Math.max(i - 1, 0));
-      } else if (e.key === 'Enter' && filtered[selectedIndex]) {
-        e.preventDefault();
-        const el = listRef.current?.querySelector(
-          `[data-index="${selectedIndex}"]`
-        ) as HTMLAnchorElement | null;
-        el?.click();
+    const onKey = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+        event.preventDefault();
+        if (open) close();
+        else openPalette();
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [open, filtered, selectedIndex]);
+  }, [open, close, openPalette]);
 
+  // Lock page scroll and focus the input while open.
   useEffect(() => {
-    if (!listRef.current) return;
-    const el = listRef.current.querySelector(`[data-index="${selectedIndex}"]`);
-    el?.scrollIntoView({ block: 'nearest' });
-  }, [selectedIndex]);
+    if (!open) return;
+    const { overflow } = document.body.style;
+    document.body.style.overflow = 'hidden';
+    const frame = requestAnimationFrame(() => inputRef.current?.focus());
+    return () => {
+      document.body.style.overflow = overflow;
+      cancelAnimationFrame(frame);
+    };
+  }, [open]);
 
-  const modal = open ? (
-    <div className="fixed inset-0" style={{ zIndex: 9999, isolation: 'isolate' }}>
-      <div className="absolute inset-0 bg-black/60" onClick={close} aria-hidden />
-      <div
-        className="relative flex h-full w-full items-start justify-center px-4 pt-[min(20vh,12rem)]"
-        role="dialog"
-        aria-modal="true"
-        aria-label="Command palette"
-        onClick={close}
-      >
-        <div
-          className="w-full max-w-[32rem] overflow-hidden rounded-2xl border border-[var(--border-strong)] bg-[var(--background)] shadow-[0_25px_60px_-12px_rgba(0,0,0,0.35)]"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <div className="flex items-center gap-3 border-b border-[var(--border)] px-4 py-3.5">
-            <SearchIcon className="h-5 w-5 shrink-0 text-[var(--muted-fg)]" />
-            <input
-              ref={inputRef}
-              type="text"
-              value={query}
-              onChange={(e) => {
-                setQuery(e.target.value);
-                setSelectedIndex(0);
-              }}
-              placeholder="Type a command or search..."
-              className="w-full bg-transparent text-[0.95rem] text-[var(--foreground)] outline-none placeholder:text-[var(--muted-fg)]"
-            />
-            <kbd className="shrink-0 rounded-md border border-[var(--border)] bg-[var(--secondary)] px-2 py-0.5 text-[0.7rem] font-medium text-[var(--muted-fg)]">
-              ESC
-            </kbd>
-          </div>
+  // Keep the active row in view.
+  useEffect(() => {
+    listRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
+  }, [active, open]);
 
-          <div
-            ref={listRef}
-            className="max-h-[min(26rem,55vh)] overflow-y-auto overscroll-contain p-2"
+  function onInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      setActive((index) => (index + 1) % Math.max(results.length, 1));
+    } else if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      setActive((index) => (index - 1 + results.length) % Math.max(results.length, 1));
+    } else if (event.key === 'Enter' && activeCommand) {
+      event.preventDefault();
+      runCommand(activeCommand);
+    } else if (event.key === 'Escape') {
+      event.preventDefault();
+      close();
+    }
+  }
+
+  const optionId = (command: Command) => `${listId}-${command.id}`;
+
+  const palette = (
+    <AnimatePresence>
+      {open ? (
+        <div className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-[min(18vh,10rem)]">
+          <motion.div
+            className="absolute inset-0 bg-black/50"
+            onClick={close}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduceMotion ? 0 : 0.15 }}
+            aria-hidden
+          />
+          <motion.div
+            role="dialog"
+            aria-modal="true"
+            aria-label="Search and commands"
+            className="relative w-full max-w-[32rem] overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--background)] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.4)]"
+            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: -6 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: -6 }}
+            transition={{ duration: reduceMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
           >
-            <p className="px-3 py-2 text-[0.7rem] font-semibold uppercase tracking-widest text-[var(--muted-fg)]">
-              Navigation
-            </p>
-
-            {filtered.length > 0 ? (
-              <ul className="space-y-0.5">
-                {filtered.map((command, i) => {
-                  const Icon = command.icon;
-                  const isSelected = i === selectedIndex;
-                  return (
-                    <li key={command.href}>
-                      <Link
-                        href={command.href}
-                        data-index={i}
-                        onClick={close}
-                        onMouseEnter={() => setSelectedIndex(i)}
-                        className={`flex items-center gap-3.5 rounded-xl px-3 py-3 transition-colors ${
-                          isSelected ? 'bg-[var(--secondary)]' : 'hover:bg-[var(--secondary)]'
-                        }`}
-                      >
-                        <span className="flex h-7 w-7 shrink-0 items-center justify-center text-[var(--muted-fg)]">
-                          <Icon className="h-[1.15rem] w-[1.15rem]" />
-                        </span>
-                        <span className="min-w-0 flex-1">
-                          <span className="block text-[0.92rem] font-medium text-[var(--foreground)]">
-                            {command.title}
-                          </span>
-                          <span className="block text-[0.8rem] leading-snug text-[var(--muted-fg)]">
-                            {command.description}
-                          </span>
-                        </span>
-                        <kbd className="shrink-0 rounded-md border border-[var(--border)] bg-[var(--background)] px-2.5 py-1 text-[0.75rem] font-medium text-[var(--muted-fg)]">
-                          {command.shortcut}
-                        </kbd>
-                      </Link>
-                    </li>
-                  );
-                })}
-              </ul>
-            ) : (
-              <p className="px-3 py-8 text-center text-[0.88rem] text-[var(--muted-fg)]">
-                No matching commands found.
-              </p>
-            )}
-          </div>
-
-          {/* Footer */}
-          <div className="flex items-center justify-between border-t border-[var(--border)] px-4 py-2.5 text-[0.7rem] text-[var(--muted-fg)]">
-            <div className="flex items-center gap-4">
-              <span className="flex items-center gap-1">
-                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
-                  ↑
-                </kbd>
-                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
-                  ↓
-                </kbd>
-                navigate
-              </span>
-              <span className="flex items-center gap-1">
-                <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
-                  ↵
-                </kbd>
-                select
-              </span>
-            </div>
-            <span className="flex items-center gap-1">
-              <kbd className="rounded border border-[var(--border)] bg-[var(--secondary)] px-1.5 py-0.5">
-                ⌘K
+            <div className="flex items-center gap-3 border-b border-[var(--border)] px-4">
+              <SearchIcon className="h-4 w-4 shrink-0 text-[var(--muted-fg)]" />
+              <input
+                ref={inputRef}
+                type="text"
+                role="combobox"
+                aria-expanded="true"
+                aria-controls={listId}
+                aria-activedescendant={activeCommand ? optionId(activeCommand) : undefined}
+                aria-autocomplete="list"
+                value={query}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setActive(0);
+                }}
+                onKeyDown={onInputKeyDown}
+                placeholder="Search pages or actions"
+                className="h-11 w-full bg-transparent text-[0.92rem] text-[var(--foreground)] placeholder:text-[var(--muted-fg)] focus-visible:outline-none"
+              />
+              <kbd className="shrink-0 rounded border border-[var(--border)] px-1.5 py-0.5 font-sans text-[0.68rem] text-[var(--muted-fg)]">
+                Esc
               </kbd>
-              to open
-            </span>
-          </div>
+            </div>
+
+            <ul
+              ref={listRef}
+              id={listId}
+              role="listbox"
+              aria-label="Results"
+              className="max-h-[min(20rem,50vh)] overflow-y-auto overscroll-contain p-1"
+            >
+              {results.length === 0 ? (
+                <li className="px-3 py-10 text-center text-[0.86rem] text-[var(--muted-fg)]">
+                  No results for &ldquo;{query}&rdquo;. Try &ldquo;resume&rdquo; or
+                  &ldquo;email&rdquo;.
+                </li>
+              ) : (
+                groups.map((group) => (
+                  <li key={group.title} role="presentation">
+                    <p className="px-2.5 pt-2 pb-0.5 text-[0.72rem] font-medium text-[var(--muted-fg)]">
+                      {group.title}
+                    </p>
+                    <ul role="presentation">
+                      {group.items.map((command) => {
+                        const index = results.indexOf(command);
+                        const selected = command === activeCommand;
+                        return (
+                          <li
+                            key={command.id}
+                            id={optionId(command)}
+                            role="option"
+                            aria-selected={selected}
+                            onMouseMove={() => setActive(index)}
+                            onClick={() => runCommand(command)}
+                            className={`flex h-9 cursor-pointer items-center gap-2.5 rounded-md px-2.5 ${
+                              selected ? 'bg-[var(--secondary)]' : ''
+                            }`}
+                          >
+                            <command.Icon className="h-3.5 w-3.5 shrink-0 text-[var(--muted-fg)]" />
+                            <span className="text-[0.86rem] text-[var(--foreground)]">
+                              {command.title}
+                            </span>
+                            <span className="hidden min-w-0 flex-1 truncate text-[0.78rem] text-[var(--muted-fg)] sm:block">
+                              {command.description}
+                            </span>
+                            <kbd
+                              className={`ml-auto shrink-0 font-sans text-[0.75rem] text-[var(--muted-fg)] ${
+                                selected ? 'opacity-100' : 'opacity-0'
+                              }`}
+                              aria-hidden
+                            >
+                              ↵
+                            </kbd>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </li>
+                ))
+              )}
+            </ul>
+
+            <div className="flex items-center gap-4 border-t border-[var(--border)] px-4 py-1.5 text-[0.7rem] text-[var(--muted-fg)]">
+              <span>↑↓ to move</span>
+              <span>↵ to open</span>
+              <span className="ml-auto">⌘K to toggle</span>
+            </div>
+          </motion.div>
         </div>
-      </div>
-    </div>
-  ) : null;
+      ) : null}
+    </AnimatePresence>
+  );
 
   return (
     <>
       <button
+        ref={triggerRef}
         type="button"
-        onClick={() => setOpen(true)}
-        className="flex h-9 w-9 items-center justify-center rounded-lg border border-[var(--border)] bg-[var(--control-bg)] text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:hidden"
-        aria-label="Open search"
+        onClick={openPalette}
+        className="flex h-8 items-center gap-1.5 rounded-full border border-[var(--border)] px-2 text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:pr-1.5 sm:pl-2.5"
+        aria-label="Search pages and actions"
+        aria-haspopup="dialog"
+        aria-keyshortcuts="Meta+K Control+K"
       >
-        <SearchIcon className="h-4 w-4" />
-      </button>
-      <button
-        type="button"
-        onClick={() => setOpen(true)}
-        className="hidden h-10 min-w-[6.8rem] items-center justify-center gap-2 rounded-full border border-[var(--border)] bg-[var(--background)] px-3.5 text-[0.9rem] text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:flex"
-        aria-label="Open search"
-      >
-        <SearchIcon className="h-4 w-4" />
-        <span className="rounded-md bg-[var(--secondary)] px-1.5 py-0.5 font-sans text-[0.85rem] font-medium tracking-[-0.02em] opacity-90">
+        <SearchIcon className="h-3.5 w-3.5" />
+        <kbd className="hidden rounded bg-[var(--secondary)] px-1.5 py-px font-sans text-[0.68rem] leading-4 font-medium sm:inline">
           ⌘K
-        </span>
+        </kbd>
       </button>
 
-      {mounted ? createPortal(modal, document.body) : null}
+      {mounted ? createPortal(palette, document.body) : null}
+      <Toast message={toastMessage} />
     </>
-  );
-}
-
-function SearchIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      aria-hidden
-    >
-      <circle cx="11" cy="11" r="8" />
-      <path d="m21 21-4.3-4.3" />
-    </svg>
-  );
-}
-
-function HomeIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M3 10.5 12 3l9 7.5" />
-      <path d="M5.5 9.5V20h13V9.5" />
-      <path d="M10 20v-5h4v5" />
-    </svg>
-  );
-}
-
-function BriefcaseIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <rect x="3" y="7" width="18" height="13" rx="2.5" />
-      <path d="M9 7V5.5A1.5 1.5 0 0 1 10.5 4h3A1.5 1.5 0 0 1 15 5.5V7" />
-      <path d="M3 12h18" />
-      <path d="M10 12v1m4-1v1" />
-    </svg>
-  );
-}
-
-function BookOpenIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M4 5.5A2.5 2.5 0 0 1 6.5 3H11v17H6.5A2.5 2.5 0 0 0 4 22Z" />
-      <path d="M20 5.5A2.5 2.5 0 0 0 17.5 3H13v17h4.5A2.5 2.5 0 0 1 20 22Z" />
-    </svg>
-  );
-}
-
-function FileTextIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M7 3.5h7l4 4V20a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 6 20V5A1.5 1.5 0 0 1 7.5 3.5Z" />
-      <path d="M14 3.5V8h4" />
-      <path d="M9 12h6M9 16h6" />
-    </svg>
-  );
-}
-
-function HeartIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
-    </svg>
-  );
-}
-
-function SparklesIcon({ className }: { className?: string }) {
-  return (
-    <svg
-      className={className}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.9"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden
-    >
-      <path d="m12 3 1.9 4.1L18 9l-4.1 1.9L12 15l-1.9-4.1L6 9l4.1-1.9L12 3Z" />
-      <path d="M5 16l.9 2.1L8 19l-2.1.9L5 22l-.9-2.1L2 19l2.1-.9L5 16Z" />
-      <path d="M19 14l1.2 2.8L23 18l-2.8 1.2L19 22l-1.2-2.8L15 18l2.8-1.2L19 14Z" />
-    </svg>
   );
 }

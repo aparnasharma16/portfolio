@@ -102,7 +102,10 @@ function Hero() {
 
 function ContactCard() {
   return (
-    <section aria-labelledby="home-contact" className="rounded-xl bg-[var(--secondary)] px-6 py-6">
+    <section
+      aria-labelledby="home-contact"
+      className="rounded-xl bg-[var(--secondary)] px-6 py-6 print:hidden"
+    >
       <h2
         id="home-contact"
         className="text-[1.1rem] font-semibold tracking-[-0.02em] text-[var(--foreground)]"

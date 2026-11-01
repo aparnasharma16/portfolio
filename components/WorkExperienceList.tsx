@@ -2,12 +2,16 @@
 
 import { BulletList } from '@/components/BulletList';
 import { CompanyLogo } from '@/components/CompanyLogo';
-import { Disclosure, ExpandAllButton, useDisclosureSet } from '@/components/Disclosure';
+import {
+  Disclosure,
+  ExpandAllButton,
+  useDisclosureSet,
+  useOpenFromHash,
+} from '@/components/Disclosure';
 import { StatusBadge } from '@/components/StatusDot';
 import { TechChipList } from '@/components/TechChip';
-import type { ExperienceEntry, GroupedExperience } from '@/lib/portfolio-data';
-
-const roleKey = (role: ExperienceEntry) => `${role.company}-${role.period}`;
+import { roleAnchor } from '@/lib/anchors';
+import type { GroupedExperience } from '@/lib/portfolio-data';
 
 /** Width of the rail column; matches the `md` company logo so dots centre under it. */
 const RAIL = 'grid grid-cols-[2.75rem_1fr] gap-x-4';
@@ -18,8 +22,10 @@ const RAIL = 'grid grid-cols-[2.75rem_1fr] gap-x-4';
  * Dates live only on roles, never repeated on the company. Role details open inline.
  */
 export function WorkExperienceList({ groups }: { groups: readonly GroupedExperience[] }) {
-  const allKeys = groups.flatMap((group) => group.roles.map(roleKey));
+  const allKeys = groups.flatMap((group) => group.roles.map(roleAnchor));
   const roles = useDisclosureSet(allKeys, allKeys.slice(0, 1));
+  // Keys are the anchors, so a `/work#<role>` link opens that role.
+  useOpenFromHash((anchor) => (allKeys.includes(anchor) ? anchor : undefined), roles.show);
 
   return (
     <div>
@@ -47,11 +53,11 @@ export function WorkExperienceList({ groups }: { groups: readonly GroupedExperie
 
             <ol className="mt-1">
               {group.roles.map((role, index) => {
-                const key = roleKey(role);
+                const key = roleAnchor(role);
                 const open = roles.isOpen(key);
                 const isLast = index === group.roles.length - 1;
                 return (
-                  <li key={key} className={RAIL}>
+                  <li key={key} id={key} className={`${RAIL} scroll-mt-20`}>
                     <RailNode active={open} continues={!isLast} />
                     <div className="min-w-0">
                       <Disclosure

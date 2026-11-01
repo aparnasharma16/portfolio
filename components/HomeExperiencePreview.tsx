@@ -1,13 +1,11 @@
 'use client';
 
 import { CompanyLogo } from '@/components/CompanyLogo';
-import { ChevronRightIcon } from '@/components/icons';
+import { ChevronIndicator, DisclosurePanel } from '@/components/Disclosure';
 import { SectionHeading } from '@/components/SectionHeading';
 import { StatusBadge } from '@/components/StatusDot';
-import { getExpandTransition } from '@/components/SubtleMotion';
 import { TechChipList } from '@/components/TechChip';
 import { type ExperienceEntry, groupExperience } from '@/lib/portfolio-data';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { useId, useState } from 'react';
 
 type Education = {
@@ -26,7 +24,6 @@ type Props = {
 export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Props) {
   const grouped = groupExperience(jobs).slice(0, previewCount);
   const [expanded, setExpanded] = useState<number | null>(0);
-  const reduceMotion = useReducedMotion() ?? false;
   const baseId = useId();
 
   return (
@@ -71,43 +68,29 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
                   <span className="hidden text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:inline">
                     {group.periodShort}
                   </span>
-                  <ChevronRightIcon
-                    className={`h-4 w-4 text-[var(--subtle)] transition-transform duration-200 ${isOpen ? 'rotate-90' : ''}`}
-                  />
+                  <ChevronIndicator open={isOpen} />
                 </span>
               </button>
 
-              <AnimatePresence initial={false}>
-                {isOpen ? (
-                  <motion.div
-                    id={panelId}
-                    key="details"
-                    initial={reduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
-                    animate={reduceMotion ? { opacity: 1 } : { opacity: 1, height: 'auto' }}
-                    exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
-                    transition={getExpandTransition(reduceMotion)}
-                    className="overflow-hidden"
-                  >
-                    <div className="pb-4 pl-12">
-                      <p className="text-[0.75rem] text-[var(--subtle)] tabular-nums sm:hidden">
-                        {group.periodShort}, {group.location}
-                      </p>
-                      <ul className="mt-1 space-y-1.5 text-[0.84rem] leading-6 text-[var(--muted-fg)]">
-                        {latest.highlights.slice(0, 2).map((h) => (
-                          <li key={h} className="relative pl-3.5">
-                            <span
-                              className="absolute top-[0.65rem] left-0 h-1 w-1 rounded-full bg-[var(--subtle)]"
-                              aria-hidden
-                            />
-                            {h}
-                          </li>
-                        ))}
-                      </ul>
-                      <TechChipList items={latest.tech.slice(0, 6)} size="sm" className="mt-3" />
-                    </div>
-                  </motion.div>
-                ) : null}
-              </AnimatePresence>
+              <DisclosurePanel id={panelId} open={isOpen} onReveal={() => setExpanded(i)}>
+                <div className="pb-4 pl-12">
+                  <p className="text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:hidden">
+                    {group.periodShort}, {group.location}
+                  </p>
+                  <ul className="mt-1 space-y-1.5 text-[0.84rem] leading-6 text-[var(--muted-fg)]">
+                    {latest.highlights.slice(0, 2).map((h) => (
+                      <li key={h} className="relative pl-3.5">
+                        <span
+                          className="absolute top-[0.65rem] left-0 h-1 w-1 rounded-full bg-[var(--subtle)]"
+                          aria-hidden
+                        />
+                        {h}
+                      </li>
+                    ))}
+                  </ul>
+                  <TechChipList items={latest.tech.slice(0, 6)} size="sm" className="mt-3" />
+                </div>
+              </DisclosurePanel>
             </li>
           );
         })}

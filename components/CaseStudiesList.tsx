@@ -1,9 +1,15 @@
 'use client';
 
 import { CompanyLogo } from '@/components/CompanyLogo';
-import { Disclosure, ExpandAllButton, useDisclosureSet } from '@/components/Disclosure';
+import {
+  Disclosure,
+  ExpandAllButton,
+  useDisclosureSet,
+  useOpenFromHash,
+} from '@/components/Disclosure';
 import { SectionIntro } from '@/components/SectionIntro';
 import { TechChipList } from '@/components/TechChip';
+import { studyAnchor } from '@/lib/anchors';
 import type { CaseStudy } from '@/lib/portfolio-data';
 
 /** The story once opened; the outcome is shown in the summary (clamped until opened). */
@@ -13,12 +19,12 @@ const storySteps = [
   { key: 'ownership', label: 'What I did' },
 ] as const satisfies readonly { key: keyof CaseStudy; label: string }[];
 
-const studyKey = (study: CaseStudy) => `${study.company}-${study.title}`;
-
 /** Company-safe case studies: title and outcome up front, the full story on demand. */
 export function CaseStudiesList({ studies }: { studies: readonly CaseStudy[] }) {
-  const keys = studies.map(studyKey);
+  const keys = studies.map(studyAnchor);
   const disclosure = useDisclosureSet(keys);
+  // Keys are the anchors, so an `/impact#<study>` link opens that case study.
+  useOpenFromHash((anchor) => (keys.includes(anchor) ? anchor : undefined), disclosure.show);
 
   return (
     <section id="case-studies" aria-labelledby="case-studies-title" className="scroll-mt-20">
@@ -32,32 +38,35 @@ export function CaseStudiesList({ studies }: { studies: readonly CaseStudy[] }) 
       </div>
 
       <ol className="mt-6 divide-y divide-[var(--border)] overflow-hidden rounded-xl border border-[var(--border)]">
-        {studies.map((study) => (
-          <li key={studyKey(study)}>
-            <Disclosure
-              open={disclosure.isOpen(studyKey(study))}
-              onToggle={() => disclosure.toggle(studyKey(study))}
-              summary={<StudySummary study={study} open={disclosure.isOpen(studyKey(study))} />}
-            >
-              <dl className="space-y-4 border-t border-[var(--border)] pt-4 sm:pl-11">
-                {storySteps.map((step) => (
-                  <div key={step.key}>
-                    <dt className="text-[0.8rem] font-semibold text-[var(--foreground)]">
-                      {step.label}
-                    </dt>
-                    <dd className="mt-1 text-[0.86rem] leading-6 text-[var(--muted-fg)]">
-                      {study[step.key]}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
-              <div className="sm:pl-11">
-                <TechChipList items={study.tech} size="sm" className="mt-5" />
-                {study.artifacts ? <Artifacts items={study.artifacts} /> : null}
-              </div>
-            </Disclosure>
-          </li>
-        ))}
+        {studies.map((study) => {
+          const key = studyAnchor(study);
+          return (
+            <li key={key} id={key} className="scroll-mt-20">
+              <Disclosure
+                open={disclosure.isOpen(key)}
+                onToggle={() => disclosure.toggle(key)}
+                summary={<StudySummary study={study} open={disclosure.isOpen(key)} />}
+              >
+                <dl className="space-y-4 border-t border-[var(--border)] pt-4 sm:pl-11">
+                  {storySteps.map((step) => (
+                    <div key={step.key}>
+                      <dt className="text-[0.8rem] font-semibold text-[var(--foreground)]">
+                        {step.label}
+                      </dt>
+                      <dd className="mt-1 text-[0.86rem] leading-6 text-[var(--muted-fg)]">
+                        {study[step.key]}
+                      </dd>
+                    </div>
+                  ))}
+                </dl>
+                <div className="sm:pl-11">
+                  <TechChipList items={study.tech} size="sm" className="mt-5" />
+                  {study.artifacts ? <Artifacts items={study.artifacts} /> : null}
+                </div>
+              </Disclosure>
+            </li>
+          );
+        })}
       </ol>
     </section>
   );
@@ -78,7 +87,7 @@ function StudySummary({ study, open }: { study: CaseStudy; open: boolean }) {
           {study.company}
         </span>
         <span
-          className={`mt-2 block text-[0.86rem] leading-6 text-[var(--muted-fg)] ${open ? '' : 'line-clamp-2'}`}
+          className={`mt-2 block text-[0.86rem] leading-6 text-[var(--muted-fg)] ${open ? '' : 'line-clamp-2 print:line-clamp-none'}`}
         >
           {study.outcome}
         </span>

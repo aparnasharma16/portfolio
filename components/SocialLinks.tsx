@@ -17,7 +17,7 @@ type SocialLinksProps = {
 export function SocialLinks({ className }: SocialLinksProps) {
   return (
     <ul
-      className={`flex flex-wrap items-center gap-1 ${className ?? ''}`}
+      className={`flex flex-wrap items-center gap-1 print:hidden ${className ?? ''}`}
       aria-label="Social links"
     >
       {socialLinks.map(({ key, href, label, Icon }) => {

@@ -27,7 +27,3 @@ export function MotionReveal({ children, className, delay = 0, y = 16 }: MotionR
     </motion.div>
   );
 }
-
-export function getExpandTransition(reduceMotion: boolean) {
-  return reduceMotion ? { duration: 0 } : { duration: 0.28, ease };
-}

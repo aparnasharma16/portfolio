@@ -27,13 +27,13 @@ export function EmailPill() {
           <MailIcon className="h-4 w-4 shrink-0 text-[var(--muted-fg)]" />
           {profile.links.emailDisplay}
         </a>
-        <span className="h-4 w-px bg-[var(--border)]" aria-hidden />
+        <span className="h-4 w-px bg-[var(--border)] print:hidden" aria-hidden />
         <button
           type="button"
           onClick={copy}
           aria-label="Copy email address"
           title="Copy email"
-          className="flex h-full items-center rounded-r-lg px-2.5 text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)]"
+          className="flex h-full items-center rounded-r-lg px-2.5 text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
         >
           <CopyIcon className="h-3.5 w-3.5" />
         </button>

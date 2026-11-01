@@ -14,11 +14,11 @@ export function SiteShell({
   splash?: boolean;
 }) {
   return (
-    <div className="flex min-h-full flex-col bg-[var(--background)] pb-[calc(4.5rem+env(safe-area-inset-bottom))] text-[var(--foreground)] sm:pb-0">
+    <div className="flex min-h-full flex-col bg-[var(--background)] pb-[calc(4.5rem+env(safe-area-inset-bottom))] text-[var(--foreground)] sm:pb-0 print:pb-0">
       {splash ? <SplashScreen /> : null}
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-lg focus:bg-[var(--foreground)] focus:px-4 focus:py-2 focus:text-[var(--background)]"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[60] focus:rounded-lg focus:bg-[var(--foreground)] focus:px-4 focus:py-2 focus:text-[var(--background)] print:hidden"
       >
         Skip to content
       </a>

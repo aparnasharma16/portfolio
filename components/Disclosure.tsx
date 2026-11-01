@@ -1,9 +1,18 @@
 'use client';
 
 import { ChevronRightIcon } from '@/components/icons';
-import { getExpandTransition } from '@/components/SubtleMotion';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
-import { useCallback, useId, useState, type ReactNode } from 'react';
+import { useReducedMotion } from 'motion/react';
+import {
+  useCallback,
+  useEffect,
+  useEffectEvent,
+  useId,
+  useLayoutEffect,
+  useRef,
+  useState,
+  type ReactNode,
+} from 'react';
+import { flushSync } from 'react-dom';
 
 type DisclosureProps = {
   /** Always-visible row content (title, dates, one-line summary). */
@@ -37,7 +46,6 @@ export function Disclosure({
   children,
   variant = 'row',
 }: DisclosureProps) {
-  const reduceMotion = useReducedMotion() ?? false;
   const panelId = useId();
 
   return (
@@ -50,30 +58,95 @@ export function Disclosure({
         className={`flex items-center gap-3 text-left transition-colors ${variants[variant].button}`}
       >
         <span className="min-w-0 flex-1">{summary}</span>
-        <ChevronRightIcon
-          className={`h-4 w-4 shrink-0 text-[var(--subtle)] transition-transform duration-200 ${
-            open ? 'rotate-90' : ''
-          }`}
-        />
+        <ChevronIndicator open={open} />
       </button>
 
-      <AnimatePresence initial={false}>
-        {open ? (
-          <motion.div
-            id={panelId}
-            key="panel"
-            initial={reduceMotion ? { opacity: 1 } : { opacity: 0, height: 0 }}
-            animate={reduceMotion ? { opacity: 1 } : { opacity: 1, height: 'auto' }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, height: 0 }}
-            transition={getExpandTransition(reduceMotion)}
-            className="overflow-hidden"
-          >
-            <div className={variants[variant].panel}>{children}</div>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <DisclosurePanel id={panelId} open={open} onReveal={onToggle}>
+        <div className={variants[variant].panel}>{children}</div>
+      </DisclosurePanel>
     </>
   );
+}
+
+/** The chevron every disclosure row ends with; turns to point down when open. */
+export function ChevronIndicator({ open }: { open: boolean }) {
+  return (
+    <ChevronRightIcon
+      className={`h-4 w-4 shrink-0 text-[var(--subtle)] transition-transform duration-200 motion-reduce:transition-none ${
+        open ? 'rotate-90' : ''
+      }`}
+    />
+  );
+}
+
+type DisclosurePanelProps = {
+  id: string;
+  open: boolean;
+  /** Called when the browser's find-in-page (Ctrl/⌘ F) matches text in a closed panel. */
+  onReveal: () => void;
+  children: ReactNode;
+};
+
+/**
+ * The collapsible body of a disclosure. It stays in the DOM while closed, marked
+ * `hidden="until-found"`, so find-in-page can still match its text and open it.
+ * Height eases with a CSS grid-rows transition (skipped for reduced motion).
+ */
+export function DisclosurePanel({ id, open, onReveal, children }: DisclosurePanelProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion() ?? false;
+  // True once the panel is fully collapsed (closing transition finished).
+  const [collapsed, setCollapsed] = useState(!open);
+  const [wasOpen, setWasOpen] = useState(open);
+  if (wasOpen !== open) {
+    setWasOpen(open);
+    setCollapsed(!open && reduceMotion);
+  }
+
+  const reveal = useEffectEvent(() => {
+    if (ref.current) openWithoutTransition(ref.current, onReveal);
+  });
+
+  useEffect(() => {
+    const panel = ref.current;
+    panel?.addEventListener('beforematch', reveal);
+    return () => panel?.removeEventListener('beforematch', reveal);
+  }, []);
+
+  // Set by hand: React renders any `hidden` value as the boolean form, which would
+  // remove the text from find-in-page. Until this runs, the closed grid row already
+  // collapses the panel visually.
+  const hide = collapsed && !open;
+  useLayoutEffect(() => {
+    if (hide) ref.current?.setAttribute('hidden', 'until-found');
+    else ref.current?.removeAttribute('hidden');
+  }, [hide]);
+
+  return (
+    <div
+      ref={ref}
+      id={id}
+      data-disclosure-panel=""
+      onTransitionEnd={(event) => {
+        if (event.target === event.currentTarget && !open) setCollapsed(true);
+      }}
+      className={`grid transition-[grid-template-rows,opacity] duration-300 ease-[cubic-bezier(0.22,1,0.36,1)] motion-reduce:transition-none ${
+        open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0'
+      }`}
+    >
+      <div className="min-h-0 overflow-hidden">{children}</div>
+    </div>
+  );
+}
+
+/**
+ * Applies `open` to a panel with its transition switched off for a frame, so the panel
+ * is full height straight away and the browser can scroll to what's inside it.
+ */
+function openWithoutTransition(panel: HTMLElement, open: () => void) {
+  panel.style.transition = 'none';
+  flushSync(open);
+  requestAnimationFrame(() => requestAnimationFrame(() => (panel.style.transition = '')));
 }
 
 /** Open/closed state for a list of disclosures, with "expand all" support. */
@@ -92,10 +165,46 @@ export function useDisclosureSet(
     });
   }, []);
 
+  const show = useCallback((key: string) => {
+    setOpen((current) => (current.has(key) ? current : new Set(current).add(key)));
+  }, []);
+
   const allOpen = allKeys.length > 0 && allKeys.every((key) => open.has(key));
   const toggleAll = useCallback(() => setOpen(new Set(allOpen ? [] : allKeys)), [allOpen, allKeys]);
 
-  return { isOpen: (key: string) => open.has(key), toggle, allOpen, toggleAll };
+  return { isOpen: (key: string) => open.has(key), toggle, show, allOpen, toggleAll };
+}
+
+/**
+ * Opens the disclosure a URL hash points at (e.g. `/work#merkle-frontend-developer` from search),
+ * on load and whenever the hash changes, then brings it into view.
+ */
+export function useOpenFromHash(
+  keyForAnchor: (anchor: string) => string | undefined,
+  show: (key: string) => void
+) {
+  const openFromHash = useEffectEvent(() => {
+    const anchor = decodeURIComponent(window.location.hash.slice(1));
+    const key = anchor ? keyForAnchor(anchor) : undefined;
+    const target = document.getElementById(anchor);
+    const panel = target?.querySelector<HTMLElement>('[data-disclosure-panel]');
+    if (!key || !target || !panel) return;
+    // Open at full height first; scrolling during the height animation would stop short
+    // for rows near the bottom of the page.
+    openWithoutTransition(panel, () => show(key));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    target.scrollIntoView({ block: 'start', behavior: reduce ? 'auto' : 'smooth' });
+  });
+
+  useEffect(() => {
+    // Next frame: opening uses flushSync, which can't run inside an effect.
+    const frame = requestAnimationFrame(openFromHash);
+    window.addEventListener('hashchange', openFromHash);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', openFromHash);
+    };
+  }, []);
 }
 
 /** The small "Expand all / Collapse all" control that sits above a disclosure list. */
@@ -104,7 +213,7 @@ export function ExpandAllButton({ allOpen, onClick }: { allOpen: boolean; onClic
     <button
       type="button"
       onClick={onClick}
-      className="shrink-0 rounded-lg px-2 py-1 text-[0.8rem] font-medium whitespace-nowrap text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)]"
+      className="shrink-0 rounded-lg px-2 py-1 text-[0.8rem] font-medium whitespace-nowrap text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
     >
       {allOpen ? 'Collapse all' : 'Expand all'}
     </button>

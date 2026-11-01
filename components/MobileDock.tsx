@@ -17,7 +17,7 @@ export function MobileDock() {
   return (
     <nav
       aria-label="Primary"
-      className="fixed inset-x-0 bottom-[max(0.875rem,env(safe-area-inset-bottom))] z-50 flex justify-center px-3 sm:hidden"
+      className="fixed inset-x-0 bottom-[max(0.875rem,env(safe-area-inset-bottom))] z-50 flex justify-center px-3 sm:hidden print:hidden"
     >
       <ul className="flex items-center gap-0.5 rounded-full border border-[var(--border)] bg-[var(--background)] p-1.5 shadow-[0_8px_24px_-12px_rgba(0,0,0,0.3)]">
         {siteNav.map((item) => {

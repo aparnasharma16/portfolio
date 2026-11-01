@@ -628,6 +628,25 @@ const aliases: Record<string, string> = {
   'RTK Query': 'Redux',
 };
 
+/** A tool's brand mark on its own (search results); `fallback` when it has none. */
+export function TechGlyph({
+  name,
+  className,
+  fallback = null,
+}: {
+  name: string;
+  className?: string;
+  fallback?: ReactNode;
+}) {
+  const icon = icons[aliases[name] ?? name];
+  if (!icon) return fallback;
+  return (
+    <span className={`flex shrink-0 items-center justify-center ${className ?? ''}`} aria-hidden>
+      {icon.glyph}
+    </span>
+  );
+}
+
 const sizes = {
   md: { chip: 'h-8 gap-2 px-3 text-[0.8rem]', icon: 'h-4 w-4' },
   sm: { chip: 'h-7 gap-1.5 px-2.5 text-[0.75rem]', icon: 'h-3.5 w-3.5' },

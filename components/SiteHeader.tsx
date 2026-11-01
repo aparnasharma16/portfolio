@@ -34,7 +34,7 @@ export function SiteHeader() {
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-[var(--background)] transition-colors duration-200 ${
+      className={`sticky top-0 z-50 border-b bg-[var(--background)] transition-colors duration-200 print:hidden ${
         scrolled ? 'border-[var(--border)]' : 'border-transparent'
       }`}
     >

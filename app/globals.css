@@ -19,7 +19,8 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.63 0 0);
+  /* 0.54 keeps secondary text at WCAG AA (4.5:1+) on both --background and --secondary */
+  --muted-foreground: oklch(0.54 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -30,7 +31,8 @@
   /* App-specific aliases (used across components) */
   --surface: var(--background);
   --muted-fg: var(--muted-foreground);
-  --subtle: #a1a1aa;
+  /* Icons, bullets, and rails only (3:1). Never use it for text: that is --muted-fg. */
+  --subtle: oklch(0.66 0 0);
   --chip-bg: var(--card);
   --control-bg: var(--secondary);
   --border-strong: oklch(0.89 0 0);
@@ -69,7 +71,7 @@
 
   --surface: var(--background);
   --muted-fg: var(--muted-foreground);
-  --subtle: #909092;
+  --subtle: oklch(0.62 0 0);
   --chip-bg: var(--card);
   --control-bg: var(--muted);
   --border-strong: oklch(1 0 0 / 18%);
@@ -81,6 +83,11 @@
   --status-bg: oklch(0.76 0.17 150 / 0.14);
   --status-fg: oklch(0.86 0.12 150);
 }
+
+/* `mac:` shows content only on Apple platforms (set by themeInitScript before paint),
+   so shortcut hints read ⌘K there and Ctrl K everywhere else, with no flash. */
+@custom-variant mac (&:where(html[data-os='mac'] *));
+@custom-variant not-mac (&:where(html:not([data-os='mac']) *));
 
 @theme inline {
   --color-background: var(--background);
@@ -112,11 +119,6 @@ body {
   font-synthesis-weight: none;
 }
 
-/* ramx.in — subdued text in both modes */
-.text-secondary {
-  color: #909092;
-}
-
 /* Visible, consistent keyboard focus everywhere. It lives in the base layer so utilities
    (e.g. `focus-visible:outline-none` on the search input) can override it; unlayered CSS
    would beat every utility regardless of specificity. */
@@ -129,6 +131,8 @@ body {
 
 html {
   scroll-behavior: smooth;
+  /* Reserve the scrollbar's space so locking scroll (search dialog) doesn't shift the page */
+  scrollbar-gutter: stable;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -167,5 +171,48 @@ html[data-splash-seen] .splash {
 @media (prefers-reduced-motion: reduce) {
   .splash {
     display: none;
+  }
+}
+
+/* Print: always light, every collapsed row expanded, on-screen controls removed
+   (they get `print:hidden` in their components). */
+@media print {
+  @page {
+    margin: 16mm 14mm;
+  }
+
+  html,
+  html.dark {
+    color-scheme: light;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.16 0 0);
+    --card: oklch(1 0 0);
+    --secondary: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.42 0 0);
+    --border: oklch(0.88 0 0);
+    --border-strong: oklch(0.82 0 0);
+    --subtle: oklch(0.6 0 0);
+    --chip-bg: oklch(1 0 0);
+  }
+
+  [data-disclosure-panel],
+  [data-disclosure-panel][hidden] {
+    display: grid !important;
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+    content-visibility: visible !important;
+    transition: none !important;
+  }
+
+  li,
+  dl > div,
+  figure {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
   }
 }

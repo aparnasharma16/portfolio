@@ -1,4 +1,5 @@
 import { profile } from '@/lib/portfolio-data';
+import { platformInitScript } from '@/lib/platform-init';
 import { splashInitScript } from '@/lib/splash-init';
 import { themeInitScript } from '@/lib/theme-init';
 import { pageMetadata } from '@/lib/metadata';
@@ -37,7 +38,9 @@ export default function RootLayout({
         <Script
           id="document-init"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: themeInitScript + splashInitScript }}
+          dangerouslySetInnerHTML={{
+            __html: themeInitScript + splashInitScript + platformInitScript,
+          }}
         />
         {children}
       </body>

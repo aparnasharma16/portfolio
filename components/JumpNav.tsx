@@ -5,7 +5,10 @@ type JumpNavProps = {
 /** In-page shortcuts for long pages. Scrolls sideways on small screens. */
 export function JumpNav({ items }: JumpNavProps) {
   return (
-    <nav aria-label="On this page" className="-mx-5 [scrollbar-width:none] overflow-x-auto px-5">
+    <nav
+      aria-label="On this page"
+      className="-mx-5 [scrollbar-width:none] overflow-x-auto px-5 print:hidden"
+    >
       <ul className="flex w-max gap-1.5">
         {items.map((item) => (
           <li key={item.id}>

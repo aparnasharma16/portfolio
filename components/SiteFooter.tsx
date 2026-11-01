@@ -27,7 +27,7 @@ export function SiteFooter() {
             </a>
           </div>
 
-          <div className="flex flex-col gap-4 sm:items-end">
+          <div className="flex flex-col gap-4 sm:items-end print:hidden">
             <nav aria-label="Footer">
               <ul className="flex flex-wrap gap-x-5 gap-y-2">
                 {siteNav.map((item) => (
@@ -43,7 +43,7 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <div className="mt-10 flex items-center justify-between gap-4 text-[0.78rem] text-[var(--muted-fg)]">
+        <div className="mt-10 flex items-center justify-between gap-4 text-[0.78rem] text-[var(--muted-fg)] print:hidden">
           <p>
             © {new Date().getFullYear()} {profile.name}
           </p>

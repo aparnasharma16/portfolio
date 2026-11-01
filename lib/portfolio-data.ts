@@ -290,7 +290,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       'There was no shared component system, so teams were shipping inconsistent UIs, spending time rebuilding common patterns, and struggling to maintain design coherence across products.',
     ownership:
-      'Led the creation of a reusable component package with 50+ components — including Accordion, Data Table, Dialog, Drawer, Command, Combobox, and more — used across internal frontend systems. Collaborated with 3 teammates to build comprehensive documentation alongside the library.',
+      'Led the build of a shared library of 50+ components (accordion, data table, dialog, drawer, combobox, and more) used across internal frontends, and wrote its documentation with three teammates.',
     outcome:
       'Reduced UI development time significantly by providing ready-to-use, well-documented components. Improved design consistency across teams and established a single source of truth for frontend patterns within the organization.',
     tech: ['React', 'TypeScript', 'Tailwind CSS', 'Storybook', 'Jest'],
@@ -374,7 +374,7 @@ export type ExperienceEntry = {
 
 export const experience: ExperienceEntry[] = [
   {
-    role: 'Senior Software Engineer - Full Stack Developer',
+    role: 'Senior Software Engineer – Full Stack Developer',
     company: 'PayPal',
     logo: '/logos/paypal.jpg',
     location: 'Bengaluru, India',
@@ -392,7 +392,7 @@ export const experience: ExperienceEntry[] = [
     ],
   },
   {
-    role: 'Technical Lead - Full Stack Developer',
+    role: 'Technical Lead – Full Stack Developer',
     company: 'Dentsu',
     logo: '/logos/dentsu.jpg',
     location: 'Bengaluru, India',
@@ -409,7 +409,7 @@ export const experience: ExperienceEntry[] = [
     ],
   },
   {
-    role: 'Senior Software Developer - Full Stack Developer',
+    role: 'Senior Software Developer – Full Stack Developer',
     company: 'Merkle, a dentsu company',
     logo: '/logos/dentsu.jpg',
     location: 'Bengaluru, India',
@@ -526,7 +526,7 @@ export const education = {
   degree: 'B.E., Computer Science & Engineering',
   school: 'Chitkara Institute of Engineering & Technology',
   logo: '/logos/chitkara.png',
-  years: '2014 — 2018',
+  years: '2014 – 2018',
 } as const;
 
 export const accomplishments = [
@@ -664,7 +664,7 @@ export const readingList: Book[] = [
     author: 'James Clear',
     category: 'Self-improvement',
     status: 'finished',
-    note: 'Small systems beat big goals — applies to code and life.',
+    note: 'Small systems beat big goals. True for code, and for life.',
   },
   {
     title: 'System Design Interview',

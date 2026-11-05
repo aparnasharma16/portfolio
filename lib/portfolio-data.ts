@@ -260,7 +260,7 @@ export const caseStudies: CaseStudy[] = [
     problem:
       'The new UI had to move from mock data to live APIs, handle bulk import and export, and apply the right access rules for internal and external users.',
     ownership:
-      'Wrote the high- and low-level designs, led the import and export feature, and built the approvals screen on live APIs. Added access checks on the client and the server, and set the frontend test approach.',
+      'Wrote the high- and low-level designs, led the import and export feature, and designed the approvals screen to page and filter on the server. Added access checks on the client and the server, and set the frontend test approach.',
     outcome:
       'Approvals stay fast as records grow, imports catch bad data before it is saved, and the code now passes the quality gate in CI.',
     tech: ['React', 'TypeScript', 'Node.js', 'REST', 'Jest', 'Cypress'],
@@ -405,7 +405,7 @@ export const experience: ExperienceEntry[] = [
       'Planned the flow around failure from day one, with safe retries, a "still processing" outcome when the bank is slow, and a clear fallback for each error case.',
       "Reviewed partner teams' API and schema changes against our design, turned the gaps into a concrete list of asks, and followed each one through to a fix.",
       'Led the bulk import and export feature from design to release, including validation, error handling, and safeguards that stop users from losing work.',
-      "Reworked the approvals screen to scale with volume: replaced mock data with live APIs and moved paging and filtering to the server, so the browser only loads what's on screen. Built the Node.js REST APIs and role-based access checks behind it.",
+      'Owned the approvals screen design: chose server-side paging and filtering over loading full queues into the browser, so it stays responsive as approval volume grows. Defined the Node.js REST API contracts and role rules behind it, enforced on the server so permissions live in one place.',
       'Set the frontend testing strategy with Jest and Cypress, made code quality a release gate in CI, and traced critical production bugs back to their root causes.',
     ],
   },

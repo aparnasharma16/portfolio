@@ -5,7 +5,9 @@ import { ChevronIndicator, DisclosurePanel } from '@/components/Disclosure';
 import { SectionHeading } from '@/components/SectionHeading';
 import { StatusBadge } from '@/components/StatusDot';
 import { TechChipList } from '@/components/TechChip';
+import { roleAnchor } from '@/lib/anchors';
 import { type ExperienceEntry, groupExperience } from '@/lib/portfolio-data';
+import Link from 'next/link';
 import { useId, useState } from 'react';
 
 type Education = {
@@ -14,6 +16,9 @@ type Education = {
   readonly logo: string;
   readonly years: string;
 };
+
+/** Highlights shown per role; the rest are a link away on /work. */
+const PREVIEW_POINTS = 2;
 
 type Props = {
   jobs: ExperienceEntry[];
@@ -41,6 +46,7 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
           const isOpen = expanded === i;
           const panelId = `${baseId}-panel-${i}`;
           const latest = group.roles[0];
+          const hasMore = latest.highlights.length > PREVIEW_POINTS;
           return (
             <li key={`${group.company}-${group.period}`} className="relative">
               <button
@@ -78,7 +84,7 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
                     {group.periodShort}, {group.location}
                   </p>
                   <ul className="mt-1 space-y-1.5 text-[0.84rem] leading-6 text-[var(--muted-fg)]">
-                    {latest.highlights.slice(0, 2).map((h) => (
+                    {latest.highlights.slice(0, PREVIEW_POINTS).map((h) => (
                       <li key={h} className="relative pl-3.5">
                         <span
                           className="absolute top-[0.65rem] left-0 h-1 w-1 rounded-full bg-[var(--subtle)]"
@@ -88,6 +94,15 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
                       </li>
                     ))}
                   </ul>
+                  {hasMore ? (
+                    <Link
+                      href={`/work#${roleAnchor(latest)}`}
+                      className="mt-1.5 -ml-2 inline-block rounded-lg px-2 py-1 text-[0.8rem] font-medium text-[var(--muted-fg)] tabular-nums transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
+                    >
+                      See all {latest.highlights.length} points
+                      <span className="sr-only"> for {group.company}</span>
+                    </Link>
+                  ) : null}
                   <TechChipList items={latest.tech.slice(0, 6)} size="sm" className="mt-3" />
                 </div>
               </DisclosurePanel>

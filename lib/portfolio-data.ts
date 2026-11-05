@@ -104,16 +104,16 @@ export type FeaturedWin = {
 
 export const featuredWins: FeaturedWin[] = [
   {
-    metric: '40%',
-    title: 'Faster API responses',
+    metric: '45%',
+    title: 'Fewer production bugs',
     summary:
-      'Sped up a high-traffic internal platform with Redis caching, leaner data models, and Node.js tuning.',
+      'Brought in stronger testing standards and review habits while leading a team through a large platform migration.',
   },
   {
     metric: '30%',
-    title: 'Faster workflows',
+    title: 'Less downtime',
     summary:
-      'Led the frontend rebuild of an internal management tool in React and Redux, making everyday tasks quicker for its users.',
+      'Led the move from a monolith to microservices with Kafka, so a failure in one part no longer took down the rest.',
   },
   {
     metric: '8 engineers',
@@ -122,16 +122,16 @@ export const featuredWins: FeaturedWin[] = [
       'Set technical direction, review standards, and delivery rhythm for a full-stack MERN team.',
   },
   {
-    metric: '30%',
-    title: 'Fewer production issues',
+    metric: '40%',
+    title: 'Faster delivery',
     summary:
-      'Built approval workflows, role-based access, and audit-ready APIs that made releases more reliable.',
+      'Built reusable component patterns for e-commerce teams, so new features took less time to ship.',
   },
   {
-    metric: '25%',
-    title: 'Fewer publishing errors',
+    metric: '95%',
+    title: 'Regression coverage',
     summary:
-      'Shipped version history, change comparison, and one-click rollback so mistakes were easy to catch and undo.',
+      'Added Cypress tests across the critical shopping journeys, so regressions were caught before release.',
   },
 ];
 
@@ -236,19 +236,34 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
-    title: 'Rebuilding an internal campaign management platform',
+    title: 'Designing an embeddable bank payment journey',
     company: 'PayPal',
     logo: '/logos/paypal.jpg',
     period: '2025 – Present',
     context:
-      'An internal platform used by many teams to plan and publish campaigns needed a rebuild to keep up with growing usage and more complex approvals.',
+      'A new way for customers to pay straight from their bank account, built to run inside more than one app.',
     problem:
-      'The old system slowed down under heavy traffic, had limited access control and auditing, and offered no easy way to see what changed or undo a bad publish.',
+      'Bank payments involve a redirect, a wait for the bank, and many ways to fail. The journey had to stay clear for the customer and be simple for other apps to add.',
     ownership:
-      'Worked on the full stack in React, Redux, Node.js (Express), and Redis. Led the frontend and built approval workflows, role-based access, version history, change comparison, and rollback with the team.',
+      'Led the web design and wrote the design docs for its flows, failure cases, and security. Agreed the contracts with partner teams, then led the build from consent to confirmation.',
     outcome:
-      'API responses got 40% faster, production issues dropped 30%, everyday workflows got 30% quicker, and publishing errors fell 25%.',
-    tech: ['React', 'TypeScript', 'Redux', 'Node.js', 'Express', 'Redis', 'REST'],
+      'Other apps can embed the journey without owning its logic. Every success and error state can be tested locally against a mock bank, and slow or failed steps have a clear fallback.',
+    tech: ['React', 'TypeScript', 'GraphQL', 'Node.js', 'Jest'],
+  },
+  {
+    title: 'Rebuilding the admin UI of an internal communications platform',
+    company: 'PayPal',
+    logo: '/logos/paypal.jpg',
+    period: '2025 – Present',
+    context:
+      'Teams use an internal platform to set up customer communications. Its admin UI was being rebuilt, with the old and new versions running side by side.',
+    problem:
+      'The new UI had to move from mock data to live APIs, handle bulk import and export, and apply the right access rules for internal and external users.',
+    ownership:
+      'Wrote the high- and low-level designs, led the import and export feature, and built the approvals screen on live APIs. Added access checks on the client and the server, and set the frontend test approach.',
+    outcome:
+      'Approvals stay fast as records grow, imports catch bad data before it is saved, and the code now passes the quality gate in CI.',
+    tech: ['React', 'TypeScript', 'Node.js', 'REST', 'Jest', 'Cypress'],
   },
   {
     title: 'Monolith to microservices migration leadership',
@@ -382,13 +397,16 @@ export const experience: ExperienceEntry[] = [
     period: 'October 2025 – Present',
     periodShort: 'Oct 2025 – Present',
     current: true,
-    tech: ['React', 'Redux', 'TypeScript', 'Node', 'Express', 'Redis', 'REST', 'AWS'],
+    tech: ['React', 'TypeScript', 'Node', 'REST', 'GraphQL', 'Jest', 'Cypress'],
     highlights: [
-      'Designed and built the backend for an internal campaign management platform on Node.js, Express, and Redis, making API responses 40% faster.',
-      'Built approval workflows, role-based access control, and audit-ready APIs, cutting production issues by 30%.',
-      "Led frontend development of the platform's new React and Redux UI, making everyday workflows 30% faster.",
-      'Shipped version history, change comparison, and rollback, reducing publishing errors by 25%.',
-      'Improved frontend performance on large datasets by 35% through smarter caching and state management.',
+      'Wrote the HLD and LLD for the new admin UI of an internal communications platform, covering component structure, state, API contracts, and how the old and new versions run side by side.',
+      'Led the web design of a new bank payment journey that runs inside more than one app, and defined a clear boundary so each host app can embed it without taking on its logic.',
+      'Made the key design calls for the payment flow: how it shows inside a host app, where payment state lives across the bank redirect, and what happens when a step fails.',
+      'Planned the flow around failure from day one, with safe retries, a "still processing" outcome when the bank is slow, and a clear fallback for each error case.',
+      "Reviewed partner teams' API and schema changes against our design, turned the gaps into a concrete list of asks, and followed each one through to a fix.",
+      'Led the bulk import and export feature from design to release, including validation, error handling, and safeguards that stop users from losing work.',
+      "Reworked the approvals screen to scale with volume: replaced mock data with live APIs and moved paging and filtering to the server, so the browser only loads what's on screen. Built the Node.js REST APIs and role-based access checks behind it.",
+      'Set the frontend testing strategy with Jest and Cypress, made code quality a release gate in CI, and traced critical production bugs back to their root causes.',
     ],
   },
   {
@@ -402,10 +420,14 @@ export const experience: ExperienceEntry[] = [
     group: 'dentsu',
     tech: ['MongoDB', 'Express', 'React', 'Node', 'TypeScript', 'Kafka', 'Redis', 'MySQL'],
     highlights: [
-      'Led scalable application development using MERN, driving architecture and best practices.',
-      'Migrated monolith to microservices with Kafka, reducing downtime by 30%.',
-      'Implemented Redis caching and optimized backend services using Node.js.',
-      'Standardized APIs with Swagger and mentored developers across teams.',
+      'Led a team of 8 engineers building MERN applications: set the technical direction, planned releases, and stayed hands-on in the code.',
+      'Wrote HLD and LLD documents for new services and features, and ran design reviews with product, QA, and partner engineering teams before any build started.',
+      'Led the move from a monolith to microservices with Kafka, cutting downtime by 30%.',
+      'Raised the testing bar with Jest and Cypress standards and stricter code reviews, cutting production bugs by 45%.',
+      'Led the build of a shared library of 50+ React components with Storybook docs, now used across internal frontends.',
+      'Introduced Redis caching and tuned the Node.js services behind our main applications.',
+      'Standardized API contracts with Swagger so frontend and backend teams could build in parallel.',
+      'Mentored engineers across teams on React, testing, and system design, and set up the code review process the team still follows.',
     ],
   },
   {
@@ -419,10 +441,13 @@ export const experience: ExperienceEntry[] = [
     group: 'dentsu',
     tech: ['React', 'Redux', 'TypeScript', 'GraphQL', 'Node', 'Formik', 'RTK Query'],
     highlights: [
-      'Designed and built a reusable component library, standardizing UI patterns and accelerating development across multiple projects.',
-      'Implemented scalable state management using Redux, RTK Query, and Formik, optimizing data flow and reducing redundant API calls.',
-      'Optimized frontend performance by improving Core Web Vitals, reducing load time and enhancing user experience across enterprise applications.',
-      'Contributed to API design and integration using GraphQL and Node.js, improving data flow efficiency and enabling scalable full-stack architecture.',
+      'Led frontend architecture for enterprise e-commerce apps: wrote the design docs, set the state management patterns, and reviewed every major change.',
+      'Built reusable UI patterns shared across product teams, speeding up feature delivery by 40%.',
+      'Designed the state layer with Redux, RTK Query, and Formik, which removed duplicate API calls and made complex forms easier to maintain.',
+      'Improved Core Web Vitals on multi-market storefronts, cutting page load time by about 2 seconds.',
+      'Set up Cypress coverage for the critical shopping journeys, reaching 95% regression coverage.',
+      'Worked with backend teams on GraphQL and Node.js API design, and wrote the LLD for the frontend side of each integration.',
+      'Mentored junior engineers on React, TypeScript, and testing.',
     ],
   },
   {

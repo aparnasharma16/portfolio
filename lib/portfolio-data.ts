@@ -1,5 +1,5 @@
 const experienceYears = '8+';
-const headline = "I build web products that feel fast and don't break.";
+const headline = 'I build web products that feel fast and don’t break.';
 const subhead = `From storefronts and checkout to payment platforms and the internal tools teams run on. ${experienceYears} years in, still sweating the details.`;
 
 export const profile = {
@@ -17,7 +17,7 @@ export const profile = {
   yearsExperience: `${experienceYears} years`,
   availabilityNote:
     'Open to senior frontend and full-stack engineering roles with strong product ownership, quality focus, and mentoring opportunities.',
-  resumeLastUpdated: 'May 2025',
+  resumeLastUpdated: 'May 2026',
   links: {
     email: 'mailto:aparnasharma157@gmail.com',
     emailDisplay: 'aparnasharma157@gmail.com',
@@ -30,7 +30,7 @@ export const profile = {
   siteUrl: 'https://aparnasharma.dev',
 };
 
-export type SitePageQuoteKey = 'home' | 'work' | 'impact' | 'blog' | 'resume';
+export type SitePageQuoteKey = 'home' | 'work' | 'impact' | 'blog' | 'resume' | 'hobbies';
 
 export const sitePageQuotes: Record<SitePageQuoteKey, { text: string; attribution: string }> = {
   home: {
@@ -42,12 +42,16 @@ export const sitePageQuotes: Record<SitePageQuoteKey, { text: string; attributio
     attribution: 'Bhagavad Gita, 2.47',
   },
   impact: {
-    text: "By devotion to one's own natural duty, a person attains perfection.",
+    text: 'By devotion to one’s own natural duty, a person attains perfection.',
     attribution: 'Bhagavad Gita, 18.45',
   },
   blog: {
     text: 'In this world, there is nothing so purifying as true knowledge.',
     attribution: 'Bhagavad Gita, 4.38',
+  },
+  hobbies: {
+    text: 'Yoga ends sorrow for one who is moderate in eating and recreation, balanced in work, and regulated in sleep and waking.',
+    attribution: 'Bhagavad Gita, 6.17',
   },
   resume: {
     text: 'A person must elevate themselves by their own mind, and not degrade themselves. The mind is the friend of the conditioned soul, and their enemy as well.',
@@ -114,12 +118,6 @@ export const featuredWins: FeaturedWin[] = [
     title: 'Less downtime',
     summary:
       'Led the move from a monolith to microservices with Kafka, so a failure in one part no longer took down the rest.',
-  },
-  {
-    metric: '8 engineers',
-    title: 'Team led',
-    summary:
-      'Set technical direction, review standards, and delivery rhythm for a full-stack MERN team.',
   },
   {
     metric: '40%',
@@ -241,28 +239,28 @@ export const caseStudies: CaseStudy[] = [
     logo: '/logos/paypal.jpg',
     period: '2025 – Present',
     context:
-      'A new way for customers to pay straight from their bank account, built to run inside more than one app.',
+      'A new way for customers to pay straight from their bank account, built once and embedded in more than one app.',
     problem:
-      'Bank payments involve a redirect, a wait for the bank, and many ways to fail. The journey had to stay clear for the customer and be simple for other apps to add.',
+      'Bank payments leave the app, wait on the bank, and can fail in many ways. The journey had to stay clear for customers and be easy for other teams to embed.',
     ownership:
-      'Led the web design and wrote the design docs for its flows, failure cases, and security. Agreed the contracts with partner teams, then led the build from consent to confirmation.',
+      'Owned the web architecture and wrote the design: sequence and state diagrams, API contracts, and the failure and security cases. Set the micro-frontend boundary, made the frame-or-redirect call, and led the build from consent to confirmation while closing contract gaps with partner teams.',
     outcome:
-      'Other apps can embed the journey without owning its logic. Every success and error state can be tested locally against a mock bank, and slow or failed steps have a clear fallback.',
+      'Host apps embed the journey through a typed contract without owning its logic. Every success and error state runs locally against a mock bank, and slow or failed steps end in a clear outcome instead of a dead end.',
     tech: ['React', 'TypeScript', 'GraphQL', 'Node.js', 'Jest'],
   },
   {
-    title: 'Rebuilding the admin UI of an internal communications platform',
+    title: 'Rebuilding an internal admin platform',
     company: 'PayPal',
     logo: '/logos/paypal.jpg',
     period: '2025 – Present',
     context:
-      'Teams use an internal platform to set up customer communications. Its admin UI was being rebuilt, with the old and new versions running side by side.',
+      'Teams use an internal admin platform to configure and approve their work. Its UI was being rebuilt, with the old and new versions running side by side.',
     problem:
-      'The new UI had to move from mock data to live APIs, handle bulk import and export, and apply the right access rules for internal and external users.',
+      'The new version had to move from mock data to live services, support bulk import and export, and apply the right access rules for internal and external users, without slowing down as records grew.',
     ownership:
-      'Wrote the high- and low-level designs, led the import and export feature, and designed the approvals screen to page and filter on the server. Added access checks on the client and the server, and set the frontend test approach.',
+      'Wrote the high- and low-level designs, led import and export from design to release, and designed the approvals workflow and the REST APIs behind it. Set the frontend test strategy and made code quality a release gate.',
     outcome:
-      'Approvals stay fast as records grow, imports catch bad data before it is saved, and the code now passes the quality gate in CI.',
+      'Approvals stay fast as volume grows, bad data is caught before it is saved, access rules are enforced on the server, and the codebase passes the CI quality gate.',
     tech: ['React', 'TypeScript', 'Node.js', 'REST', 'Jest', 'Cypress'],
   },
   {
@@ -399,14 +397,15 @@ export const experience: ExperienceEntry[] = [
     current: true,
     tech: ['React', 'TypeScript', 'Node', 'REST', 'GraphQL', 'Jest', 'Cypress'],
     highlights: [
-      'Wrote the HLD and LLD for the new admin UI of an internal communications platform, covering component structure, state, API contracts, and how the old and new versions run side by side.',
-      'Led the web design of a new bank payment journey that runs inside more than one app, and defined a clear boundary so each host app can embed it without taking on its logic.',
-      'Made the key design calls for the payment flow: how it shows inside a host app, where payment state lives across the bank redirect, and what happens when a step fails.',
-      'Planned the flow around failure from day one, with safe retries, a "still processing" outcome when the bank is slow, and a clear fallback for each error case.',
-      "Reviewed partner teams' API and schema changes against our design, turned the gaps into a concrete list of asks, and followed each one through to a fix.",
-      'Led the bulk import and export feature from design to release, including validation, error handling, and safeguards that stop users from losing work.',
-      'Owned the approvals screen design: chose server-side paging and filtering over loading full queues into the browser, so it stays responsive as approval volume grows. Defined the Node.js REST API contracts and role rules behind it, enforced on the server so permissions live in one place.',
-      'Set the frontend testing strategy with Jest and Cypress, made code quality a release gate in CI, and traced critical production bugs back to their root causes.',
+      'Owned the web architecture for a new bank payment journey that runs inside two apps. Wrote the low-level design: architecture, sequence and state diagrams, API contracts, and the failure, security, and config design.',
+      'Wrote the high- and low-level designs for the next version of an internal admin platform: component architecture, state, API contracts, and how the old and new versions run side by side behind role-based access.',
+      'Drew the micro-frontend boundary for the payment journey: one embeddable component with a typed props-and-callbacks contract, so current and future host apps can add the flow without owning its logic.',
+      'Made the calls that shaped the payment flow: an embedded frame or a full-page redirect (with an automatic fallback when the frame is blocked), where payment state lives across the bank redirect, and one shared API layer instead of direct calls, so permissions stay in a single backend.',
+      'Designed the payment journey for failure from day one: idempotent requests, conflict and step-up handling, a polling window with a “still processing” outcome, and a fallback for every error. Built a local backend and bank mock so each outcome can be tested without a shared environment.',
+      "Reviewed partner teams' schema and contract changes against the web design, turned the gaps into a concrete list of asks, and unblocked cross-team issues such as redirect allowlisting and frame-embedding rules.",
+      'Led bulk import and export for the admin platform from design to release: data contracts, validation on the client and the server, clear error handling, and safeguards against lost edits and accidental destructive changes.',
+      'Designed the approvals workflow with server-driven paging and filtering, plus the Node.js REST APIs and role rules behind it, so it stays fast as volume grows and access is enforced in one place. Led the move from mock data to live services, agreeing contracts with each dependent team.',
+      'Made code quality a release gate in CI, set the Jest and Cypress test strategy, fixed critical production issues at the root rather than patching symptoms, and mentored engineers through reviews on TypeScript, testing, and design.',
     ],
   },
   {
@@ -641,7 +640,7 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     quote:
-      "Aparna is who I'd give the messy project to. She breaks it down, keeps everyone in the loop, and ships it without drama. Her code reviews made the whole team sharper.",
+      'Aparna is who I’d give the messy project to. She breaks it down, keeps everyone in the loop, and ships it without drama. Her code reviews made the whole team sharper.',
     name: 'Engineering Manager',
     role: 'Managed Aparna',
     company: 'Dentsu',
@@ -657,7 +656,7 @@ export const testimonials: Testimonial[] = [
   },
   {
     quote:
-      "She asks the right questions early, which saves weeks later. Calm under deadlines, and great at explaining technical trade-offs to people who aren't engineers.",
+      'She asks the right questions early, which saves weeks later. Calm under deadlines, and great at explaining technical trade-offs to people who aren’t engineers.',
     name: 'Product Manager',
     role: 'Cross-team partner',
     company: 'PayPal',

@@ -30,7 +30,7 @@ export function SocialLinks({ className }: SocialLinksProps) {
               {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               <Icon className="h-4 w-4" />
-              <Tooltip label={label} />
+              <IconTooltip label={label} />
             </a>
           </li>
         );
@@ -39,7 +39,8 @@ export function SocialLinks({ className }: SocialLinksProps) {
   );
 }
 
-function Tooltip({ label }: { label: string }) {
+/** Hover/focus label for icon-only controls (social links, copy email). */
+export function IconTooltip({ label }: { label: string }) {
   return (
     <span
       className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 rounded-md bg-[var(--foreground)] px-2 py-0.5 text-caption font-medium whitespace-nowrap text-[var(--background)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"

@@ -1,11 +1,12 @@
 'use client';
 
 import { CopyIcon, MailIcon } from '@/components/icons';
+import { IconTooltip } from '@/components/SocialLinks';
 import { Toast, useToast } from '@/components/Toast';
 import { profile } from '@/lib/portfolio-data';
 
-/** The email address as a mailto link, with a one-tap copy button and confirmation toast. */
-export function EmailPill({ className }: { className?: string }) {
+/** Copies the email address and confirms with a toast. */
+function useCopyEmail() {
   const { message, show } = useToast();
 
   async function copy() {
@@ -16,6 +17,13 @@ export function EmailPill({ className }: { className?: string }) {
       show('Copy failed. Long-press the address instead');
     }
   }
+
+  return { message, copy };
+}
+
+/** The email address as a mailto link, with a one-tap copy button and confirmation toast. */
+export function EmailPill({ className }: { className?: string }) {
+  const { message, copy } = useCopyEmail();
 
   return (
     <>
@@ -40,6 +48,26 @@ export function EmailPill({ className }: { className?: string }) {
           <CopyIcon className="h-3.5 w-3.5" />
         </button>
       </span>
+      <Toast message={message} />
+    </>
+  );
+}
+
+/** Icon-only copy-email control, styled like the social links it sits next to. */
+export function CopyEmailButton() {
+  const { message, copy } = useCopyEmail();
+
+  return (
+    <>
+      <button
+        type="button"
+        onClick={copy}
+        aria-label="Copy email address"
+        className="group touch-target inline-flex rounded-md p-1.5 text-[var(--muted-fg)] transition-all hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
+      >
+        <CopyIcon className="h-4 w-4" />
+        <IconTooltip label="Copy email" />
+      </button>
       <Toast message={message} />
     </>
   );

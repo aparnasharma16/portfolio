@@ -1,7 +1,7 @@
 import { ButtonLink } from '@/components/ButtonLink';
-import { EmailPill } from '@/components/EmailPill';
+import { CopyEmailButton, EmailPill } from '@/components/EmailPill';
 import { HomeExperiencePreview } from '@/components/HomeExperiencePreview';
-import { FileIcon, LinkedInIcon } from '@/components/icons';
+import { FileIcon, LinkedInIcon, MailIcon } from '@/components/icons';
 import { PageQuote } from '@/components/PageQuote';
 import { SocialLinks } from '@/components/SocialLinks';
 import { StatusDot } from '@/components/StatusDot';
@@ -86,14 +86,25 @@ function Hero() {
         {profile.subhead}
       </p>
 
-      <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
-        <ButtonLink href="/resume" className="w-full sm:w-auto">
-          <FileIcon className="h-4 w-4" />
-          View resume
-        </ButtonLink>
-        <EmailPill className="w-full sm:w-auto" />
+      {/* One action row: contact first, resume second, then profiles. On phones the two
+          buttons share a row at equal width and the icons sit underneath. */}
+      <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
+        <div className="grid grid-cols-2 gap-3 sm:flex">
+          <ButtonLink href={profile.links.email}>
+            <MailIcon className="h-4 w-4" />
+            Get in touch
+          </ButtonLink>
+          <ButtonLink href="/resume" variant="outline">
+            <FileIcon className="h-4 w-4" />
+            View resume
+          </ButtonLink>
+        </div>
+        <div className="-ml-1.5 flex items-center gap-1 sm:ml-0 pointer-coarse:gap-4">
+          <SocialLinks />
+          <span className="mx-1 h-4 w-px bg-[var(--border-strong)] print:hidden" aria-hidden />
+          <CopyEmailButton />
+        </div>
       </div>
-      <SocialLinks className="mt-4 -ml-1.5" />
     </header>
   );
 }

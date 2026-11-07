@@ -7,7 +7,7 @@ export type ViewAllAction = {
   subject: string;
   /** Total shown in the label, so the count always says what it counts. */
   count?: number;
-  /** Short noun shown after the count ("roles", "tools"); defaults to `subject`. */
+  /** Short noun shown after the count ("roles", "tools"); defaults to `subject`, '' for none. */
   unit?: string;
   /** Visible text instead of "View all …", when a count would not match what the preview shows. */
   label?: string;
@@ -25,7 +25,8 @@ export function ViewAllLink({ href, subject, count, unit = subject, label }: Vie
         <span>{label}</span>
       ) : count ? (
         <span>
-          View all <span className="tabular-nums">{count}</span> {unit}
+          View all <span className="tabular-nums">{count}</span>
+          {unit ? ` ${unit}` : null}
         </span>
       ) : (
         'View all'

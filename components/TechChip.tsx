@@ -609,6 +609,77 @@ const icons: Record<string, IconDef> = {
       </Svg>
     ),
   },
+  'Design systems': {
+    label: 'Design systems',
+    glyph: (
+      <Svg>
+        <g className="text-[var(--muted-fg)]" stroke="currentColor" strokeWidth="1.8">
+          <rect x="4" y="4" width="7" height="7" rx="1.5" />
+          <rect x="13" y="4" width="7" height="7" rx="1.5" />
+          <rect x="4" y="13" width="7" height="7" rx="1.5" />
+          <rect x="13" y="13" width="7" height="7" rx="1.5" />
+        </g>
+      </Svg>
+    ),
+  },
+  'Testing strategy': {
+    label: 'Testing strategy',
+    glyph: (
+      <Svg>
+        <g
+          className="text-[var(--muted-fg)]"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <rect x="5" y="4" width="14" height="17" rx="2" />
+          <path d="M9 4.5V3h6v1.5" />
+          <path d="m9 13 2 2 4-4" />
+        </g>
+      </Svg>
+    ),
+  },
+  'CI quality gates': {
+    label: 'CI quality gates',
+    glyph: (
+      <Svg>
+        <g
+          className="text-[var(--muted-fg)]"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M12 3 19 6v5c0 4.5-3 8-7 10-4-2-7-5.5-7-10V6l7-3Z" />
+          <path d="m9 12 2 2 4-4" />
+        </g>
+      </Svg>
+    ),
+  },
+  'CI/CD': {
+    label: 'CI/CD',
+    glyph: (
+      <Svg>
+        <g
+          className="text-[var(--muted-fg)]"
+          stroke="currentColor"
+          strokeWidth="1.8"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+        >
+          <path d="M20 11a8 8 0 0 0-14.9-3" />
+          <path d="M4 13a8 8 0 0 0 14.9 3" />
+          <path d="M4 4v4h4" />
+          <path d="M20 20v-4h-4" />
+        </g>
+      </Svg>
+    ),
+  },
+  Formik: {
+    label: 'Formik',
+    glyph: <LetterBadge text="F" bg="#172B4D" />,
+  },
   PostgreSQL: {
     label: 'PostgreSQL',
     glyph: <LetterBadge text="PG" bg="#336791" />,

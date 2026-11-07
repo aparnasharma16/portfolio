@@ -33,8 +33,32 @@ type StackPreviewProps = {
   href: string;
 };
 
-/** Home page teaser: the core of the stack, with everything else one click away. */
-export function StackPreview({ groups, groupLimit = 3, itemLimit = 4, href }: StackPreviewProps) {
+/**
+ * Capabilities (design, leadership) read as statements, so they render as a plain list.
+ * Pills are kept for tools, where the brand mark helps scanning.
+ */
+function GroupItems({ group }: { group: StackGroup }) {
+  if (group.kind !== 'capability') return <TechChipList items={group.items} label={group.title} />;
+  return (
+    <ul
+      className="grid gap-x-6 gap-y-2 text-control font-medium text-[var(--foreground)] sm:grid-cols-2 sm:pt-1.5"
+      aria-label={group.title}
+    >
+      {group.items.map((item) => (
+        <li key={item} className="relative pl-4">
+          <span
+            className="absolute top-[0.55rem] left-0 h-1 w-1 rounded-full bg-[var(--subtle)]"
+            aria-hidden
+          />
+          {item}
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+/** Home page teaser: design and leadership first, then the core tools; the rest is one click away. */
+export function StackPreview({ groups, groupLimit = 4, itemLimit = 4, href }: StackPreviewProps) {
   const visible = groups
     .slice(0, groupLimit)
     .map((group) => ({ ...group, items: group.items.slice(0, itemLimit) }));
@@ -44,21 +68,28 @@ export function StackPreview({ groups, groupLimit = 3, itemLimit = 4, href }: St
     <section aria-labelledby="stack-preview">
       <SectionHeading
         id="stack-preview"
-        title="Stack"
-        action={{ href, subject: 'tools and practices', unit: 'tools', count: total }}
+        title="Expertise"
+        action={{ href, subject: 'skills and tools', unit: '', count: total }}
       />
       <div className="mt-4 overflow-hidden rounded-xl border border-[var(--border)]">
         <dl className="divide-y divide-[var(--border)]">
-          {visible.map((group) => (
-            <div key={group.id} className="grid gap-2 px-5 py-4 sm:grid-cols-[7.5rem_1fr] sm:gap-4">
-              <dt className="text-small font-medium text-[var(--muted-fg)] sm:pt-1.5">
-                {group.title}
-              </dt>
-              <dd>
-                <TechChipList items={group.items} label={group.title} />
-              </dd>
-            </div>
-          ))}
+          {visible.map((group) => {
+            const Icon = groupIcons[group.id];
+            return (
+              <div
+                key={group.id}
+                className="grid gap-3 px-5 py-4 sm:grid-cols-[10.5rem_1fr] sm:gap-4"
+              >
+                <dt className="flex items-center gap-2 text-small font-medium text-[var(--foreground)] sm:h-8">
+                  <Icon className="h-4 w-4 shrink-0 text-[var(--subtle)]" />
+                  {group.title}
+                </dt>
+                <dd>
+                  <GroupItems group={group} />
+                </dd>
+              </div>
+            );
+          })}
         </dl>
       </div>
     </section>
@@ -71,8 +102,8 @@ export function StackBreakdown({ groups }: { groups: readonly StackGroup[] }) {
     <section id="stack" aria-labelledby="stack-title" className="scroll-mt-20">
       <SectionIntro
         id="stack-title"
-        title="Stack"
-        description="Grouped by the job each tool does. Most of my work sits in the first three rows."
+        title="Expertise"
+        description="How I design, lead, and build. Design and leadership come first, then the tools."
       />
       <div className="mt-6 divide-y divide-[var(--border)] overflow-hidden rounded-xl border border-[var(--border)]">
         {groups.map((group) => {
@@ -88,7 +119,7 @@ export function StackBreakdown({ groups }: { groups: readonly StackGroup[] }) {
                   <p className="mt-0.5 text-small text-[var(--muted-fg)]">{group.summary}</p>
                 </div>
               </div>
-              <TechChipList items={group.items} label={group.title} />
+              <GroupItems group={group} />
             </div>
           );
         })}

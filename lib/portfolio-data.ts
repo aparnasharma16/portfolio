@@ -12,11 +12,13 @@ export const profile = {
   subhead,
   /** Headline + subhead, for meta descriptions and link previews. */
   valueProposition: `${headline} ${subhead}`,
-  metaDescription: `Senior Software Engineer at PayPal (${experienceYears} yrs): MERN, SFCC, APIs, Jest, microservices, and e-commerce. Bengaluru.`,
+  metaDescription: `Senior Software Engineer at PayPal with ${experienceYears} years of leading web architecture, full-stack delivery, and engineering teams. Bengaluru.`,
   experienceYears,
   yearsExperience: `${experienceYears} years`,
+  /** Title of the home page hiring box. */
+  hireHeadline: 'Hiring a senior or lead engineer?',
   availabilityNote:
-    'Open to senior frontend and full-stack engineering roles with strong product ownership, quality focus, and mentoring opportunities.',
+    'Open to senior and lead full-stack roles where I own the architecture, set the quality bar, and grow the engineers around me.',
   resumeLastUpdated: 'May 2026',
   links: {
     email: 'mailto:aparnasharma157@gmail.com',
@@ -148,19 +150,57 @@ export type StackGroup = {
   title: string;
   /** One-line answer to "what do you use this for?" */
   summary: string;
+  /** `capability`: how I work (design, leadership), shown as plain text rather than tool chips. */
+  kind?: 'capability';
   items: string[];
 };
 
-/** Single source for every stack listing (home preview, impact breakdown). */
+/**
+ * Single source for every stack listing (home preview, impact breakdown). Ordered the way
+ * a lead is read: how systems are designed and teams are led first, then the tools.
+ * Within a group, the most senior items come first, since previews show only the first few.
+ */
 export const stack: StackGroup[] = [
+  {
+    id: 'architecture',
+    title: 'Architecture & design',
+    summary: 'Thinking a system through, and writing it down, before it is built.',
+    kind: 'capability',
+    items: [
+      'System design',
+      'Micro-frontends',
+      'API contract design',
+      'Technical design docs',
+      'High-level design (HLD)',
+      'Low-level design (LLD)',
+      'Microservices',
+      'Event-driven architecture',
+    ],
+  },
+  {
+    id: 'practice',
+    title: 'Leadership & practice',
+    summary: 'How I lead a team, not just a codebase.',
+    kind: 'capability',
+    items: [
+      'Technical direction',
+      'Design reviews',
+      'Code review standards',
+      'Mentoring',
+      'Release planning',
+      'Accessibility',
+      'Core Web Vitals',
+    ],
+  },
   {
     id: 'frontend',
     title: 'Frontend',
     summary: 'Interfaces that stay fast as data and teams grow.',
     items: [
-      'Next.js',
       'React',
       'TypeScript',
+      'Design systems',
+      'Next.js',
       'Redux',
       'RTK Query',
       'Formik',
@@ -173,19 +213,19 @@ export const stack: StackGroup[] = [
     id: 'backend',
     title: 'Backend',
     summary: 'The APIs and services behind the screens.',
-    items: ['Node.js', 'Express', 'REST APIs', 'GraphQL', 'Kafka', 'Swagger', 'PHP'],
+    items: ['Node.js', 'REST APIs', 'GraphQL', 'Kafka', 'Express', 'Swagger', 'PHP'],
+  },
+  {
+    id: 'testing',
+    title: 'Quality & testing',
+    summary: 'A test strategy and release gates, from unit tests to full user journeys.',
+    items: ['Testing strategy', 'CI quality gates', 'Jest', 'Cypress', 'Playwright', 'Storybook'],
   },
   {
     id: 'data',
     title: 'Data & caching',
     summary: 'Storage and caching for high-traffic workflows.',
     items: ['MongoDB', 'PostgreSQL', 'MySQL', 'Redis'],
-  },
-  {
-    id: 'testing',
-    title: 'Testing',
-    summary: 'Confidence from unit tests to full user journeys.',
-    items: ['Jest', 'Cypress', 'Playwright', 'Storybook'],
   },
   {
     id: 'commerce',
@@ -197,25 +237,7 @@ export const stack: StackGroup[] = [
     id: 'delivery',
     title: 'Cloud & delivery',
     summary: 'Getting changes to production safely.',
-    items: ['AWS', 'CI/CD', 'Git'],
-  },
-  {
-    id: 'architecture',
-    title: 'Architecture & design',
-    summary: 'Thinking a system through before building it.',
-    items: [
-      'System design',
-      'High-level design (HLD)',
-      'Low-level design (LLD)',
-      'Design docs',
-      'Microservices',
-    ],
-  },
-  {
-    id: 'practice',
-    title: 'Engineering practice',
-    summary: 'How I work with a team, not just a codebase.',
-    items: ['Code reviews', 'Mentoring', 'Accessibility', 'Core Web Vitals'],
+    items: ['CI/CD', 'AWS', 'Git'],
   },
 ];
 
@@ -734,8 +756,8 @@ export const siteNav = [
   {
     href: '/impact',
     label: 'Impact',
-    description: 'Results, case studies, how I work, and stack',
-    keywords: ['impact', 'case studies', 'results', 'stack', 'skills', 'awards'],
+    description: 'Results, case studies, how I work, and expertise',
+    keywords: ['impact', 'case studies', 'results', 'expertise', 'stack', 'skills', 'awards'],
     shortcut: 'I',
   },
   {

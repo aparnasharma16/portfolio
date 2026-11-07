@@ -50,7 +50,7 @@ const groupOrder: readonly GroupTitle[] = [
   'Pages',
   'Experience',
   'Case studies',
-  'Stack',
+  'Expertise',
   'Results',
   'How I work',
   'Actions',
@@ -61,7 +61,7 @@ const RECENT_KEY = 'portfolio-recent-commands';
 const RECENT_LIMIT = 2;
 
 const iconClass = 'h-3.5 w-3.5';
-const contentIcons: Record<Exclude<ContentGroup, 'Stack'>, ReactNode> = {
+const contentIcons: Record<Exclude<ContentGroup, 'Expertise'>, ReactNode> = {
   Experience: <BriefcaseIcon className={iconClass} />,
   'Case studies': <BookOpenIcon className={iconClass} />,
   Results: <TrendingUpIcon className={iconClass} />,
@@ -175,7 +175,7 @@ export function SearchCommand() {
       ...contentIndex.map((entry) => ({
         ...entry,
         icon:
-          entry.group === 'Stack' ? (
+          entry.group === 'Expertise' ? (
             <TechGlyph
               name={entry.title}
               className={iconClass}

@@ -116,7 +116,7 @@ function ContactCard() {
       className="rounded-xl bg-[var(--secondary)] px-5 py-6 sm:px-6 print:hidden"
     >
       <h2 id="home-contact" className="text-heading text-[var(--foreground)]">
-        Hiring for a senior frontend or full-stack role?
+        {profile.hireHeadline}
       </h2>
       <p className="mt-2 max-w-lg text-body text-[var(--muted-fg)]">{profile.availabilityNote}</p>
       <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center">

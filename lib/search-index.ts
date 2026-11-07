@@ -1,7 +1,7 @@
 import { roleAnchor, studyAnchor } from '@/lib/anchors';
 import { caseStudies, experience, expertiseAreas, featuredWins, stack } from '@/lib/portfolio-data';
 
-export type ContentGroup = 'Experience' | 'Case studies' | 'Stack' | 'Results' | 'How I work';
+export type ContentGroup = 'Experience' | 'Case studies' | 'Expertise' | 'Results' | 'How I work';
 
 export type ContentEntry = {
   id: string;
@@ -37,7 +37,7 @@ export const contentIndex: readonly ContentEntry[] = [
   ...stack.flatMap((group) =>
     group.items.map((item) => ({
       id: `stack:${item}`,
-      group: 'Stack' as const,
+      group: 'Expertise' as const,
       title: item,
       description: group.title,
       keywords: [] as string[],

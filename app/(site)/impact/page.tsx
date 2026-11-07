@@ -27,7 +27,7 @@ const chapters = [
   { id: 'results', label: 'Results' },
   { id: 'case-studies', label: 'Case studies' },
   { id: 'how-i-work', label: 'How I work' },
-  { id: 'stack', label: 'Stack' },
+  { id: 'stack', label: 'Expertise' },
   { id: 'recognition', label: 'Recognition' },
 ] as const;
 

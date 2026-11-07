@@ -50,12 +50,10 @@ export function CaseStudiesList({ studies }: { studies: readonly CaseStudy[] }) 
                 <dl className="space-y-4 border-t border-[var(--border)] pt-4 sm:pl-11">
                   {storySteps.map((step) => (
                     <div key={step.key}>
-                      <dt className="text-[0.8rem] font-semibold text-[var(--foreground)]">
+                      <dt className="text-small font-semibold text-[var(--foreground)]">
                         {step.label}
                       </dt>
-                      <dd className="mt-1 text-[0.86rem] leading-6 text-[var(--muted-fg)]">
-                        {study[step.key]}
-                      </dd>
+                      <dd className="mt-1 text-body text-[var(--muted-fg)]">{study[step.key]}</dd>
                     </div>
                   ))}
                 </dl>
@@ -78,16 +76,14 @@ function StudySummary({ study, open }: { study: CaseStudy; open: boolean }) {
       <CompanyLogo src={study.logo} name={study.company} size="sm" />
       <span className="min-w-0 flex-1">
         <span className="flex flex-wrap items-baseline justify-between gap-x-4">
-          <span className="text-[0.95rem] font-semibold tracking-[-0.01em] text-pretty text-[var(--foreground)]">
+          <span className="text-subheading text-pretty text-[var(--foreground)]">
             {study.title}
           </span>
-          <span className="text-[0.78rem] text-[var(--muted-fg)] tabular-nums">{study.period}</span>
+          <span className="text-small text-[var(--muted-fg)] tabular-nums">{study.period}</span>
         </span>
-        <span className="block text-[0.8rem] font-medium text-[var(--muted-fg)]">
-          {study.company}
-        </span>
+        <span className="block text-small font-medium text-[var(--muted-fg)]">{study.company}</span>
         <span
-          className={`mt-2 block text-[0.86rem] leading-6 text-[var(--muted-fg)] ${open ? '' : 'line-clamp-2 print:line-clamp-none'}`}
+          className={`mt-2 block text-body text-[var(--muted-fg)] ${open ? '' : 'line-clamp-2 print:line-clamp-none'}`}
         >
           {study.outcome}
         </span>
@@ -100,7 +96,7 @@ function StudySummary({ study, open }: { study: CaseStudy; open: boolean }) {
 function Artifacts({ items }: { items: readonly string[] }) {
   return (
     <details className="group mt-5">
-      <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 py-1.5 text-[0.8rem] font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)] [&::-webkit-details-marker]:hidden">
+      <summary className="inline-flex cursor-pointer list-none items-center gap-1.5 rounded-lg border border-[var(--border)] px-3 py-1.5 text-small font-medium text-[var(--foreground)] transition-colors hover:bg-[var(--secondary)] [&::-webkit-details-marker]:hidden">
         <span className="group-open:hidden">Show the {items.length} components</span>
         <span className="hidden group-open:inline">Hide components</span>
       </summary>
@@ -108,7 +104,7 @@ function Artifacts({ items }: { items: readonly string[] }) {
         {items.map((item) => (
           <li
             key={item}
-            className="rounded-md bg-[var(--secondary)] px-2 py-0.5 text-[0.76rem] text-[var(--muted-fg)]"
+            className="rounded-md bg-[var(--secondary)] px-2 py-0.5 text-caption text-[var(--muted-fg)]"
           >
             {item}
           </li>

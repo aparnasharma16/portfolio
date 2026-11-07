@@ -61,17 +61,17 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
                 </span>
                 <span className="min-w-0 flex-1">
                   <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
-                    <span className="text-[0.93rem] font-semibold text-[var(--foreground)] underline-offset-4 group-hover:underline">
+                    <span className="text-subheading text-[var(--foreground)] underline-offset-4 group-hover:underline">
                       {group.company}
                     </span>
                     {group.current ? <StatusBadge>Current</StatusBadge> : null}
                   </span>
-                  <span className="mt-0.5 block text-[0.8rem] text-[var(--muted-fg)]">
+                  <span className="mt-0.5 block text-small text-[var(--muted-fg)]">
                     {latest.role}
                   </span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2 pt-0.5">
-                  <span className="hidden text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:inline">
+                  <span className="hidden text-small text-[var(--muted-fg)] tabular-nums sm:inline">
                     {group.periodShort}
                   </span>
                   <ChevronIndicator open={isOpen} />
@@ -80,10 +80,10 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
 
               <DisclosurePanel id={panelId} open={isOpen} onReveal={() => setExpanded(i)}>
                 <div className="pb-4 pl-12">
-                  <p className="text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:hidden">
+                  <p className="text-small text-[var(--muted-fg)] tabular-nums sm:hidden">
                     {group.periodShort}, {group.location}
                   </p>
-                  <ul className="mt-1 space-y-1.5 text-[0.84rem] leading-6 text-[var(--muted-fg)]">
+                  <ul className="mt-1 space-y-1.5 text-body text-[var(--muted-fg)]">
                     {latest.highlights.slice(0, PREVIEW_POINTS).map((h) => (
                       <li key={h} className="relative pl-3.5">
                         <span
@@ -97,7 +97,7 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
                   {hasMore ? (
                     <Link
                       href={`/work#${roleAnchor(latest)}`}
-                      className="mt-1.5 -ml-2 inline-block rounded-lg px-2 py-1 text-[0.8rem] font-medium text-[var(--muted-fg)] tabular-nums transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
+                      className="touch-target mt-1.5 -ml-2 inline-block rounded-lg px-2 py-1 text-small font-medium text-[var(--muted-fg)] tabular-nums transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
                     >
                       See all {latest.highlights.length} points
                       <span className="sr-only"> for {group.company}</span>
@@ -116,14 +116,14 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
               <CompanyLogo src={education.logo} name={education.school} size="sm" />
             </span>
             <span className="min-w-0 flex-1">
-              <span className="block text-[0.93rem] font-semibold text-[var(--foreground)]">
+              <span className="block text-subheading text-[var(--foreground)]">
                 {education.school}
               </span>
-              <span className="mt-0.5 block text-[0.8rem] text-[var(--muted-fg)]">
+              <span className="mt-0.5 block text-small text-[var(--muted-fg)]">
                 {education.degree}
               </span>
             </span>
-            <span className="hidden shrink-0 pt-0.5 pr-6 text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:inline">
+            <span className="hidden shrink-0 pt-0.5 pr-6 text-small text-[var(--muted-fg)] tabular-nums sm:inline">
               {education.years}
             </span>
           </li>

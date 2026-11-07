@@ -10,10 +10,7 @@ type SectionHeadingProps = {
 export function SectionHeading({ title, id, action }: SectionHeadingProps) {
   return (
     <div className="flex items-center justify-between gap-4">
-      <h2
-        id={id}
-        className="text-[1.05rem] font-semibold tracking-[-0.02em] text-[var(--foreground)]"
-      >
+      <h2 id={id} className="text-heading text-[var(--foreground)]">
         {title}
       </h2>
       {action ? <ViewAllLink {...action} /> : null}

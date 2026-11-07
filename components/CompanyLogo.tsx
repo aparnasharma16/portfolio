@@ -12,8 +12,8 @@ type CompanyLogoProps = {
 };
 
 const styles = {
-  sm: { frame: 'h-8 w-8 rounded-lg text-[0.72rem]', image: 'p-1', sizes: '32px' },
-  md: { frame: 'h-11 w-11 rounded-xl text-[0.9rem]', image: 'p-1.5', sizes: '44px' },
+  sm: { frame: 'h-8 w-8 rounded-lg text-caption', image: 'p-1', sizes: '32px' },
+  md: { frame: 'h-11 w-11 rounded-xl text-body', image: 'p-1.5', sizes: '44px' },
 } as const;
 
 function monogram(name: string) {

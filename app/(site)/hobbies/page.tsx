@@ -15,7 +15,7 @@ export default function HobbiesPage() {
     <main id="main" className="mx-auto max-w-2xl px-5 pt-8 pb-16 md:pt-12">
       <PageHeader
         title="Beyond work"
-        description="Life beyond the keyboard, and what I'm reading."
+        description="Life beyond the keyboard, and what I’m reading."
       />
 
       <div className="mt-12 space-y-14">
@@ -23,7 +23,7 @@ export default function HobbiesPage() {
         <BookList books={readingList} />
       </div>
 
-      <PageQuote quote={sitePageQuotes.home} />
+      <PageQuote quote={sitePageQuotes.hobbies} />
     </main>
   );
 }

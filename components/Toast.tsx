@@ -50,7 +50,7 @@ export function Toast({ message }: { message: string | null }) {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={reduceMotion ? { opacity: 0 } : { opacity: 0, y: 8, scale: 0.98 }}
             transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-            className="flex items-center gap-2 rounded-full bg-[var(--foreground)] px-4 py-2 text-[0.82rem] font-medium text-[var(--background)] shadow-lg"
+            className="flex items-center gap-2 rounded-full bg-[var(--foreground)] px-4 py-2 text-small font-medium text-[var(--background)] shadow-lg"
           >
             <CheckIcon className="h-3.5 w-3.5" />
             {message}

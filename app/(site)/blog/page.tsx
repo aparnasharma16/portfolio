@@ -27,16 +27,10 @@ export default function BlogPage() {
           {blogPosts.map((post) => (
             <li key={post.slug} className="grid gap-1 py-5 sm:grid-cols-[1fr_auto] sm:gap-6">
               <div>
-                <h2 className="text-[0.98rem] font-semibold text-[var(--foreground)]">
-                  {post.title}
-                </h2>
-                <p className="mt-1 text-[0.88rem] leading-6 text-[var(--muted-fg)]">
-                  {post.description}
-                </p>
+                <h2 className="text-subheading text-[var(--foreground)]">{post.title}</h2>
+                <p className="mt-1 text-body text-[var(--muted-fg)]">{post.description}</p>
               </div>
-              <p className="text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:pt-1">
-                {post.date}
-              </p>
+              <p className="text-small text-[var(--muted-fg)] tabular-nums sm:pt-1">{post.date}</p>
             </li>
           ))}
         </ul>
@@ -45,20 +39,18 @@ export default function BlogPage() {
           <SectionIntro
             id="upcoming-title"
             title="Coming up"
-            description="A few focused posts from real engineering work, not filler. Here's what I'm writing."
+            description="A few focused posts from real engineering work, not filler. Here’s what I’m writing."
           />
           <ul className={`mt-6 ${rowList}`}>
             {upcomingBlogTopics.map((topic) => (
               <li key={topic.title} className="py-4">
-                <p className="text-[0.92rem] font-semibold text-[var(--foreground)]">
-                  {topic.title}
-                </p>
-                <p className="mt-0.5 text-[0.84rem] text-[var(--muted-fg)]">{topic.hint}</p>
+                <p className="text-subheading text-[var(--foreground)]">{topic.title}</p>
+                <p className="mt-0.5 text-small text-[var(--muted-fg)]">{topic.hint}</p>
               </li>
             ))}
           </ul>
           <div className="mt-6 flex flex-wrap items-center gap-3">
-            <p className="text-[0.84rem] text-[var(--muted-fg)]">Get notified when they land:</p>
+            <p className="text-small text-[var(--muted-fg)]">Get notified when they land:</p>
             <ButtonLink href={profile.links.linkedin} variant="outline" external>
               LinkedIn
             </ButtonLink>

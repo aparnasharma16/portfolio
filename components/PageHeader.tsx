@@ -11,12 +11,8 @@ type PageHeaderProps = {
 export function PageHeader({ title, description, children }: PageHeaderProps) {
   return (
     <header>
-      <h1 className="text-[1.75rem] leading-tight font-bold tracking-[-0.04em] text-[var(--foreground)] md:text-[2rem]">
-        {title}
-      </h1>
-      <p className="mt-2 max-w-xl text-[0.95rem] leading-6 text-pretty text-[var(--muted-fg)]">
-        {description}
-      </p>
+      <h1 className="text-title text-[var(--foreground)]">{title}</h1>
+      <p className="mt-2 max-w-xl text-lead text-pretty text-[var(--muted-fg)]">{description}</p>
       {children ? <div className="mt-5">{children}</div> : null}
     </header>
   );
@@ -27,7 +23,7 @@ type Stat = { value: string | number; label: string };
 /** Compact inline stats on one line: "8+ years  3 companies  6 roles". */
 export function StatRow({ items }: { items: readonly Stat[] }) {
   return (
-    <dl className="flex flex-wrap gap-x-5 gap-y-1 text-[0.86rem]">
+    <dl className="flex flex-wrap gap-x-5 gap-y-1 text-small">
       {items.map((item) => (
         <div key={item.label} className="flex flex-row-reverse items-baseline gap-1.5">
           <dt className="text-[var(--muted-fg)]">{item.label}</dt>

@@ -6,10 +6,10 @@ type PageQuoteProps = {
 export function PageQuote({ quote }: PageQuoteProps) {
   return (
     <figure className="mt-16 max-w-md print:hidden">
-      <blockquote className="text-[0.86rem] leading-6 text-pretty text-[var(--muted-fg)] italic">
+      <blockquote className="text-small text-pretty text-[var(--muted-fg)] italic">
         &ldquo;{quote.text}&rdquo;
       </blockquote>
-      <figcaption className="mt-1 text-[0.76rem] text-[var(--muted-fg)]">
+      <figcaption className="mt-1 text-caption text-[var(--muted-fg)]">
         {quote.attribution}
       </figcaption>
     </figure>

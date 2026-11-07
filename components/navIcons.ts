@@ -1,4 +1,4 @@
-import { BriefcaseIcon, FileIcon, HeartIcon, HomeIcon, SparklesIcon } from '@/components/icons';
+import { BriefcaseIcon, FileIcon, HeartIcon, HomeIcon, TrendingUpIcon } from '@/components/icons';
 import type { SiteNavHref } from '@/lib/portfolio-data';
 import type { ComponentType } from 'react';
 
@@ -6,7 +6,7 @@ import type { ComponentType } from 'react';
 export const navIcons: Record<SiteNavHref, ComponentType<{ className?: string }>> = {
   '/': HomeIcon,
   '/work': BriefcaseIcon,
-  '/impact': SparklesIcon,
+  '/impact': TrendingUpIcon,
   '/hobbies': HeartIcon,
   '/resume': FileIcon,
 };

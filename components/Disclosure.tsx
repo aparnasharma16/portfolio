@@ -213,7 +213,7 @@ export function ExpandAllButton({ allOpen, onClick }: { allOpen: boolean; onClic
     <button
       type="button"
       onClick={onClick}
-      className="shrink-0 rounded-lg px-2 py-1 text-[0.8rem] font-medium whitespace-nowrap text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
+      className="touch-target shrink-0 rounded-lg px-2 py-1 text-small font-medium whitespace-nowrap text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] print:hidden"
     >
       {allOpen ? 'Collapse all' : 'Expand all'}
     </button>

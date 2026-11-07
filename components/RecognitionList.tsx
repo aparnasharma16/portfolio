@@ -21,7 +21,7 @@ export function Recognition({
     <section id="recognition" aria-labelledby="recognition-title" className="scroll-mt-20">
       <SectionIntro id="recognition-title" title="Recognition" />
 
-      <h3 className="mt-6 text-[0.95rem] font-semibold text-[var(--foreground)]">
+      <h3 className="mt-6 text-small font-semibold text-[var(--foreground)]">
         Certifications and awards
       </h3>
       <ul className="mt-3 divide-y divide-[var(--border)] border-y border-[var(--border)]">
@@ -31,11 +31,11 @@ export function Recognition({
             className="grid gap-1 py-4 sm:grid-cols-[1fr_auto] sm:gap-6"
           >
             <div>
-              <p className="text-[0.92rem] font-semibold text-[var(--foreground)]">{award.title}</p>
-              <p className="text-[0.8rem] font-medium text-[var(--muted-fg)]">{award.org}</p>
-              <p className="mt-1 text-[0.84rem] leading-6 text-[var(--muted-fg)]">{award.note}</p>
+              <p className="text-subheading text-[var(--foreground)]">{award.title}</p>
+              <p className="text-small font-medium text-[var(--muted-fg)]">{award.org}</p>
+              <p className="mt-1 text-body text-[var(--muted-fg)]">{award.note}</p>
             </div>
-            <p className="text-[0.78rem] text-[var(--muted-fg)] tabular-nums sm:pt-0.5 sm:text-right">
+            <p className="text-small text-[var(--muted-fg)] tabular-nums sm:pt-0.5 sm:text-right">
               {award.date}
             </p>
           </li>
@@ -46,7 +46,7 @@ export function Recognition({
         <>
           <h3
             id="testimonials"
-            className="mt-10 scroll-mt-20 text-[0.95rem] font-semibold text-[var(--foreground)]"
+            className="mt-10 scroll-mt-20 text-small font-semibold text-[var(--foreground)]"
           >
             Kind words
           </h3>

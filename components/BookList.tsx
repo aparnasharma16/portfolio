@@ -23,30 +23,24 @@ export function BookList({ books }: { books: readonly Book[] }) {
           if (shelfBooks.length === 0) return null;
           return (
             <div key={shelf.status}>
-              <h3 className="text-[0.86rem] font-semibold text-[var(--foreground)]">
-                {shelf.title}
-              </h3>
+              <h3 className="text-small font-semibold text-[var(--foreground)]">{shelf.title}</h3>
               <ul className="mt-2 divide-y divide-[var(--border)] border-y border-[var(--border)]">
                 {shelfBooks.map((book) => (
                   <li key={book.title} className="py-4">
                     <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                      <p className="text-[0.92rem] text-[var(--muted-fg)]">
-                        <span className="font-semibold text-[var(--foreground)]">{book.title}</span>
+                      <p className="text-subheading text-[var(--muted-fg)]">
+                        <span className="text-[var(--foreground)]">{book.title}</span>
                         <span className="sr-only">, </span>
-                        <span className="block text-[0.8rem]">{book.author}</span>
+                        <span className="block text-small font-normal">{book.author}</span>
                       </p>
                       {book.status === 'reading' ? (
                         <StatusBadge>Reading</StatusBadge>
                       ) : (
-                        <span className="text-[0.76rem] text-[var(--muted-fg)]">
-                          {book.category}
-                        </span>
+                        <span className="text-caption text-[var(--muted-fg)]">{book.category}</span>
                       )}
                     </div>
                     {book.note ? (
-                      <p className="mt-1 text-[0.84rem] leading-6 text-[var(--muted-fg)]">
-                        {book.note}
-                      </p>
+                      <p className="mt-1 text-body text-[var(--muted-fg)]">{book.note}</p>
                     ) : null}
                   </li>
                 ))}

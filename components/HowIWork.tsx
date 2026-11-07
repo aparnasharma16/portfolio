@@ -14,9 +14,9 @@ export function HowIWork({ areas }: { areas: readonly ExpertiseArea[] }) {
       <dl className="mt-6 divide-y divide-[var(--border)] border-y border-[var(--border)]">
         {areas.map((area) => (
           <div key={area.label} className="grid gap-1 py-5 sm:grid-cols-[11rem_1fr] sm:gap-6">
-            <dt className="text-[0.92rem] font-semibold text-[var(--foreground)]">{area.label}</dt>
+            <dt className="text-subheading text-[var(--foreground)]">{area.label}</dt>
             <dd>
-              <p className="text-[0.88rem] leading-6 text-[var(--muted-fg)]">{area.description}</p>
+              <p className="text-body text-[var(--muted-fg)]">{area.description}</p>
               {area.details ? (
                 <div className="mt-3">
                   <BulletList items={area.details} />

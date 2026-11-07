@@ -26,7 +26,7 @@ export default function ResumePage() {
             <ExternalIcon className="h-4 w-4" />
             Open in new tab
           </ButtonLink>
-          <p className="text-[0.8rem] text-[var(--muted-fg)] tabular-nums">
+          <p className="text-small text-[var(--muted-fg)] tabular-nums">
             Updated {profile.resumeLastUpdated}
           </p>
         </div>
@@ -45,23 +45,36 @@ export default function ResumePage() {
             <FileIcon className="h-5 w-5" />
           </span>
           <span className="min-w-0">
-            <span className="block truncate text-[0.9rem] font-medium text-[var(--foreground)]">
+            <span className="block truncate text-body font-medium text-[var(--foreground)]">
               {fileName}
             </span>
-            <span className="block text-[0.78rem] text-[var(--muted-fg)]">Tap to open the PDF</span>
+            <span className="block text-small text-[var(--muted-fg)]">Tap to open the PDF</span>
           </span>
         </a>
 
         <figure className="hidden overflow-hidden rounded-xl border border-[var(--border)] sm:pointer-fine:block">
-          <figcaption className="flex items-center gap-2 border-b border-[var(--border)] bg-[var(--secondary)] px-4 py-2.5 text-[0.78rem] text-[var(--muted-fg)]">
+          <figcaption className="flex items-center gap-2 border-b border-[var(--border)] bg-[var(--secondary)] px-4 py-2.5 text-small text-[var(--muted-fg)]">
             <FileIcon className="h-3.5 w-3.5" />
             {fileName}
           </figcaption>
-          <iframe
-            title={`${profile.name} resume`}
-            src={pdf}
-            className="block h-[80vh] w-full bg-[var(--secondary)]"
-          />
+          {/* The placeholder sits behind the frame; the PDF viewer covers it once it paints. */}
+          <div className="relative h-[80vh] bg-[var(--secondary)]">
+            <div
+              className="absolute inset-0 flex flex-col items-center justify-center gap-2 px-6 text-center"
+              aria-hidden
+            >
+              <FileIcon className="h-6 w-6 text-[var(--subtle)]" />
+              <p className="text-small font-medium text-[var(--foreground)]">Loading preview…</p>
+              <p className="max-w-xs text-small text-[var(--muted-fg)]">
+                If it doesn’t appear, use Open in new tab above.
+              </p>
+            </div>
+            <iframe
+              title={`${profile.name} resume`}
+              src={pdf}
+              className="relative block h-full w-full"
+            />
+          </div>
         </figure>
       </div>
 

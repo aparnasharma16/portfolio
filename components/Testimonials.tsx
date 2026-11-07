@@ -16,17 +16,17 @@ export function TestimonialList({ items }: { items: readonly Testimonial[] }) {
     <div className="grid gap-8 sm:grid-cols-2">
       {items.map((item) => (
         <figure key={item.quote} className="flex flex-col border-l-2 border-[var(--border)] pl-5">
-          <blockquote className="flex-1 text-[0.95rem] leading-7 text-pretty text-[var(--foreground)]">
+          <blockquote className="flex-1 text-body text-pretty text-[var(--foreground)]">
             &ldquo;{item.quote}&rdquo;
           </blockquote>
           <figcaption className="mt-4 flex items-center gap-3">
             <span
-              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--secondary)] text-[0.7rem] font-semibold text-[var(--muted-fg)]"
+              className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[var(--secondary)] text-caption font-semibold text-[var(--muted-fg)]"
               aria-hidden
             >
               {initials(item.name)}
             </span>
-            <span className="min-w-0 text-[0.8rem] leading-5">
+            <span className="min-w-0 text-small">
               <span className="block font-semibold text-[var(--foreground)]">{item.name}</span>
               <span className="block text-[var(--muted-fg)]">
                 {item.role}, {item.company}

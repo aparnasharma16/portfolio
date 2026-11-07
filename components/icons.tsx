@@ -214,12 +214,11 @@ export function BriefcaseIcon({ className }: IconProps) {
   );
 }
 
-export function SparklesIcon({ className }: IconProps) {
+export function TrendingUpIcon({ className }: IconProps) {
   return (
     <StrokeIcon className={className}>
-      <path d="m12 3 1.9 4.1L18 9l-4.1 1.9L12 15l-1.9-4.1L6 9l4.1-1.9L12 3Z" />
-      <path d="M5 16l.9 2.1L8 19l-2.1.9L5 22l-.9-2.1L2 19l2.1-.9L5 16Z" />
-      <path d="M19 14l1.2 2.8L23 18l-2.8 1.2L19 22l-1.2-2.8L15 18l2.8-1.2L19 14Z" />
+      <path d="m3 17 6-6 4 4 8-8" />
+      <path d="M15 7h6v6" />
     </StrokeIcon>
   );
 }

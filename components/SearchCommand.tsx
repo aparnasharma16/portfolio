@@ -9,8 +9,8 @@ import {
   LinkedInIcon,
   MoonIcon,
   SearchIcon,
-  SparklesIcon,
   SunIcon,
+  TrendingUpIcon,
   UsersIcon,
 } from '@/components/icons';
 import { navIcons } from '@/components/navIcons';
@@ -64,7 +64,7 @@ const iconClass = 'h-3.5 w-3.5';
 const contentIcons: Record<Exclude<ContentGroup, 'Stack'>, ReactNode> = {
   Experience: <BriefcaseIcon className={iconClass} />,
   'Case studies': <BookOpenIcon className={iconClass} />,
-  Results: <SparklesIcon className={iconClass} />,
+  Results: <TrendingUpIcon className={iconClass} />,
   'How I work': <UsersIcon className={iconClass} />,
 };
 
@@ -91,7 +91,10 @@ function rememberRecent(id: string) {
  */
 function matchScore(command: Command, query: string): number | null {
   const title = command.title.toLowerCase();
-  const haystack = [title, command.description, ...command.keywords].join(' ').toLowerCase();
+  const haystack = [title, command.description, ...command.keywords]
+    .join(' ')
+    .toLowerCase()
+    .replace(/[‘’]/g, "'");
   if (!query.split(/\s+/).every((word) => haystack.includes(word))) return null;
   if (title.startsWith(query)) return 0;
   if (title.includes(` ${query}`)) return 1;
@@ -246,7 +249,7 @@ export function SearchCommand() {
 
   /** Groups in display order; `results` is the same items flattened for keyboard nav. */
   const groups = useMemo(() => {
-    const q = query.trim().toLowerCase().replace(/\s+/g, ' ');
+    const q = query.trim().toLowerCase().replace(/\s+/g, ' ').replace(/[‘’]/g, "'");
 
     if (!q) {
       const recentCommands = recent
@@ -418,13 +421,13 @@ export function SearchCommand() {
                 onKeyDown={onInputKeyDown}
                 placeholder="Search roles, skills, pages"
                 // 16px on phones: anything smaller makes iOS Safari zoom the page on focus.
-                className="h-12 w-full min-w-0 bg-transparent text-base text-[var(--foreground)] placeholder:text-[var(--muted-fg)] focus-visible:outline-none sm:h-11 sm:text-[0.92rem]"
+                className="h-12 w-full min-w-0 bg-transparent text-base text-[var(--foreground)] placeholder:text-[var(--muted-fg)] focus-visible:outline-none sm:h-11 sm:text-body"
               />
               <button
                 type="button"
                 onClick={close}
                 aria-label="Close search"
-                className="shrink-0 rounded-md px-2 py-1 text-[0.8rem] font-medium text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] pointer-fine:border pointer-fine:border-[var(--border)] pointer-fine:px-1.5 pointer-fine:py-0.5 pointer-fine:text-[0.68rem]"
+                className="shrink-0 rounded-md px-2 py-1 text-small font-medium text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] pointer-fine:border pointer-fine:border-[var(--border)] pointer-fine:px-1.5 pointer-fine:py-0.5 pointer-fine:text-caption"
               >
                 <span className="pointer-coarse:hidden">Esc</span>
                 <span className="pointer-fine:hidden">Cancel</span>
@@ -439,7 +442,7 @@ export function SearchCommand() {
               className="max-h-[min(22rem,55vh)] overflow-y-auto overscroll-contain p-1"
             >
               {results.length === 0 ? (
-                <li className="px-6 py-10 text-center text-[0.86rem] text-pretty text-[var(--muted-fg)]">
+                <li className="px-6 py-10 text-center text-small text-pretty text-[var(--muted-fg)]">
                   Nothing matches &ldquo;{query.trim()}&rdquo;. Try a skill like
                   &ldquo;React&rdquo;, or &ldquo;resume&rdquo;.
                 </li>
@@ -447,7 +450,7 @@ export function SearchCommand() {
                 groups.map((group) => (
                   <li key={group.title} role="presentation">
                     <p
-                      className="px-2.5 pt-2.5 pb-1 text-[0.72rem] font-medium text-[var(--muted-fg)]"
+                      className="px-2.5 pt-2.5 pb-1 text-caption font-medium text-[var(--muted-fg)]"
                       aria-hidden
                     >
                       {group.title}
@@ -474,15 +477,15 @@ export function SearchCommand() {
                             {/* Phones: title over description. Wider: one line, and the description
                                 gives way first when space runs out. */}
                             <span className="flex min-w-0 flex-1 flex-col sm:flex-row sm:items-baseline sm:gap-2.5">
-                              <span className="truncate text-[0.88rem] text-[var(--foreground)] sm:text-[0.86rem]">
+                              <span className="truncate text-body text-[var(--foreground)] sm:text-control">
                                 {command.title}
                               </span>
-                              <span className="truncate text-[0.76rem] text-[var(--muted-fg)] sm:min-w-[4rem] sm:flex-1 sm:shrink-[4] sm:text-[0.78rem]">
+                              <span className="truncate text-small text-[var(--muted-fg)] sm:min-w-[4rem] sm:flex-1 sm:shrink-[4]">
                                 {command.description}
                               </span>
                             </span>
                             <kbd
-                              className={`ml-auto shrink-0 font-sans text-[0.75rem] text-[var(--muted-fg)] pointer-coarse:hidden ${
+                              className={`ml-auto shrink-0 font-sans text-caption text-[var(--muted-fg)] pointer-coarse:hidden ${
                                 selected ? 'opacity-100' : 'opacity-0'
                               }`}
                               aria-hidden
@@ -504,7 +507,7 @@ export function SearchCommand() {
                 : ''}
             </p>
 
-            <div className="flex items-center gap-4 border-t border-[var(--border)] px-4 py-1.5 text-[0.7rem] text-[var(--muted-fg)] pointer-coarse:hidden">
+            <div className="flex items-center gap-4 border-t border-[var(--border)] px-4 py-1.5 text-caption text-[var(--muted-fg)] pointer-coarse:hidden">
               <span>↑↓ to move</span>
               <span>↵ to open</span>
               <span className="ml-auto">{shortcut} to close</span>
@@ -521,13 +524,13 @@ export function SearchCommand() {
         ref={triggerRef}
         type="button"
         onClick={openPalette}
-        className="flex h-8 items-center gap-1.5 rounded-full border border-[var(--border)] px-2 text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:pr-1.5 sm:pl-2.5"
+        className="touch-target flex h-8 items-center gap-1.5 rounded-full border border-[var(--border)] px-2 text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:pr-1.5 sm:pl-2.5"
         aria-label="Search the site"
         aria-haspopup="dialog"
         aria-keyshortcuts="Meta+K Control+K"
       >
         <SearchIcon className="h-3.5 w-3.5" />
-        <kbd className="hidden rounded bg-[var(--secondary)] px-1.5 py-px font-sans text-[0.68rem] leading-4 font-medium sm:pointer-fine:inline">
+        <kbd className="hidden rounded bg-[var(--secondary)] px-1.5 py-px font-sans text-caption font-medium sm:pointer-fine:inline">
           {shortcut}
         </kbd>
       </button>

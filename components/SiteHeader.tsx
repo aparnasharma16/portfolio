@@ -39,15 +39,10 @@ export function SiteHeader() {
       }`}
     >
       <div className="mx-auto flex h-14 max-w-2xl items-center gap-4 px-5">
-        {/* Mobile brand; skipped on home, where the hero already shows the name. */}
-        {pathname === '/' ? null : (
-          <Link
-            href="/"
-            className="text-[0.95rem] font-semibold tracking-[-0.02em] text-[var(--foreground)] sm:hidden"
-          >
-            {profile.name}
-          </Link>
-        )}
+        {/* Mobile brand on every page, so the bar looks the same across routes. */}
+        <Link href="/" className="touch-target text-subheading text-[var(--foreground)] sm:hidden">
+          {profile.name}
+        </Link>
 
         <nav className="hidden items-center sm:flex" aria-label="Primary">
           {siteNav.map((item) => {
@@ -57,9 +52,9 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? 'page' : undefined}
-                className={`relative inline-flex h-8 items-center rounded-lg px-3 text-[0.88rem] tracking-[-0.01em] transition-colors ${
+                className={`touch-target inline-flex h-8 items-center rounded-lg px-3 text-control transition-colors ${
                   active
-                    ? 'font-semibold text-[var(--foreground)]'
+                    ? 'font-medium text-[var(--foreground)]'
                     : 'font-medium text-[var(--muted-fg)] hover:bg-[var(--secondary)] hover:text-[var(--foreground)]'
                 }`}
               >
@@ -81,7 +76,7 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2">
+        <div className="ml-auto flex items-center gap-2 pointer-coarse:gap-3">
           <SearchCommand />
           <ThemeToggle />
         </div>

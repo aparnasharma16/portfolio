@@ -648,8 +648,8 @@ export function TechGlyph({
 }
 
 const sizes = {
-  md: { chip: 'h-8 gap-2 px-3 text-[0.8rem]', icon: 'h-4 w-4' },
-  sm: { chip: 'h-7 gap-1.5 px-2.5 text-[0.75rem]', icon: 'h-3.5 w-3.5' },
+  md: { chip: 'h-8 gap-2 px-3 text-small', icon: 'h-4 w-4' },
+  sm: { chip: 'h-7 gap-1.5 px-2.5 text-caption', icon: 'h-3.5 w-3.5' },
 } as const;
 
 /**

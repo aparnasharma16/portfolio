@@ -40,12 +40,10 @@ export function WorkExperienceList({ groups }: { groups: readonly GroupedExperie
               <CompanyLogo src={group.logo} name={group.company} size="md" />
               <div className="min-w-0">
                 <div className="flex flex-wrap items-center gap-2">
-                  <h2 className="text-[1.05rem] font-semibold tracking-[-0.02em] text-[var(--foreground)]">
-                    {group.company}
-                  </h2>
+                  <h2 className="text-subheading text-[var(--foreground)]">{group.company}</h2>
                   {group.current ? <StatusBadge>Current</StatusBadge> : null}
                 </div>
-                <p className="text-[0.82rem] text-[var(--muted-fg)]">
+                <p className="text-small text-[var(--muted-fg)]">
                   {group.location}, {group.workType.toLowerCase()}
                 </p>
               </div>
@@ -66,10 +64,10 @@ export function WorkExperienceList({ groups }: { groups: readonly GroupedExperie
                         onToggle={() => roles.toggle(key)}
                         summary={
                           <span className="sm:flex sm:items-baseline sm:justify-between sm:gap-4">
-                            <span className="block text-[0.92rem] font-medium text-[var(--foreground)]">
+                            <span className="block text-body font-medium text-[var(--foreground)]">
                               {role.role}
                             </span>
-                            <span className="block text-[0.78rem] text-[var(--muted-fg)] tabular-nums">
+                            <span className="block text-small text-[var(--muted-fg)] tabular-nums">
                               {role.periodShort}
                             </span>
                           </span>

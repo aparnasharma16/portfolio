@@ -9,16 +9,11 @@ type SectionIntroProps = {
 export function SectionIntro({ id, title, description }: SectionIntroProps) {
   return (
     <div>
-      <h2
-        id={id}
-        className="text-[1.25rem] font-semibold tracking-[-0.03em] text-[var(--foreground)]"
-      >
+      <h2 id={id} className="text-heading text-[var(--foreground)]">
         {title}
       </h2>
       {description ? (
-        <p className="mt-2 max-w-xl text-[0.9rem] leading-6 text-pretty text-[var(--muted-fg)]">
-          {description}
-        </p>
+        <p className="mt-2 max-w-xl text-body text-pretty text-[var(--muted-fg)]">{description}</p>
       ) : null}
     </div>
   );

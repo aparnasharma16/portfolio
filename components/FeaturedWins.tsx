@@ -15,13 +15,9 @@ export function ResultsGrid({ wins }: { wins: readonly FeaturedWin[] }) {
         <RuledGrid>
           {wins.map((win) => (
             <RuledCell key={win.title}>
-              <p className="text-[1.75rem] leading-none font-bold tracking-[-0.04em] text-[var(--foreground)] tabular-nums">
-                {win.metric}
-              </p>
-              <h3 className="mt-2 text-[0.9rem] font-semibold text-[var(--foreground)]">
-                {win.title}
-              </h3>
-              <p className="mt-1 text-[0.84rem] leading-6 text-[var(--muted-fg)]">{win.summary}</p>
+              <p className="text-metric text-[var(--foreground)] tabular-nums">{win.metric}</p>
+              <h3 className="mt-2 text-subheading text-[var(--foreground)]">{win.title}</h3>
+              <p className="mt-1 text-body text-[var(--muted-fg)]">{win.summary}</p>
             </RuledCell>
           ))}
         </RuledGrid>

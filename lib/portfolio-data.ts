@@ -1,21 +1,25 @@
+const experienceYears = '8+';
+const headline = 'I build web products that feel fast and don’t break.';
+const subhead = `From storefronts and checkout to payment platforms and the internal tools teams run on. ${experienceYears} years in, still sweating the details.`;
+
 export const profile = {
   name: 'Aparna Sharma',
   title: 'Senior Software Engineer',
   location: 'Bengaluru, India',
-  identityLine: 'Senior Software Engineer · MERN · campaigns · full-stack systems',
-  tagline:
-    'I build reliable, high-quality products across frontend, backend, and commerce platforms, with a strong focus on delivery ownership and engineering quality.',
-  valueProposition:
-    'Engineering leader and senior IC with 8+ years shipping payment and commerce experiences, improving product quality, and mentoring teams across fast-moving product organizations.',
-  metaDescription:
-    'Senior Software Engineer at PayPal (8+ yrs): MERN, SFCC, APIs, Jest, microservices, and e-commerce. Bengaluru.',
-  summary:
-    'Senior Software Engineer at PayPal with over 7 years of expertise in the MERN stack (MongoDB, Express.js, React.js, Node.js) and hands-on experience with SFCC (Salesforce Commerce Cloud), HTML, JavaScript, TypeScript, CSS, RWD, Shopify, PHP, and MySQL. Proficient in API development and integration. Adept at writing test cases using Jest and committed to ensuring high code quality. Familiar with Kafka for event-driven architecture and a solid understanding of basic AWS services. Demonstrated strong leadership abilities through mentoring teams, conducting code reviews, and optimizing performance. Passionate about building scalable, high-performance applications and delivering robust solutions in payments, e-commerce, and full-stack development while staying updated with the latest technologies.',
-  yearsExperience: '8+ years',
-  primaryFocus: 'Frontend systems, full-stack delivery, payments, and commerce',
+  /** Hero headline: the one bold line on the site. */
+  headline,
+  /** Supporting line under the headline. */
+  subhead,
+  /** Headline + subhead, for meta descriptions and link previews. */
+  valueProposition: `${headline} ${subhead}`,
+  metaDescription: `Senior Software Engineer at PayPal with ${experienceYears} years of leading web architecture, full-stack delivery, and engineering teams. Bengaluru.`,
+  experienceYears,
+  yearsExperience: `${experienceYears} years`,
+  /** Title of the home page hiring box. */
+  hireHeadline: 'Hiring a senior or lead engineer?',
   availabilityNote:
-    'Open to senior frontend and full-stack engineering roles with strong product ownership, quality focus, and mentoring opportunities.',
-  resumeLastUpdated: 'May 2025',
+    'Open to senior and lead full-stack roles where I own the architecture, set the quality bar, and grow the engineers around me.',
+  resumeLastUpdated: 'May 2026',
   links: {
     email: 'mailto:aparnasharma157@gmail.com',
     emailDisplay: 'aparnasharma157@gmail.com',
@@ -25,11 +29,10 @@ export const profile = {
     instagram: 'https://www.instagram.com/aparnasharma1601',
   },
   resumePdfPath: '/Aparna_Sharma_FullStack_Developer.pdf',
-  currentStatus: 'Building campaign workflow systems at PayPal',
   siteUrl: 'https://aparnasharma.dev',
 };
 
-export type SitePageQuoteKey = 'home' | 'work' | 'impact' | 'blog' | 'resume';
+export type SitePageQuoteKey = 'home' | 'work' | 'impact' | 'blog' | 'resume' | 'hobbies';
 
 export const sitePageQuotes: Record<SitePageQuoteKey, { text: string; attribution: string }> = {
   home: {
@@ -41,12 +44,16 @@ export const sitePageQuotes: Record<SitePageQuoteKey, { text: string; attributio
     attribution: 'Bhagavad Gita, 2.47',
   },
   impact: {
-    text: "By devotion to one's own natural duty, a person attains perfection.",
+    text: 'By devotion to one’s own natural duty, a person attains perfection.',
     attribution: 'Bhagavad Gita, 18.45',
   },
   blog: {
     text: 'In this world, there is nothing so purifying as true knowledge.',
     attribution: 'Bhagavad Gita, 4.38',
+  },
+  hobbies: {
+    text: 'Yoga ends sorrow for one who is moderate in eating and recreation, balanced in work, and regulated in sleep and waking.',
+    attribution: 'Bhagavad Gita, 6.17',
   },
   resume: {
     text: 'A person must elevate themselves by their own mind, and not degrade themselves. The mind is the friend of the conditioned soul, and their enemy as well.',
@@ -57,28 +64,41 @@ export const sitePageQuotes: Record<SitePageQuoteKey, { text: string; attributio
 export type ExpertiseArea = {
   label: string;
   description: string;
+  /** Optional supporting points shown under the description. */
+  details?: readonly string[];
 };
 
 export const expertiseAreas: ExpertiseArea[] = [
   {
-    label: 'Frontend Engineering',
+    label: 'Frontend architecture',
     description:
-      'Build accessible, scalable interfaces in React and TypeScript with strong performance and maintainability.',
+      'Set the frontend direction for large React and TypeScript apps: component systems, state architecture, performance, and accessibility standards the whole team builds on.',
   },
   {
-    label: 'Full-Stack Delivery',
+    label: 'Backend and APIs',
     description:
-      'Own features end-to-end across APIs, services, testing, release workflows, and production readiness.',
+      'Design Node.js services and APIs that hold up under load, with clear contracts, Redis caching, Kafka messaging, and a deliberate path from monolith to microservices.',
   },
   {
-    label: 'E-commerce & Payments',
+    label: 'Delivery and quality',
     description:
-      'Deliver checkout, commerce, and customer-facing flows where reliability, trust, and speed matter.',
+      'Drive work from design doc to production: break it down, sequence the releases, and put testing and CI/CD in place so what ships stays reliable.',
   },
   {
-    label: 'Leadership & Mentoring',
+    label: 'Payments and commerce',
     description:
-      'Guide engineers through reviews, standards, testing strategy, and execution without losing delivery pace.',
+      'Lead the flows where trust and money meet, from storefronts and checkout to payment platforms and the internal tools behind them.',
+  },
+  {
+    label: 'Technical leadership',
+    description:
+      'Lead teams of up to 8 engineers: set technical direction, raise the bar through reviews and standards, and grow people into owners.',
+    details: [
+      'Set architecture and delivery plans for the team, and owned release readiness.',
+      'Mentored engineers on React, testing, and maintainable patterns, helping juniors grow into confident feature owners.',
+      'Introduced review standards, documentation habits, and release processes the team kept using.',
+      'Stayed hands-on in the code while setting direction, so technical decisions stayed grounded.',
+    ],
   },
 ];
 
@@ -90,68 +110,134 @@ export type FeaturedWin = {
 
 export const featuredWins: FeaturedWin[] = [
   {
-    metric: '40%',
-    title: 'Faster API response',
+    metric: '45%',
+    title: 'Fewer production bugs',
     summary:
-      'Reduced campaign workflow API response times through Redis caching, optimized data models, and Node.js performance tuning.',
-  },
-  {
-    metric: '80K+',
-    title: 'Users served',
-    summary:
-      'Led development of Campaign Management (V2) UI using React.js and Redux, serving 80K+ users with improved workflow efficiency.',
-  },
-  {
-    metric: '8 engineers',
-    title: 'Led delivery teams',
-    summary:
-      'Managed execution, architecture direction, and engineering standards while shipping MERN products at Dentsu.',
+      'Brought in stronger testing standards and review habits while leading a team through a large platform migration.',
   },
   {
     metric: '30%',
-    title: 'Fewer production issues',
+    title: 'Less downtime',
     summary:
-      'Engineered backend systems with approval workflows, RBAC, and audit-ready APIs, reducing production issues by 30%.',
+      'Led the move from a monolith to microservices with Kafka, so a failure in one part no longer took down the rest.',
   },
   {
-    metric: '5K+',
-    title: 'API requests/min',
+    metric: '40%',
+    title: 'Faster delivery',
     summary:
-      'Architected scalable campaign workflow architecture supporting 5K+ API requests/min with optimized Node.js and Redis caching.',
+      'Built reusable component patterns for e-commerce teams, so new features took less time to ship.',
+  },
+  {
+    metric: '95%',
+    title: 'Regression coverage',
+    summary:
+      'Added Cypress tests across the critical shopping journeys, so regressions were caught before release.',
   },
 ];
 
-export type ExpertiseGroup = {
+export type StackGroupId =
+  | 'frontend'
+  | 'backend'
+  | 'data'
+  | 'testing'
+  | 'commerce'
+  | 'delivery'
+  | 'architecture'
+  | 'practice';
+
+export type StackGroup = {
+  id: StackGroupId;
   title: string;
+  /** One-line answer to "what do you use this for?" */
+  summary: string;
+  /** `capability`: how I work (design, leadership), shown as plain text rather than tool chips. */
+  kind?: 'capability';
   items: string[];
 };
 
-export const coreExpertise: ExpertiseGroup[] = [
+/**
+ * Single source for every stack listing (home preview, impact breakdown). Ordered the way
+ * a lead is read: how systems are designed and teams are led first, then the tools.
+ * Within a group, the most senior items come first, since previews show only the first few.
+ */
+export const stack: StackGroup[] = [
   {
-    title: 'Frontend',
-    items: ['React', 'TypeScript', 'Redux', 'Tailwind CSS', 'Responsive UI'],
-  },
-  {
-    title: 'Backend',
-    items: ['Node.js', 'Express', 'REST APIs', 'GraphQL', 'MySQL'],
-  },
-  {
-    title: 'Testing',
-    items: ['Jest', 'Cypress', 'Playwright', 'Regression strategy', 'QA collaboration'],
-  },
-  {
-    title: 'Commerce',
-    items: ['PayPal', 'Shopify', 'SFCC', 'WooCommerce', 'Checkout flows'],
-  },
-  {
-    title: 'Leadership',
+    id: 'architecture',
+    title: 'Architecture & design',
+    summary: 'Thinking a system through, and writing it down, before it is built.',
+    kind: 'capability',
     items: [
-      'Mentoring',
-      'Code reviews',
-      'Delivery ownership',
-      'Standards',
-      'Cross-team coordination',
+      'System design',
+      'Micro-frontends',
+      'API contract design',
+      'Technical design docs',
+      'High-level design (HLD)',
+      'Low-level design (LLD)',
+      'Microservices',
+      'Event-driven architecture',
     ],
+  },
+  {
+    id: 'practice',
+    title: 'Leadership & practice',
+    summary: 'How I lead a team, not just a codebase.',
+    kind: 'capability',
+    items: [
+      'Technical direction',
+      'Design reviews',
+      'Code review standards',
+      'Mentoring',
+      'Release planning',
+      'Accessibility',
+      'Core Web Vitals',
+    ],
+  },
+  {
+    id: 'frontend',
+    title: 'Frontend',
+    summary: 'Interfaces that stay fast as data and teams grow.',
+    items: [
+      'React',
+      'TypeScript',
+      'Design systems',
+      'Next.js',
+      'Redux',
+      'RTK Query',
+      'Formik',
+      'Tailwind CSS',
+      'HTML',
+      'CSS',
+    ],
+  },
+  {
+    id: 'backend',
+    title: 'Backend',
+    summary: 'The APIs and services behind the screens.',
+    items: ['Node.js', 'REST APIs', 'GraphQL', 'Kafka', 'Express', 'Swagger', 'PHP'],
+  },
+  {
+    id: 'testing',
+    title: 'Quality & testing',
+    summary: 'A test strategy and release gates, from unit tests to full user journeys.',
+    items: ['Testing strategy', 'CI quality gates', 'Jest', 'Cypress', 'Playwright', 'Storybook'],
+  },
+  {
+    id: 'data',
+    title: 'Data & caching',
+    summary: 'Storage and caching for high-traffic workflows.',
+    items: ['MongoDB', 'PostgreSQL', 'MySQL', 'Redis'],
+  },
+  {
+    id: 'commerce',
+    title: 'Commerce & payments',
+    summary: 'Checkout, storefront and search platforms.',
+    items: ['PayPal', 'Shopify', 'SFCC', 'WooCommerce', 'Algolia'],
+  },
+  {
+    id: 'delivery',
+    title: 'Cloud & delivery',
+    summary: 'Getting changes to production safely.',
+    items: ['CI/CD', 'AWS', 'Git'],
   },
 ];
 
@@ -170,24 +256,39 @@ export type CaseStudy = {
 
 export const caseStudies: CaseStudy[] = [
   {
-    title: 'Campaign workflow architecture & management platform',
+    title: 'Designing an embeddable bank payment journey',
     company: 'PayPal',
-    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s',
+    logo: '/logos/paypal.jpg',
     period: '2025 – Present',
     context:
-      'PayPal\'s campaign management system needed a complete V2 rebuild to support growing team scale, complex approval workflows, and high-throughput API requirements.',
+      'A new way for customers to pay straight from their bank account, built once and embedded in more than one app.',
     problem:
-      'The existing system couldn\'t handle 5K+ API requests/min, lacked RBAC and audit controls, and had no version history or rollback capabilities — leading to campaign errors and workflow inefficiencies.',
+      'Bank payments leave the app, wait on the bank, and can fail in many ways. The journey had to stay clear for customers and be easy for other teams to embed.',
     ownership:
-      'Architected the full-stack campaign platform using React.js, Redux, Node.js (Express), and Redis. Owned approval workflows, RBAC, Publish History, version diff, and rollback features.',
+      'Owned the web architecture and wrote the design: sequence and state diagrams, API contracts, and the failure and security cases. Set the micro-frontend boundary, made the frame-or-redirect call, and led the build from consent to confirmation while closing contract gaps with partner teams.',
     outcome:
-      'Reduced API response time by 40%, cut production issues by 30%, improved workflow efficiency by 30% for 80K+ users, and reduced campaign errors by 25% across 10K+ campaigns/month.',
-    tech: ['React', 'TypeScript', 'Redux', 'Node.js', 'Express', 'Redis', 'REST'],
+      'Host apps embed the journey through a typed contract without owning its logic. Every success and error state runs locally against a mock bank, and slow or failed steps end in a clear outcome instead of a dead end.',
+    tech: ['React', 'TypeScript', 'GraphQL', 'Node.js', 'Jest'],
+  },
+  {
+    title: 'Rebuilding an internal admin platform',
+    company: 'PayPal',
+    logo: '/logos/paypal.jpg',
+    period: '2025 – Present',
+    context:
+      'Teams use an internal admin platform to configure and approve their work. Its UI was being rebuilt, with the old and new versions running side by side.',
+    problem:
+      'The new version had to move from mock data to live services, support bulk import and export, and apply the right access rules for internal and external users, without slowing down as records grew.',
+    ownership:
+      'Wrote the high- and low-level designs, led import and export from design to release, and designed the approvals workflow and the REST APIs behind it. Set the frontend test strategy and made code quality a release gate.',
+    outcome:
+      'Approvals stay fast as volume grows, bad data is caught before it is saved, access rules are enforced on the server, and the codebase passes the CI quality gate.',
+    tech: ['React', 'TypeScript', 'Node.js', 'REST', 'Jest', 'Cypress'],
   },
   {
     title: 'Monolith to microservices migration leadership',
     company: 'Dentsu',
-    logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
+    logo: '/logos/dentsu.jpg',
     period: '2024 – 2025',
     context:
       'Led a team delivering MERN applications while the platform evolved toward more scalable and resilient architecture.',
@@ -202,7 +303,7 @@ export const caseStudies: CaseStudy[] = [
   {
     title: 'Reusable commerce frontend systems',
     company: 'Merkle / dentsu',
-    logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
+    logo: '/logos/dentsu.jpg',
     period: '2021 – 2024',
     context:
       'Built storefront and platform capabilities for e-commerce teams serving multiple markets and product teams.',
@@ -217,14 +318,14 @@ export const caseStudies: CaseStudy[] = [
   {
     title: 'Internal reusable component library',
     company: 'Dentsu',
-    logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
+    logo: '/logos/dentsu.jpg',
     period: '2024 – 2025',
     context:
       'Frontend teams across Dentsu were building similar UI patterns independently, leading to inconsistent experiences and duplicated effort across projects.',
     problem:
       'There was no shared component system, so teams were shipping inconsistent UIs, spending time rebuilding common patterns, and struggling to maintain design coherence across products.',
     ownership:
-      'Led the creation of a reusable component package with 50+ components — including Accordion, Data Table, Dialog, Drawer, Command, Combobox, and more — used across internal frontend systems. Collaborated with 3 teammates to build comprehensive documentation alongside the library.',
+      'Led the build of a shared library of 50+ components (accordion, data table, dialog, drawer, combobox, and more) used across internal frontends, and wrote its documentation with three teammates.',
     outcome:
       'Reduced UI development time significantly by providing ready-to-use, well-documented components. Improved design consistency across teams and established a single source of truth for frontend patterns within the organization.',
     tech: ['React', 'TypeScript', 'Tailwind CSS', 'Storybook', 'Jest'],
@@ -292,13 +393,6 @@ export const caseStudies: CaseStudy[] = [
   },
 ];
 
-export const leadershipHighlights = [
-  'Led teams of up to 8 engineers with end-to-end ownership across architecture, delivery, and release readiness.',
-  'Mentored junior developers on React, testing, responsive design, and maintainable engineering patterns.',
-  'Raised code quality through review standards, documentation discipline, and stronger release processes.',
-  'Balanced hands-on implementation with technical direction in product environments where execution speed mattered.',
-] as const;
-
 export type ExperienceEntry = {
   role: string;
   company: string;
@@ -315,62 +409,52 @@ export type ExperienceEntry = {
 
 export const experience: ExperienceEntry[] = [
   {
-    role: 'Senior Software Engineer - Full Stack Developer',
+    role: 'Senior Software Engineer – Full Stack Developer',
     company: 'PayPal',
-    logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQehMn3aH23yJN5YVvX0dUiDhzAwcyZCxSIw&s',
+    logo: '/logos/paypal.jpg',
     location: 'Bengaluru, India',
     workType: 'On-Site',
     period: 'October 2025 – Present',
     periodShort: 'Oct 2025 – Present',
     current: true,
-    tech: [
-      'React',
-      'Redux',
-      'TypeScript',
-      'Node',
-      'Express',
-      'Redis',
-      'REST',
-      'AWS',
-    ],
+    tech: ['React', 'TypeScript', 'Node', 'REST', 'GraphQL', 'Jest', 'Cypress'],
     highlights: [
-      'Architected scalable campaign workflow architecture using Node.js (Express), Redis caching, and optimized data models, supporting 5K+ API requests/min and reducing response time by 40%.',
-      'Engineered backend systems with approval workflows, RBAC, and audit-ready APIs, handling 50K+ transactions/day and improving system reliability while reducing production issues by 30%.',
-      'Led development of Campaign Management (V2) UI using React.js and Redux, serving 80K+ users and improving workflow efficiency by 30%.',
-      'Built advanced features like Publish History, version diff, and rollback flows, reducing campaign errors by 25% across 10K+ campaigns/month.',
-      'Improved frontend performance by 35% through Redux caching and optimized state management for large datasets (100K+ records).',
+      'Owned the web architecture for a new bank payment journey that runs inside two apps. Wrote the low-level design: architecture, sequence and state diagrams, API contracts, and the failure, security, and config design.',
+      'Wrote the high- and low-level designs for the next version of an internal admin platform: component architecture, state, API contracts, and how the old and new versions run side by side behind role-based access.',
+      'Drew the micro-frontend boundary for the payment journey: one embeddable component with a typed props-and-callbacks contract, so current and future host apps can add the flow without owning its logic.',
+      'Made the calls that shaped the payment flow: an embedded frame or a full-page redirect (with an automatic fallback when the frame is blocked), where payment state lives across the bank redirect, and one shared API layer instead of direct calls, so permissions stay in a single backend.',
+      'Designed the payment journey for failure from day one: idempotent requests, conflict and step-up handling, a polling window with a “still processing” outcome, and a fallback for every error. Built a local backend and bank mock so each outcome can be tested without a shared environment.',
+      "Reviewed partner teams' schema and contract changes against the web design, turned the gaps into a concrete list of asks, and unblocked cross-team issues such as redirect allowlisting and frame-embedding rules.",
+      'Led bulk import and export for the admin platform from design to release: data contracts, validation on the client and the server, clear error handling, and safeguards against lost edits and accidental destructive changes.',
+      'Designed the approvals workflow with server-driven paging and filtering, plus the Node.js REST APIs and role rules behind it, so it stays fast as volume grows and access is enforced in one place. Led the move from mock data to live services, agreeing contracts with each dependent team.',
+      'Made code quality a release gate in CI, set the Jest and Cypress test strategy, fixed critical production issues at the root rather than patching symptoms, and mentored engineers through reviews on TypeScript, testing, and design.',
     ],
   },
   {
-    role: 'Technical Lead - Full Stack Developer',
+    role: 'Technical Lead – Full Stack Developer',
     company: 'Dentsu',
-    logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
+    logo: '/logos/dentsu.jpg',
     location: 'Bengaluru, India',
     workType: 'On-Site',
     period: 'November 2024 – October 2025',
     periodShort: 'Nov 2024 – Oct 2025',
     group: 'dentsu',
-    tech: [
-      'MongoDB',
-      'Express',
-      'React',
-      'Node',
-      'TypeScript',
-      'Kafka',
-      'Redis',
-      'MySQL',
-    ],
+    tech: ['MongoDB', 'Express', 'React', 'Node', 'TypeScript', 'Kafka', 'Redis', 'MySQL'],
     highlights: [
-      'Led scalable application development using MERN, driving architecture and best practices.',
-      'Migrated monolith to microservices with Kafka, reducing downtime by 30%.',
-      'Implemented Redis caching and optimized backend services using Node.js.',
-      'Standardized APIs with Swagger and mentored developers across teams.',
+      'Led a team of 8 engineers building MERN applications: set the technical direction, planned releases, and stayed hands-on in the code.',
+      'Wrote HLD and LLD documents for new services and features, and ran design reviews with product, QA, and partner engineering teams before any build started.',
+      'Led the move from a monolith to microservices with Kafka, cutting downtime by 30%.',
+      'Raised the testing bar with Jest and Cypress standards and stricter code reviews, cutting production bugs by 45%.',
+      'Led the build of a shared library of 50+ React components with Storybook docs, now used across internal frontends.',
+      'Introduced Redis caching and tuned the Node.js services behind our main applications.',
+      'Standardized API contracts with Swagger so frontend and backend teams could build in parallel.',
+      'Mentored engineers across teams on React, testing, and system design, and set up the code review process the team still follows.',
     ],
   },
   {
-    role: 'Senior Software Developer - Full Stack Developer',
+    role: 'Senior Software Developer – Full Stack Developer',
     company: 'Merkle, a dentsu company',
-    logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
+    logo: '/logos/dentsu.jpg',
     location: 'Bengaluru, India',
     workType: 'On-Site',
     period: 'April 2023 – October 2024',
@@ -378,16 +462,19 @@ export const experience: ExperienceEntry[] = [
     group: 'dentsu',
     tech: ['React', 'Redux', 'TypeScript', 'GraphQL', 'Node', 'Formik', 'RTK Query'],
     highlights: [
-      'Designed and built a reusable component library, standardizing UI patterns and accelerating development across multiple projects.',
-      'Implemented scalable state management using Redux, RTK Query, and Formik, optimizing data flow and reducing redundant API calls.',
-      'Optimized frontend performance by improving Core Web Vitals, reducing load time and enhancing user experience across enterprise applications.',
-      'Contributed to API design and integration using GraphQL and Node.js, improving data flow efficiency and enabling scalable full-stack architecture.',
+      'Led frontend architecture for enterprise e-commerce apps: wrote the design docs, set the state management patterns, and reviewed every major change.',
+      'Built reusable UI patterns shared across product teams, speeding up feature delivery by 40%.',
+      'Designed the state layer with Redux, RTK Query, and Formik, which removed duplicate API calls and made complex forms easier to maintain.',
+      'Improved Core Web Vitals on multi-market storefronts, cutting page load time by about 2 seconds.',
+      'Set up Cypress coverage for the critical shopping journeys, reaching 95% regression coverage.',
+      'Worked with backend teams on GraphQL and Node.js API design, and wrote the LLD for the frontend side of each integration.',
+      'Mentored junior engineers on React, TypeScript, and testing.',
     ],
   },
   {
     role: 'Frontend Developer',
     company: 'Merkle, a dentsu company',
-    logo: 'https://assets-au-01.kc-usercontent.com/df4a25df-7d25-0294-ad5c-62528c8f82da/dafcbd7c-0500-4d33-8785-ab2497753f32/logo%20dentsu%20hitam.jpeg',
+    logo: '/logos/dentsu.jpg',
     location: 'Bengaluru, India',
     workType: 'On-Site',
     period: 'August 2021 – March 2023',
@@ -395,7 +482,7 @@ export const experience: ExperienceEntry[] = [
     group: 'dentsu',
     tech: ['React', 'JavaScript', 'Node', 'Algolia', 'HTML', 'CSS'],
     highlights: [
-      'Led frontend for multi-region eCommerce platforms (USA & Canada).',
+      'Led frontend for multi-region e-commerce storefronts.',
       'Built dashboards and improved UX with Algolia search.',
       'Collaborated on Node.js APIs and improved accessibility standards.',
     ],
@@ -403,7 +490,6 @@ export const experience: ExperienceEntry[] = [
   {
     role: 'PHP Developer',
     company: 'ONS Tech',
-    logo: 'https://www.onstechglobal.com/build/assets/ons_tech_logo-4dbdbfd3.png',
     location: 'Chandigarh, India',
     workType: 'On-Site',
     period: 'August 2018 – July 2021',
@@ -419,18 +505,17 @@ export const experience: ExperienceEntry[] = [
   {
     role: 'Trainee',
     company: 'ONS Tech',
-    logo: 'https://www.onstechglobal.com/build/assets/ons_tech_logo-4dbdbfd3.png',
     location: 'Chandigarh, India',
     workType: 'On-Site',
     period: 'January 2018 – July 2018',
     periodShort: 'Jan 2018 – Jul 2018',
     group: 'onstech',
     tech: ['PHP', 'MySQL', 'JavaScript'],
-    highlights: [
-      'Developed a project management system with reporting and database design.',
-    ],
+    highlights: ['Developed a project management system with reporting and database design.'],
   },
 ];
+
+export const currentRole = experience.find((job) => job.current);
 
 export type GroupedExperience = {
   company: string;
@@ -486,8 +571,8 @@ export function groupExperience(jobs: ExperienceEntry[]): GroupedExperience[] {
 export const education = {
   degree: 'B.E., Computer Science & Engineering',
   school: 'Chitkara Institute of Engineering & Technology',
-  logo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTaGkBGFJe-tIGpvst2pWJCQkUFMhDuJ-qM4A&s',
-  years: '2014 — 2018',
+  logo: '/logos/chitkara.png',
+  years: '2014 – 2018',
 } as const;
 
 export const accomplishments = [
@@ -529,73 +614,80 @@ export const blogPosts: BlogPost[] = [];
 export type UpcomingBlogTopic = {
   title: string;
   hint: string;
-  icon: string;
 };
 
 export const upcomingBlogTopics: UpcomingBlogTopic[] = [
   {
     title: 'How I improve frontend quality at scale',
     hint: 'Patterns, reviews, and testing culture',
-    icon: 'quality',
   },
   {
     title: 'What I learned leading teams in commerce projects',
     hint: 'People, process, and delivery ownership',
-    icon: 'leadership',
   },
   {
     title: 'A practical testing strategy with Jest, Cypress, and Playwright',
     hint: 'Layered testing from unit to E2E',
-    icon: 'testing',
   },
 ];
 
+export type HobbyIconKey =
+  'painting' | 'drives' | 'music' | 'coffee' | 'reading' | 'cooking' | 'travel';
+
 export type Hobby = {
   label: string;
-  emoji: string;
+  icon: HobbyIconKey;
 };
 
 export const hobbies: Hobby[] = [
-  { label: 'Painting', emoji: 'painting' },
-  { label: 'Long drives', emoji: 'drives' },
-  { label: 'Music', emoji: 'music' },
-  { label: 'Trying out coffees', emoji: 'coffee' },
-  { label: 'Reading books', emoji: 'reading' },
-  { label: 'Cooking', emoji: 'cooking' },
-  { label: 'Travel', emoji: 'travel' },
-] as const;
+  { label: 'Painting', icon: 'painting' },
+  { label: 'Long drives', icon: 'drives' },
+  { label: 'Music', icon: 'music' },
+  { label: 'Trying out coffees', icon: 'coffee' },
+  { label: 'Reading books', icon: 'reading' },
+  { label: 'Cooking', icon: 'cooking' },
+  { label: 'Travel', icon: 'travel' },
+];
 
 export type Testimonial = {
   quote: string;
   name: string;
   role: string;
   company: string;
+  /** Drafts are kept out of the site until replaced with a real, approved quote. */
+  placeholder?: boolean;
 };
 
-// Replace with real testimonials when available
+// PLACEHOLDER: swap these for real quotes (with permission), then delete `placeholder: true`.
 export const testimonials: Testimonial[] = [
   {
     quote:
-      'Aparna consistently delivered high-quality work and raised the bar for the entire team through thoughtful code reviews and mentoring.',
+      'Aparna is who I’d give the messy project to. She breaks it down, keeps everyone in the loop, and ships it without drama. Her code reviews made the whole team sharper.',
     name: 'Engineering Manager',
-    role: 'Manager',
+    role: 'Managed Aparna',
     company: 'Dentsu',
+    placeholder: true,
   },
   {
     quote:
-      'Her ability to own complex features end-to-end, from architecture to production, made her an invaluable part of our commerce team.',
+      'When something broke in checkout, Aparna was usually the one who found the root cause, fixed it, and added the test so it stayed fixed. She takes real ownership of her work.',
     name: 'Senior Engineer',
-    role: 'Peer',
+    role: 'Worked on the same team',
     company: 'Merkle',
+    placeholder: true,
   },
   {
     quote:
-      "One of the strongest frontend engineers I've worked with — reliable, detail-oriented, and always thinking about long-term quality.",
-    name: 'Product Lead',
-    role: 'Cross-team',
+      'She asks the right questions early, which saves weeks later. Calm under deadlines, and great at explaining technical trade-offs to people who aren’t engineers.',
+    name: 'Product Manager',
+    role: 'Cross-team partner',
     company: 'PayPal',
+    placeholder: true,
   },
 ];
+
+/** Only real, approved quotes reach the site. */
+export const publishedTestimonials = testimonials.filter((item) => !item.placeholder);
 
 export type Book = {
   title: string;
@@ -606,13 +698,6 @@ export type Book = {
 };
 
 export const readingList: Book[] = [
-  {
-    title: 'The Bhagavad Gita',
-    author: 'Eknath Easwaran (translation)',
-    category: 'Philosophy',
-    status: 'finished',
-    note: 'A constant reference for equanimity and purposeful action.',
-  },
   {
     title: 'Clean Code',
     author: 'Robert C. Martin',
@@ -625,7 +710,7 @@ export const readingList: Book[] = [
     author: 'James Clear',
     category: 'Self-improvement',
     status: 'finished',
-    note: 'Small systems beat big goals — applies to code and life.',
+    note: 'Small systems beat big goals. True for code, and for life.',
   },
   {
     title: 'System Design Interview',
@@ -649,11 +734,46 @@ export const readingList: Book[] = [
   },
 ];
 
-export const searchLinks = [
-  { href: '/', label: 'Home', hint: 'Landing' },
-  { href: '/work', label: 'Work', hint: 'Experience' },
-  { href: '/impact', label: 'Impact', hint: 'Case studies' },
-  { href: '/blog', label: 'Blog', hint: 'Writing' },
-  { href: '/hobbies', label: 'Hobbies', hint: 'Beyond work' },
-  { href: '/resume', label: 'Resume', hint: 'CV' },
+/**
+ * Primary navigation: header, mobile dock, footer, and search all read from here.
+ * The blog is hidden from navigation until it has posts (the page and its data remain).
+ */
+export const siteNav = [
+  {
+    href: '/',
+    label: 'Home',
+    description: 'Start here',
+    keywords: ['home', 'landing', 'index'],
+    shortcut: 'H',
+  },
+  {
+    href: '/work',
+    label: 'Work',
+    description: 'Roles, companies, and what I did there',
+    keywords: ['work', 'experience', 'career', 'jobs'],
+    shortcut: 'W',
+  },
+  {
+    href: '/impact',
+    label: 'Impact',
+    description: 'Results, case studies, how I work, and expertise',
+    keywords: ['impact', 'case studies', 'results', 'expertise', 'stack', 'skills', 'awards'],
+    shortcut: 'I',
+  },
+  {
+    href: '/hobbies',
+    label: 'Hobbies',
+    description: 'Life beyond work, and what I’m reading',
+    keywords: ['hobbies', 'interests', 'personal', 'painting', 'music', 'coffee', 'books'],
+    shortcut: 'Y',
+  },
+  {
+    href: '/resume',
+    label: 'Resume',
+    description: 'View or download my resume',
+    keywords: ['resume', 'cv', 'pdf', 'download'],
+    shortcut: 'R',
+  },
 ] as const;
+
+export type SiteNavHref = (typeof siteNav)[number]['href'];

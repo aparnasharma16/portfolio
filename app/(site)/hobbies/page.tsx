@@ -1,45 +1,26 @@
 import { BookList } from '@/components/BookList';
 import { Hobbies } from '@/components/Hobbies';
+import { PageHeader } from '@/components/PageHeader';
 import { PageQuote } from '@/components/PageQuote';
-import { MotionReveal } from '@/components/SubtleMotion';
-import { hobbies, profile, readingList, sitePageQuotes } from '@/lib/portfolio-data';
+import { hobbies, readingList, sitePageQuotes } from '@/lib/portfolio-data';
+import { pageMetadata, titleFor } from '@/lib/metadata';
 import type { Metadata } from 'next';
 
-export const metadata: Metadata = {
-  title: `Hobbies — ${profile.name}`,
-  description: 'Beyond code — the things I enjoy outside of engineering.',
-  openGraph: {
-    title: `Hobbies — ${profile.name}`,
-    description: 'Beyond code — the things I enjoy outside of engineering.',
-  },
-};
+const description = 'The things I enjoy outside of engineering.';
+
+export const metadata: Metadata = pageMetadata({ title: titleFor('Hobbies'), description });
 
 export default function HobbiesPage() {
   return (
-    <main id="main" className="mx-auto max-w-2xl px-5 py-10 md:py-14">
-      <MotionReveal>
-        <div>
-          <h1 className="text-[1.85rem] font-bold tracking-[-0.04em] text-[var(--foreground)] md:text-[2.15rem]">
-            Beyond work
-          </h1>
-          <p className="mt-3 max-w-2xl text-[0.95rem] leading-7 text-[var(--muted-fg)]">
-            When I&apos;m not building products, these are the things that keep me energized and
-            inspired.
-          </p>
-        </div>
-      </MotionReveal>
+    <main id="main" className="mx-auto max-w-2xl px-5 pt-8 pb-16 md:pt-12">
+      <PageHeader title="Hobbies" description="Life beyond work, and what I’m reading." />
 
-      <MotionReveal delay={0.04}>
+      <div className="mt-12 space-y-14">
         <Hobbies items={hobbies} />
-      </MotionReveal>
-
-      <MotionReveal delay={0.08}>
         <BookList books={readingList} />
-      </MotionReveal>
+      </div>
 
-      <MotionReveal delay={0.12}>
-        <PageQuote quote={sitePageQuotes.home} />
-      </MotionReveal>
+      <PageQuote quote={sitePageQuotes.hobbies} />
     </main>
   );
 }

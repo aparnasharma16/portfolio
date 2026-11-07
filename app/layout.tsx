@@ -1,5 +1,7 @@
 import { profile } from '@/lib/portfolio-data';
+import { platformInitScript } from '@/lib/platform-init';
 import { themeInitScript } from '@/lib/theme-init';
+import { pageMetadata } from '@/lib/metadata';
 import type { Metadata } from 'next';
 import { Hanken_Grotesk } from 'next/font/google';
 import Script from 'next/script';
@@ -13,21 +15,11 @@ const hankenGrotesk = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: `${profile.name} — ${profile.title}`,
-  description: profile.metaDescription,
   metadataBase: new URL(profile.siteUrl),
-  openGraph: {
+  ...pageMetadata({
     title: `${profile.name} — ${profile.title}`,
     description: profile.metaDescription,
-    siteName: profile.name,
-    locale: 'en_US',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: `${profile.name} — ${profile.title}`,
-    description: profile.metaDescription,
-  },
+  }),
 };
 
 export default function RootLayout({
@@ -38,14 +30,17 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      data-scroll-behavior="smooth"
       suppressHydrationWarning
       className={`${hankenGrotesk.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col font-sans">
         <Script
-          id="theme-init"
+          id="document-init"
           strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: themeInitScript }}
+          dangerouslySetInnerHTML={{
+            __html: themeInitScript + platformInitScript,
+          }}
         />
         {children}
       </body>

@@ -1,126 +1,123 @@
-import { CompanyLogo } from '@/components/CompanyLogo';
-import { MotionItem, MotionStagger } from '@/components/SubtleMotion';
-import { TechIcon } from '@/components/TechIcon';
-import { type ExperienceEntry, groupExperience } from '@/lib/portfolio-data';
+'use client';
 
-export function WorkExperienceList({ jobs }: { jobs: ExperienceEntry[] }) {
-  const grouped = groupExperience(jobs);
+import { BulletList } from '@/components/BulletList';
+import { CompanyLogo } from '@/components/CompanyLogo';
+import {
+  Disclosure,
+  ExpandAllButton,
+  useDisclosureSet,
+  useOpenFromHash,
+} from '@/components/Disclosure';
+import { StatusBadge } from '@/components/StatusDot';
+import { TechChipList } from '@/components/TechChip';
+import { roleAnchor } from '@/lib/anchors';
+import type { GroupedExperience } from '@/lib/portfolio-data';
+import type { ReactNode } from 'react';
+
+/** Width of the rail column; matches the `md` company logo so dots centre under it. */
+const RAIL = 'grid grid-cols-[2.75rem_1fr] gap-x-4';
+
+/**
+ * Career path, no cards. Each company is a node on a thin rail (its logo); each role
+ * is a dot on that rail with its own dates, so promotions read as a line going up.
+ * Dates live only on roles, never repeated on the company. Role details open inline.
+ */
+export function WorkExperienceList({
+  groups,
+  summary,
+}: {
+  groups: readonly GroupedExperience[];
+  /** Shown on the left of the toolbar row, sharing it with Expand all (e.g. the stats). */
+  summary?: ReactNode;
+}) {
+  const allKeys = groups.flatMap((group) => group.roles.map(roleAnchor));
+  const roles = useDisclosureSet(allKeys, allKeys.slice(0, 1));
+  // Keys are the anchors, so a `/work#<role>` link opens that role.
+  useOpenFromHash((anchor) => (allKeys.includes(anchor) ? anchor : undefined), roles.show);
 
   return (
-    <MotionStagger className="relative" delay={0.06}>
-      {/* Vertical timeline line */}
-      <div className="absolute bottom-0 left-[1.34rem] top-0 w-px bg-[var(--border)]" aria-hidden />
+    <div>
+      <div className="flex items-center justify-between gap-4 border-b border-[var(--border)] pb-4">
+        {summary}
+        {/* Pull the button's padding out so its text lines up with the right edge. */}
+        <div className="-mr-2 ml-auto">
+          <ExpandAllButton allOpen={roles.allOpen} onClick={roles.toggleAll} />
+        </div>
+      </div>
 
-      {grouped.map((group, gi) => (
-        <MotionItem key={`${group.company}-${group.period}`}>
-          <article
-            className={`relative pl-12 ${gi > 0 ? 'mt-8' : ''}`}
-          >
-            {/* Timeline dot */}
-            {group.current ? (
-              <span className="absolute left-[1.03rem] top-3 flex h-2.5 w-2.5 items-center justify-center">
-                <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[#4ade80] opacity-75" />
-                <span className="relative inline-flex h-2.5 w-2.5 rounded-full bg-[#4ade80]" />
-              </span>
-            ) : (
-              <span className="absolute left-[1.03rem] top-3 h-2.5 w-2.5 rounded-full bg-[#f59e0b]" />
-            )}
-
-            {/* Glassmorphism card wrapper */}
-            <div className="rounded-[1.2rem] border border-[var(--border)] bg-[var(--background)] px-5 py-5 shadow-[0_2px_8px_rgba(0,0,0,0.04)] transition-all duration-300 hover:border-[var(--foreground)]/10 hover:shadow-[0_8px_24px_rgba(0,0,0,0.08)] dark:shadow-[0_2px_8px_rgba(0,0,0,0.2)] dark:hover:shadow-[0_8px_24px_rgba(0,0,0,0.3)] md:px-6">
-              {/* Company header */}
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between">
-                <div className="min-w-0">
-                  <div className="flex items-start gap-3">
-                    {group.logo ? (
-                      <CompanyLogo src={group.logo} alt={`${group.company} logo`} size="md" />
-                    ) : null}
-                    <div className="min-w-0">
-                      <div className="flex flex-wrap items-center gap-2">
-                        <h3 className="text-[1.15rem] font-bold leading-snug tracking-[-0.02em] text-[var(--foreground)]">
-                          {group.company}
-                        </h3>
-                        {group.current ? (
-                          <span className="inline-flex items-center gap-1.5 rounded-xl border border-[#86efac] bg-[#f0fdf4] px-2.5 py-0.5 text-[0.8rem] font-medium text-[#166534] dark:border-[#14532d] dark:bg-[#052e16] dark:text-[#bbf7d0]">
-                            <span className="h-2 w-2 rounded-full bg-[#4ade80]" aria-hidden />
-                            Working
-                          </span>
-                        ) : null}
-                      </div>
-                      {group.roles.length === 1 ? (
-                        <p className="mt-0.5 text-[0.88rem] leading-6 text-[var(--muted-fg)]">
-                          {group.roles[0].role}
-                        </p>
-                      ) : null}
-                    </div>
-                  </div>
+      <ol className="mt-8 space-y-10">
+        {groups.map((group) => (
+          <li key={`${group.company}-${group.period}`}>
+            <div className={`${RAIL} items-center`}>
+              <CompanyLogo src={group.logo} name={group.company} size="md" />
+              <div className="min-w-0">
+                <div className="flex flex-wrap items-center gap-2">
+                  <h2 className="text-subheading text-[var(--foreground)]">{group.company}</h2>
+                  {group.current ? <StatusBadge>Current</StatusBadge> : null}
                 </div>
-                <div className="shrink-0 text-left text-[0.88rem] leading-6 text-[var(--muted-fg)] sm:text-right">
-                  <p>{group.period}</p>
-                  <p>
-                    {group.location} ({group.workType})
-                  </p>
-                </div>
+                <p className="text-small text-[var(--muted-fg)]">
+                  {group.location}, {group.workType.toLowerCase()}
+                </p>
               </div>
-
-              {/* Roles within group */}
-              {group.roles.map((role, ri) => (
-                <div
-                  key={`${role.role}-${role.period}`}
-                  className={ri > 0 ? 'mt-8 border-t border-dashed border-[var(--border)] pt-6' : ''}
-                >
-                  {/* Show role sub-header for grouped entries */}
-                  {group.roles.length > 1 ? (
-                    <div className={`flex items-center gap-2 ${ri === 0 ? 'mt-4' : ''}`}>
-                      <span className="h-1.5 w-1.5 rounded-full bg-[var(--muted-fg)]" />
-                      <p className="text-[0.92rem] font-semibold text-[var(--foreground)]">
-                        {role.role}
-                      </p>
-                      <span className="text-[0.78rem] text-[var(--subtle)]">
-                        {role.periodShort}
-                      </span>
-                    </div>
-                  ) : null}
-
-                  <hr className={`border-[var(--border)] ${group.roles.length > 1 ? 'mt-3' : 'mt-4'}`} />
-
-                  {/* Technologies */}
-                  <div className="mt-4">
-                    <h4 className="text-[0.88rem] font-semibold tracking-[-0.01em] text-[var(--foreground)]">
-                      Technologies &amp; Tools
-                    </h4>
-                    <ul className="mt-2.5 flex flex-wrap gap-2" aria-label="Technologies">
-                      {role.tech.map((t) => (
-                        <li key={t}>
-                          <TechIcon name={t} />
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Highlights */}
-                  <div className="mt-4">
-                    <h4 className="text-[0.88rem] font-semibold tracking-[-0.01em] text-[var(--foreground)]">
-                      What I&apos;ve done
-                    </h4>
-                    <ul className="mt-2.5 space-y-2.5 text-[0.88rem] leading-[1.7] text-[var(--muted-fg)]">
-                      {role.highlights.map((h) => (
-                        <li key={h} className="relative pl-4">
-                          <span
-                            className="absolute left-0 top-[0.65rem] h-[5px] w-[5px] rounded-full bg-[var(--subtle)]"
-                            aria-hidden
-                          />
-                          {h}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              ))}
             </div>
-          </article>
-        </MotionItem>
-      ))}
-    </MotionStagger>
+
+            <ol className="mt-1">
+              {group.roles.map((role, index) => {
+                const key = roleAnchor(role);
+                const open = roles.isOpen(key);
+                const isLast = index === group.roles.length - 1;
+                return (
+                  <li key={key} id={key} className={`${RAIL} scroll-mt-20`}>
+                    <RailNode active={open} continues={!isLast} />
+                    <div className="min-w-0">
+                      <Disclosure
+                        variant="plain"
+                        open={open}
+                        onToggle={() => roles.toggle(key)}
+                        summary={
+                          <span className="sm:flex sm:items-baseline sm:justify-between sm:gap-4">
+                            <span className="block text-body font-medium text-[var(--foreground)]">
+                              {role.role}
+                            </span>
+                            <span className="block text-small text-[var(--muted-fg)] tabular-nums">
+                              {role.periodShort}
+                            </span>
+                          </span>
+                        }
+                      >
+                        <BulletList items={role.highlights} />
+                        <TechChipList items={role.tech} size="sm" className="mt-4" />
+                      </Disclosure>
+                    </div>
+                  </li>
+                );
+              })}
+            </ol>
+          </li>
+        ))}
+      </ol>
+    </div>
+  );
+}
+
+/**
+ * One role's piece of the rail: a line in from above (from the logo or previous role),
+ * the dot, and a line on down only if another role follows.
+ */
+function RailNode({ active, continues }: { active: boolean; continues: boolean }) {
+  return (
+    <span className="relative flex justify-center" aria-hidden>
+      <span className="absolute top-0 h-[1.1rem] w-px bg-[var(--border-strong)]" />
+      {continues ? (
+        <span className="absolute top-[1.1rem] bottom-0 w-px bg-[var(--border-strong)]" />
+      ) : null}
+      <span
+        className={`relative mt-[0.95rem] h-2.5 w-2.5 rounded-full border-2 transition-colors ${
+          active
+            ? 'border-[var(--foreground)] bg-[var(--foreground)]'
+            : 'border-[var(--border-strong)] bg-[var(--background)]'
+        }`}
+      />
+    </span>
   );
 }

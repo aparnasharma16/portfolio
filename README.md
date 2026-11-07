@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Aparna Sharma — portfolio
 
-## Getting Started
+Personal site for Aparna Sharma, Senior Software Engineer. Built with Next.js (App Router),
+React, TypeScript, Tailwind CSS v4, and Motion.
 
-First, run the development server:
+## Run it
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Before opening a PR, all of these must pass:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run format     # Prettier (with Tailwind class sorting)
+npm run lint
+npx tsc --noEmit
+npm run build
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Editing content
 
-## Learn More
+Almost everything on the site comes from one file: **`lib/portfolio-data.ts`**.
 
-To learn more about Next.js, take a look at the following resources:
+| To change…                               | Edit                                                       |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| Name, headline, intro, links, email      | `profile`                                                  |
+| Jobs and roles (Work page, home preview) | `experience`                                               |
+| Results, case studies, how I work        | `featuredWins`, `caseStudies`, `expertiseAreas`            |
+| Stack                                    | `stack`                                                    |
+| Certifications and awards                | `accomplishments`                                          |
+| Testimonials                             | `testimonials` (remove `placeholder: true` to publish one) |
+| Hobbies and bookshelf                    | `hobbies`, `readingList`                                   |
+| Navigation, search, footer links         | `siteNav`                                                  |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Images live in `public/`: the profile photo, company logos in `public/logos/`, and the resume
+PDF (`profile.resumePdfPath`).
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Read [`AGENTS.md`](./AGENTS.md) before editing content.** It has the employer
+confidentiality checklist (no internal product names, no non-public numbers, and so on) and the
+code and design conventions.
 
-## Deploy on Vercel
+## Notes
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- The blog page exists but is hidden from navigation and search until `blogPosts` has entries.
+  To launch it, add posts and a `/blog` entry to `siteNav`, then remove the `disallow` in
+  `app/robots.ts` and the `robots` metadata in `app/(site)/blog/page.tsx`.
+- `profile.siteUrl` drives the sitemap and robots URLs; update it if the domain changes.

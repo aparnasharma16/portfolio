@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /*
   Color system aligned with ramx.in / sleek-portfolio (oklch neutrals).
@@ -19,7 +19,8 @@
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.63 0 0);
+  /* 0.54 keeps secondary text at WCAG AA (4.5:1+) on both --background and --secondary */
+  --muted-foreground: oklch(0.54 0 0);
   --accent: oklch(0.97 0 0);
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.577 0.245 27.325);
@@ -30,7 +31,8 @@
   /* App-specific aliases (used across components) */
   --surface: var(--background);
   --muted-fg: var(--muted-foreground);
-  --subtle: #a1a1aa;
+  /* Icons, bullets, and rails only (3:1). Never use it for text: that is --muted-fg. */
+  --subtle: oklch(0.66 0 0);
   --chip-bg: var(--card);
   --control-bg: var(--secondary);
   --border-strong: oklch(0.89 0 0);
@@ -38,6 +40,12 @@
   --working-bg: oklch(0.94 0 0);
   --working-fg: oklch(0.35 0 0);
   --working-dot: oklch(0.45 0 0);
+  /* Single accent ("checkout blue"): focus rings and link states only */
+  --accent-ink: oklch(0.52 0.2 264);
+  /* Availability / "current" indicator */
+  --status: oklch(0.72 0.17 150);
+  --status-bg: oklch(0.72 0.17 150 / 0.12);
+  --status-fg: oklch(0.45 0.13 150);
 }
 
 .dark {
@@ -63,13 +71,73 @@
 
   --surface: var(--background);
   --muted-fg: var(--muted-foreground);
-  --subtle: #909092;
+  --subtle: oklch(0.62 0 0);
   --chip-bg: var(--card);
   --control-bg: var(--muted);
   --border-strong: oklch(1 0 0 / 18%);
   --working-bg: oklch(1 0 0 / 8%);
   --working-fg: oklch(0.92 0 0);
   --working-dot: oklch(0.65 0 0);
+  --accent-ink: oklch(0.72 0.14 264);
+  --status: oklch(0.76 0.17 150);
+  --status-bg: oklch(0.76 0.17 150 / 0.14);
+  --status-fg: oklch(0.86 0.12 150);
+}
+
+/* `mac:` shows content only on Apple platforms (set by themeInitScript before paint),
+   so shortcut hints read ⌘K there and Ctrl K everywhere else, with no flash. */
+@custom-variant mac (&:where(html[data-os='mac'] *));
+@custom-variant not-mac (&:where(html:not([data-os='mac']) *));
+
+/* Type scale: every text role on the site uses one of these. Pick by role, never by
+   eye; size, line height, tracking and (for headings) weight come with the token. */
+@theme {
+  --text-display: 2.125rem;
+  --text-display--line-height: 1.08;
+  --text-display--letter-spacing: -0.045em;
+  --text-display--font-weight: 600;
+  --text-display-lg: 2.625rem;
+  --text-display-lg--line-height: 1.08;
+  --text-display-lg--letter-spacing: -0.045em;
+  --text-display-lg--font-weight: 600;
+  /* Page h1 */
+  --text-title: 2rem;
+  --text-title--line-height: 1.2;
+  --text-title--letter-spacing: -0.04em;
+  --text-title--font-weight: 700;
+  /* Section h2 */
+  --text-heading: 1.25rem;
+  --text-heading--line-height: 1.4;
+  --text-heading--letter-spacing: -0.025em;
+  --text-heading--font-weight: 600;
+  /* Big comparable numbers (results) */
+  --text-metric: 1.75rem;
+  --text-metric--line-height: 1;
+  --text-metric--letter-spacing: -0.04em;
+  --text-metric--font-weight: 700;
+  /* Item titles: companies, case studies, results, stack groups, awards, books */
+  --text-subheading: 1rem;
+  --text-subheading--line-height: 1.5;
+  --text-subheading--letter-spacing: -0.01em;
+  --text-subheading--font-weight: 600;
+  /* Intro under a page title or the hero headline */
+  --text-lead: 1.0625rem;
+  --text-lead--line-height: 1.75rem;
+  /* All running text: descriptions, bullets, paragraphs */
+  --text-body: 0.9375rem;
+  --text-body--line-height: 1.5rem;
+  /* Buttons, nav links, form text */
+  --text-control: 0.875rem;
+  --text-control--line-height: 1.25rem;
+  /* Meta: dates, roles, locations, labels, captions */
+  --text-small: 0.8125rem;
+  --text-small--line-height: 1.25rem;
+  /* Chips, tags, badges, tooltips, key hints */
+  --text-caption: 0.75rem;
+  --text-caption--line-height: 1rem;
+  /* Mobile dock labels only */
+  --text-micro: 0.6875rem;
+  --text-micro--line-height: 1;
 }
 
 @theme inline {
@@ -83,8 +151,7 @@
   --color-border: var(--border);
   --color-card: var(--card);
   --font-sans: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
-  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
-    "Liberation Mono", monospace;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', monospace;
 }
 
 body {
@@ -92,7 +159,10 @@ body {
   color: var(--foreground);
   font-family: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
   font-optical-sizing: auto;
-  font-feature-settings: "ss01" 1, "cv11" 1, "kern" 1;
+  font-feature-settings:
+    'ss01' 1,
+    'cv11' 1,
+    'kern' 1;
   font-kerning: normal;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -100,7 +170,86 @@ body {
   font-synthesis-weight: none;
 }
 
-/* ramx.in — subdued text in both modes */
-.text-secondary {
-  color: #909092;
+/* Visible, consistent keyboard focus everywhere. It lives in the base layer so utilities
+   (e.g. `focus-visible:outline-none` on the search input) can override it; unlayered CSS
+   would beat every utility regardless of specificity. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--accent-ink);
+    outline-offset: 2px;
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Reserve the scrollbar's space so locking scroll (search dialog) doesn't shift the page */
+  scrollbar-gutter: stable;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* Touch screens get at least a 44×44px hit area around small controls, without changing
+   how they look. The invisible ::before is centered on the control, which becomes the
+   positioning context. Keep neighbours ~44px apart so the areas don't overlap. */
+@utility touch-target {
+  position: relative;
+
+  @media (pointer: coarse) {
+    &::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, 44px);
+      height: max(100%, 44px);
+      transform: translate(-50%, -50%);
+    }
+  }
+}
+
+/* Print: always light, every collapsed row expanded, on-screen controls removed
+   (they get `print:hidden` in their components). */
+@media print {
+  @page {
+    margin: 16mm 14mm;
+  }
+
+  html,
+  html.dark {
+    color-scheme: light;
+    --background: oklch(1 0 0);
+    --foreground: oklch(0.16 0 0);
+    --card: oklch(1 0 0);
+    --secondary: oklch(0.97 0 0);
+    --muted-foreground: oklch(0.42 0 0);
+    --border: oklch(0.88 0 0);
+    --border-strong: oklch(0.82 0 0);
+    --subtle: oklch(0.6 0 0);
+    --chip-bg: oklch(1 0 0);
+  }
+
+  [data-disclosure-panel],
+  [data-disclosure-panel][hidden] {
+    display: grid !important;
+    grid-template-rows: 1fr !important;
+    opacity: 1 !important;
+    content-visibility: visible !important;
+    transition: none !important;
+  }
+
+  li,
+  dl > div,
+  figure {
+    break-inside: avoid;
+  }
+
+  h1,
+  h2,
+  h3 {
+    break-after: avoid;
+  }
 }

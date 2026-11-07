@@ -12,6 +12,7 @@ import { StatusBadge } from '@/components/StatusDot';
 import { TechChipList } from '@/components/TechChip';
 import { roleAnchor } from '@/lib/anchors';
 import type { GroupedExperience } from '@/lib/portfolio-data';
+import type { ReactNode } from 'react';
 
 /** Width of the rail column; matches the `md` company logo so dots centre under it. */
 const RAIL = 'grid grid-cols-[2.75rem_1fr] gap-x-4';
@@ -21,7 +22,14 @@ const RAIL = 'grid grid-cols-[2.75rem_1fr] gap-x-4';
  * is a dot on that rail with its own dates, so promotions read as a line going up.
  * Dates live only on roles, never repeated on the company. Role details open inline.
  */
-export function WorkExperienceList({ groups }: { groups: readonly GroupedExperience[] }) {
+export function WorkExperienceList({
+  groups,
+  summary,
+}: {
+  groups: readonly GroupedExperience[];
+  /** Shown on the left of the toolbar row, sharing it with Expand all (e.g. the stats). */
+  summary?: ReactNode;
+}) {
   const allKeys = groups.flatMap((group) => group.roles.map(roleAnchor));
   const roles = useDisclosureSet(allKeys, allKeys.slice(0, 1));
   // Keys are the anchors, so a `/work#<role>` link opens that role.
@@ -29,11 +37,15 @@ export function WorkExperienceList({ groups }: { groups: readonly GroupedExperie
 
   return (
     <div>
-      <div className="flex justify-end">
-        <ExpandAllButton allOpen={roles.allOpen} onClick={roles.toggleAll} />
+      <div className="flex items-center justify-between gap-4 border-b border-[var(--border)] pb-4">
+        {summary}
+        {/* Pull the button's padding out so its text lines up with the right edge. */}
+        <div className="-mr-2 ml-auto">
+          <ExpandAllButton allOpen={roles.allOpen} onClick={roles.toggleAll} />
+        </div>
       </div>
 
-      <ol className="mt-4 space-y-10">
+      <ol className="mt-8 space-y-10">
         {groups.map((group) => (
           <li key={`${group.company}-${group.period}`}>
             <div className={`${RAIL} items-center`}>

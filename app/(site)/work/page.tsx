@@ -14,18 +14,21 @@ const companies = groupExperience(experience);
 export default function WorkPage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-5 pt-8 pb-16 md:pt-12">
-      <PageHeader title="Work" description="My work experience across companies and roles.">
-        <StatRow
-          items={[
-            { value: profile.experienceYears, label: 'years' },
-            { value: companies.length, label: 'companies' },
-            { value: experience.length, label: 'roles' },
-          ]}
-        />
-      </PageHeader>
+      <PageHeader title="Work" description="My work experience across companies and roles." />
 
-      <div className="mt-8 border-t border-[var(--border)] pt-3">
-        <WorkExperienceList groups={companies} />
+      <div className="mt-5">
+        <WorkExperienceList
+          groups={companies}
+          summary={
+            <StatRow
+              items={[
+                { value: profile.experienceYears, label: 'years' },
+                { value: companies.length, label: 'companies' },
+                { value: experience.length, label: 'roles' },
+              ]}
+            />
+          }
+        />
       </div>
 
       <PageQuote quote={sitePageQuotes.work} />

@@ -741,7 +741,7 @@ export const siteNav = [
   {
     href: '/hobbies',
     label: 'Hobbies',
-    description: 'Life beyond code',
+    description: 'Life beyond work, and what I’m reading',
     keywords: ['hobbies', 'interests', 'personal', 'painting', 'music', 'coffee', 'books'],
     shortcut: 'Y',
   },

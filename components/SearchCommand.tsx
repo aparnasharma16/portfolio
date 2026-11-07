@@ -510,7 +510,7 @@ export function SearchCommand() {
             <div className="flex items-center gap-4 border-t border-[var(--border)] px-4 py-1.5 text-caption text-[var(--muted-fg)] pointer-coarse:hidden">
               <span>↑↓ to move</span>
               <span>↵ to open</span>
-              <span className="ml-auto">{shortcut} to close</span>
+              <span className="ml-auto">Esc to close</span>
             </div>
           </motion.div>
         </div>

@@ -36,7 +36,7 @@ export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Pro
       <SectionHeading
         id="home-experience"
         title="Experience"
-        action={{ href: '/work', subject: 'roles', count: jobs.length }}
+        action={{ href: '/work', subject: 'experience', label: 'View full timeline' }}
       />
 
       <ol className="relative mt-5">

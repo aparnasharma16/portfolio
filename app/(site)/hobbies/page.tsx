@@ -13,10 +13,7 @@ export const metadata: Metadata = pageMetadata({ title: titleFor('Hobbies'), des
 export default function HobbiesPage() {
   return (
     <main id="main" className="mx-auto max-w-2xl px-5 pt-8 pb-16 md:pt-12">
-      <PageHeader
-        title="Beyond work"
-        description="Life beyond the keyboard, and what I’m reading."
-      />
+      <PageHeader title="Hobbies" description="Life beyond work, and what I’m reading." />
 
       <div className="mt-12 space-y-14">
         <Hobbies items={hobbies} />

@@ -60,7 +60,9 @@ function Hero() {
               fill
               sizes="56px"
               className="object-cover object-top"
-              priority
+              // Above the fold, so never lazy; but it's a small avatar, not the LCP element
+              // (the headline is), so it doesn't take a high-priority preload.
+              loading="eager"
             />
           </div>
           <span

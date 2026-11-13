@@ -66,7 +66,10 @@ publishing.
   - Section headings with a "View all" link: `SectionHeading` + `ViewAllLink`.
   - Tech and skill pills: `TechChip` / `TechChipList`. Add missing brand glyphs there.
   - Expandable rows: `Disclosure` + `useDisclosureSet` (with `ExpandAllButton`). Bullets: `BulletList`.
-  - Page chrome (header, footer, dock): `SiteShell`. Theme state: `lib/theme.ts` (`useIsDark`, `toggleTheme`).
+  - Page chrome (header, footer, dock, toast): `SiteShell`. Theme state: `lib/theme.ts` (`useIsDark`,
+    `toggleTheme`); style per theme with the `dark:` variant, never a JS-applied class.
+  - Confirmations: `showToast()` from `components/Toast.tsx` (one shared region; never render a second one).
+  - Hover labels on icon-only controls: `IconTooltip`. Overlays: native `<dialog>` / `popover`.
   - Social links: `SocialLinks`. Logos: `CompanyLogo` (has a monogram fallback).
   - Status dot and badge: `StatusDot` / `StatusBadge`.
   - Buttons: `ButtonLink`. Page intros: `PageHeader`. Section titles: `SectionIntro` (full

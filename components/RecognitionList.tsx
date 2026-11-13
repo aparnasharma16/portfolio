@@ -18,7 +18,7 @@ export function Recognition({
   testimonials: readonly Testimonial[];
 }) {
   return (
-    <section id="recognition" aria-labelledby="recognition-title" className="scroll-mt-20">
+    <section id="recognition" aria-labelledby="recognition-title">
       <SectionIntro id="recognition-title" title="Recognition" />
 
       <h3 className="mt-6 text-small font-semibold text-[var(--foreground)]">
@@ -44,10 +44,7 @@ export function Recognition({
 
       {testimonials.length > 0 ? (
         <>
-          <h3
-            id="testimonials"
-            className="mt-10 scroll-mt-20 text-small font-semibold text-[var(--foreground)]"
-          >
+          <h3 id="testimonials" className="mt-10 text-small font-semibold text-[var(--foreground)]">
             Kind words
           </h3>
           <div className="mt-4">

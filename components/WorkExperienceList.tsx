@@ -67,7 +67,7 @@ export function WorkExperienceList({
                 const open = roles.isOpen(key);
                 const isLast = index === group.roles.length - 1;
                 return (
-                  <li key={key} id={key} className={`${RAIL} scroll-mt-20`}>
+                  <li key={key} id={key} className={RAIL}>
                     <RailNode active={open} continues={!isLast} />
                     <div className="min-w-0">
                       <Disclosure

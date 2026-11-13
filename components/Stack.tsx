@@ -99,7 +99,7 @@ export function StackPreview({ groups, groupLimit = 4, itemLimit = 4, href }: St
 /** Impact page: every group, with what it is used for. */
 export function StackBreakdown({ groups }: { groups: readonly StackGroup[] }) {
   return (
-    <section id="stack" aria-labelledby="stack-title" className="scroll-mt-20">
+    <section id="stack" aria-labelledby="stack-title">
       <SectionIntro
         id="stack-title"
         title="Expertise"

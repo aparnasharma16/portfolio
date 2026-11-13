@@ -2,6 +2,7 @@ import { MobileDock } from '@/components/MobileDock';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
 import { ToastRegion } from '@/components/Toast';
+import { profile, siteNav } from '@/lib/portfolio-data';
 import type { ReactNode } from 'react';
 
 /** Page chrome shared by every route: skip link, header, footer, the mobile dock, and the toast. */
@@ -14,10 +15,10 @@ export function SiteShell({ children }: { children: ReactNode }) {
       >
         Skip to content
       </a>
-      <SiteHeader />
+      <SiteHeader name={profile.name} nav={siteNav} />
       <div className="flex-1">{children}</div>
       <SiteFooter />
-      <MobileDock />
+      <MobileDock nav={siteNav} />
       <ToastRegion />
     </div>
   );

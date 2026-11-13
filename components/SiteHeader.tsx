@@ -3,8 +3,7 @@
 import { isActivePath } from '@/components/navIcons';
 import { SearchCommand } from '@/components/SearchCommand';
 import { ThemeToggle } from '@/components/ThemeToggle';
-import { profile, siteNav } from '@/lib/portfolio-data';
-import { motion, useReducedMotion } from 'motion/react';
+import type { siteNav } from '@/lib/portfolio-data';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
@@ -34,10 +33,9 @@ function useScrolledFallback() {
  * Top bar. Desktop shows the primary nav inline; on mobile the nav lives in the
  * bottom `MobileDock`, so the bar only carries the name, search, and theme.
  */
-export function SiteHeader() {
+export function SiteHeader({ name, nav }: { name: string; nav: typeof siteNav }) {
   const pathname = usePathname();
   const scrolled = useScrolledFallback();
-  const reduceMotion = useReducedMotion();
 
   return (
     <header
@@ -52,11 +50,11 @@ export function SiteHeader() {
       <div className="mx-auto flex h-14 max-w-2xl items-center gap-4 px-5">
         {/* Mobile brand on every page, so the bar looks the same across routes. */}
         <Link href="/" className="touch-target text-subheading text-[var(--foreground)] sm:hidden">
-          {profile.name}
+          {name}
         </Link>
 
-        <nav className="hidden items-center sm:flex" aria-label="Primary">
-          {siteNav.map((item) => {
+        <nav className="nav-underline relative hidden items-center sm:flex" aria-label="Primary">
+          {nav.map((item) => {
             const active = isActivePath(pathname, item.href);
             return (
               <Link
@@ -71,14 +69,10 @@ export function SiteHeader() {
               >
                 {item.label}
                 {active ? (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-x-3 -bottom-3 h-0.5 rounded-full bg-[var(--foreground)]"
-                    transition={
-                      reduceMotion
-                        ? { duration: 0 }
-                        : { type: 'spring', stiffness: 500, damping: 38 }
-                    }
+                  // Static underline for browsers without anchor positioning; elsewhere one
+                  // underline on the nav slides between links (`.nav-underline`, globals.css).
+                  <span
+                    className="nav-underline-fallback absolute inset-x-3 -bottom-3 rounded-full border-b-2 border-[var(--foreground)]"
                     aria-hidden
                   />
                 ) : null}

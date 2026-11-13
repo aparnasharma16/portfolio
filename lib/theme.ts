@@ -1,5 +1,5 @@
 import { THEME_STORAGE_KEY } from '@/lib/theme-init';
-import { useSyncExternalStore } from 'react';
+import { useEffect, useSyncExternalStore } from 'react';
 
 type Pinned = 'light' | 'dark';
 
@@ -46,6 +46,21 @@ export function toggleTheme() {
   }
 }
 
+/** Apply a theme change made in another tab. */
+function onStorage(event: StorageEvent) {
+  if (event.key !== THEME_STORAGE_KEY && event.key !== null) return;
+  const value = event.key === null ? null : event.newValue;
+  applyScheme(value === 'light' || value === 'dark' ? value : null);
+}
+
+/** Keep this tab's theme in sync with toggles in other tabs. Mount once (ThemeToggle does). */
+export function useThemeSync() {
+  useEffect(() => {
+    window.addEventListener('storage', onStorage);
+    return () => window.removeEventListener('storage', onStorage);
+  }, []);
+}
+
 function subscribe(onChange: () => void) {
   // Pinned scheme changes (this tab), and OS scheme changes while following the OS.
   const observer = new MutationObserver(onChange);
@@ -57,17 +72,9 @@ function subscribe(onChange: () => void) {
   });
   const query = darkQuery();
   query.addEventListener('change', onChange);
-  // Another tab toggled the theme: apply it here too (the observer then notifies).
-  const onStorage = (event: StorageEvent) => {
-    if (event.key !== THEME_STORAGE_KEY && event.key !== null) return;
-    const value = event.key === null ? null : event.newValue;
-    applyScheme(value === 'light' || value === 'dark' ? value : null);
-  };
-  window.addEventListener('storage', onStorage);
   return () => {
     observer.disconnect();
     query.removeEventListener('change', onChange);
-    window.removeEventListener('storage', onStorage);
   };
 }
 

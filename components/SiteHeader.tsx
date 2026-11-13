@@ -9,16 +9,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSyncExternalStore } from 'react';
 
+/** Browsers with scroll-state queries show the divider from CSS alone (globals.css). */
+const cssHandlesDivider = () => CSS.supports('container-type', 'scroll-state');
+
 function subscribeToScroll(onChange: () => void) {
+  if (cssHandlesDivider()) return () => {};
   window.addEventListener('scroll', onChange, { passive: true });
   return () => window.removeEventListener('scroll', onChange);
 }
 
-/** True once the page has scrolled, so the header can show its divider. */
-function useScrolled() {
+/**
+ * Fallback for browsers without scroll-state queries: true once the page has scrolled,
+ * so the header can show its divider. Always false where CSS does the job.
+ */
+function useScrolledFallback() {
   return useSyncExternalStore(
     subscribeToScroll,
-    () => window.scrollY > 4,
+    () => !cssHandlesDivider() && window.scrollY > 4,
     () => false
   );
 }
@@ -29,15 +36,19 @@ function useScrolled() {
  */
 export function SiteHeader() {
   const pathname = usePathname();
-  const scrolled = useScrolled();
+  const scrolled = useScrolledFallback();
   const reduceMotion = useReducedMotion();
 
   return (
     <header
-      className={`sticky top-0 z-50 border-b bg-[var(--background)] transition-colors duration-200 print:hidden ${
-        scrolled ? 'border-[var(--border)]' : 'border-transparent'
-      }`}
+      data-scrolled={scrolled ? '' : undefined}
+      className="site-header group/header sticky top-0 z-50 border-b border-transparent bg-[var(--background)] print:hidden"
     >
+      {/* Divider once scrolled: CSS scroll-state query, or `data-scrolled` as a fallback. */}
+      <span
+        className="site-header-rule pointer-events-none absolute inset-x-0 -bottom-px h-px bg-[var(--border)] opacity-0 transition-opacity duration-200 group-data-[scrolled]/header:opacity-100"
+        aria-hidden
+      />
       <div className="mx-auto flex h-14 max-w-2xl items-center gap-4 px-5">
         {/* Mobile brand on every page, so the bar looks the same across routes. */}
         <Link href="/" className="touch-target text-subheading text-[var(--foreground)] sm:hidden">

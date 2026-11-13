@@ -32,6 +32,11 @@ export default function ResumePage() {
         </div>
       </PageHeader>
 
+      {/* The preview below can't print, so a printout says where the resume itself is. */}
+      <p className="mt-8 hidden text-body print:block">
+        The full resume is a PDF: {new URL(pdf, profile.siteUrl).toString()}
+      </p>
+
       <div className="mt-10 print:hidden">
         {/* Inline PDF preview is unreliable on phones and tablets (iOS shows one page and
             won't scroll it), so touch screens get a tap target and the system viewer. */}

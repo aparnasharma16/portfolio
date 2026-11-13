@@ -44,7 +44,6 @@ export function ButtonLink({
     <a
       href={href}
       className={className}
-
       download={download || undefined}
       {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
     >

@@ -7,7 +7,7 @@ export function JumpNav({ items }: JumpNavProps) {
   return (
     <nav
       aria-label="On this page"
-      className="-mx-5 -my-1.5 [scrollbar-width:none] overflow-x-auto px-5 py-1.5 print:hidden"
+      className="-mx-5 -my-1.5 [scrollbar-width:none] overflow-x-auto px-5 py-1.5 print:hidden [&::-webkit-scrollbar]:hidden"
     >
       <ul className="flex w-max gap-1.5">
         {items.map((item) => (

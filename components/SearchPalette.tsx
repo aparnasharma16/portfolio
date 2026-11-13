@@ -218,7 +218,10 @@ export default function SearchPalette({ open, onClose }: SearchPaletteProps) {
           const link = document.createElement('a');
           link.href = profile.resumePdfPath;
           link.download = '';
+          // Firefox ignores clicks on a link that isn't in the document.
+          document.body.append(link);
           link.click();
+          link.remove();
         },
       },
       {

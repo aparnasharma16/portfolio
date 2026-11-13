@@ -1,7 +1,7 @@
 'use client';
 
 import { ChevronRightIcon } from '@/components/icons';
-import { useReducedMotion } from 'motion/react';
+import { usePrefersReducedMotion } from '@/lib/reduced-motion';
 import {
   useCallback,
   useEffect,
@@ -94,7 +94,7 @@ type DisclosurePanelProps = {
  */
 export function DisclosurePanel({ id, open, onReveal, children }: DisclosurePanelProps) {
   const ref = useRef<HTMLDivElement>(null);
-  const reduceMotion = useReducedMotion() ?? false;
+  const reduceMotion = usePrefersReducedMotion();
   // True once the panel is fully collapsed (closing transition finished).
   const [collapsed, setCollapsed] = useState(!open);
   const [wasOpen, setWasOpen] = useState(open);

@@ -22,6 +22,8 @@ type DisclosureProps = {
   children: ReactNode;
   /** `row`: full-bleed row inside a bordered list. `plain`: borderless, for open layouts. */
   variant?: keyof typeof variants;
+  /** Wrap the trigger in an `<h3>` so each row shows up in the page's heading outline. */
+  heading?: boolean;
 };
 
 const variants = {
@@ -45,21 +47,25 @@ export function Disclosure({
   onToggle,
   children,
   variant = 'row',
+  heading = false,
 }: DisclosureProps) {
   const panelId = useId();
 
+  const trigger = (
+    <button
+      type="button"
+      onClick={onToggle}
+      aria-expanded={open}
+      aria-controls={panelId}
+      className={`flex items-center gap-3 text-left transition-colors ${variants[variant].button}`}
+    >
+      <span className="min-w-0 flex-1">{summary}</span>
+      <ChevronIndicator open={open} />
+    </button>
+  );
   return (
     <>
-      <button
-        type="button"
-        onClick={onToggle}
-        aria-expanded={open}
-        aria-controls={panelId}
-        className={`flex items-center gap-3 text-left transition-colors ${variants[variant].button}`}
-      >
-        <span className="min-w-0 flex-1">{summary}</span>
-        <ChevronIndicator open={open} />
-      </button>
+      {heading ? <h3>{trigger}</h3> : trigger}
 
       <DisclosurePanel id={panelId} open={open} onReveal={onToggle}>
         <div className={variants[variant].panel}>{children}</div>

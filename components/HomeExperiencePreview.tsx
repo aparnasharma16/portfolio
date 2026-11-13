@@ -45,6 +45,8 @@ export function HomeExperiencePreview({ groups: grouped, education }: Props) {
           const isOpen = expanded === i;
           const panelId = `${baseId}-panel-${i}`;
           const latest = group.roles[0];
+          // Promotions share one row; say so, since the dates span every role.
+          const earlier = group.roles.length - 1;
           const hasMore = latest.highlights.length > PREVIEW_POINTS;
           return (
             <li key={`${group.company}-${group.period}`} className="relative">
@@ -67,6 +69,9 @@ export function HomeExperiencePreview({ groups: grouped, education }: Props) {
                   </span>
                   <span className="mt-0.5 block text-small text-[var(--muted-fg)]">
                     {latest.role}
+                    {earlier > 0
+                      ? `, after ${earlier} earlier role${earlier > 1 ? 's' : ''}`
+                      : null}
                   </span>
                 </span>
                 <span className="flex shrink-0 items-center gap-2 pt-0.5">
@@ -120,6 +125,7 @@ export function HomeExperiencePreview({ groups: grouped, education }: Props) {
               </span>
               <span className="mt-0.5 block text-small text-[var(--muted-fg)]">
                 {education.degree}
+                <span className="tabular-nums sm:hidden">, {education.years}</span>
               </span>
             </span>
             <span className="hidden shrink-0 pt-0.5 pr-6 text-small text-[var(--muted-fg)] tabular-nums sm:inline">

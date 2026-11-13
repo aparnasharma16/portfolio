@@ -64,12 +64,7 @@ export function useThemeSync() {
 function subscribe(onChange: () => void) {
   // Pinned scheme changes (this tab), and OS scheme changes while following the OS.
   const observer = new MutationObserver(onChange);
-  observer.observe(document.head, {
-    subtree: true,
-    childList: true,
-    attributes: true,
-    attributeFilter: ['content'],
-  });
+  observer.observe(schemeMeta(), { attributes: true, attributeFilter: ['content'] });
   const query = darkQuery();
   query.addEventListener('change', onChange);
   return () => {

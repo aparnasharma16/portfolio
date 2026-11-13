@@ -29,6 +29,7 @@ export const profile = {
     instagram: 'https://www.instagram.com/aparnasharma1601',
   },
   resumePdfPath: '/Aparna_Sharma_FullStack_Developer.pdf',
+  avatarPath: '/aparna-sharma.jpeg',
   siteUrl: 'https://aparnasharma.dev',
 };
 
@@ -528,6 +529,12 @@ export type GroupedExperience = {
   roles: ExperienceEntry[];
 };
 
+/** Start and end of a "Mon YYYY – Mon YYYY" range; a single date is both ends. */
+function periodBounds(period: string) {
+  const [start, end = start] = period.split(/\s+[–—-]\s+/);
+  return { start, end };
+}
+
 export function groupExperience(jobs: ExperienceEntry[]): GroupedExperience[] {
   const result: GroupedExperience[] = [];
   let i = 0;
@@ -541,13 +548,14 @@ export function groupExperience(jobs: ExperienceEntry[]): GroupedExperience[] {
       }
       const first = groupJobs[0];
       const last = groupJobs[groupJobs.length - 1];
+      const span = `${periodBounds(last.periodShort).start} – ${periodBounds(first.periodShort).end}`;
       result.push({
         company: [...new Set(groupJobs.map((j) => j.company))].join(' / '),
         logo: first.logo,
         location: first.location,
         workType: first.workType,
-        period: `${last.periodShort.split(' – ')[0]} – ${first.periodShort.split(' – ')[1]}`,
-        periodShort: `${last.periodShort.split(' – ')[0]} – ${first.periodShort.split(' – ')[1]}`,
+        period: span,
+        periodShort: span,
         current: first.current,
         roles: groupJobs,
       });

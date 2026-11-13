@@ -12,6 +12,7 @@ import {
   currentRole,
   education,
   experience,
+  groupExperience,
   profile,
   sitePageQuotes,
   stack,
@@ -37,7 +38,10 @@ export default function HomePage() {
       </MotionReveal>
 
       <div className="mt-16 space-y-16">
-        <HomeExperiencePreview jobs={experience} education={education} />
+        <HomeExperiencePreview
+          groups={groupExperience(experience).slice(0, 3)}
+          education={education}
+        />
         <StackPreview groups={stack} href="/impact#stack" />
         <TestimonialsPreview items={publishedTestimonials} href="/impact#testimonials" />
         <ContactCard />

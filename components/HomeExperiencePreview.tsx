@@ -6,7 +6,7 @@ import { SectionHeading } from '@/components/SectionHeading';
 import { StatusBadge } from '@/components/StatusDot';
 import { TechChipList } from '@/components/TechChip';
 import { roleAnchor } from '@/lib/anchors';
-import { type ExperienceEntry, groupExperience } from '@/lib/portfolio-data';
+import type { GroupedExperience } from '@/lib/portfolio-data';
 import Link from 'next/link';
 import { useId, useState } from 'react';
 
@@ -21,13 +21,12 @@ type Education = {
 const PREVIEW_POINTS = 2;
 
 type Props = {
-  jobs: ExperienceEntry[];
+  /** Roles already grouped by company (`groupExperience`), done on the server. */
+  groups: GroupedExperience[];
   education?: Education;
-  previewCount?: number;
 };
 
-export function HomeExperiencePreview({ jobs, education, previewCount = 3 }: Props) {
-  const grouped = groupExperience(jobs).slice(0, previewCount);
+export function HomeExperiencePreview({ groups: grouped, education }: Props) {
   const [expanded, setExpanded] = useState<number | null>(0);
   const baseId = useId();
 

@@ -27,7 +27,7 @@ export function CaseStudiesList({ studies }: { studies: readonly CaseStudy[] }) 
   useOpenFromHash((anchor) => (keys.includes(anchor) ? anchor : undefined), disclosure.show);
 
   return (
-    <section id="case-studies" aria-labelledby="case-studies-title" className="scroll-mt-20">
+    <section id="case-studies" aria-labelledby="case-studies-title">
       <div className="flex items-end justify-between gap-4">
         <SectionIntro
           id="case-studies-title"
@@ -41,7 +41,7 @@ export function CaseStudiesList({ studies }: { studies: readonly CaseStudy[] }) 
         {studies.map((study) => {
           const key = studyAnchor(study);
           return (
-            <li key={key} id={key} className="scroll-mt-20">
+            <li key={key} id={key}>
               <Disclosure
                 open={disclosure.isOpen(key)}
                 onToggle={() => disclosure.toggle(key)}

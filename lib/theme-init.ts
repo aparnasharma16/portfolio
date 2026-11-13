@@ -1,16 +1,23 @@
-/** localStorage key for the chosen theme. Kept here (server-safe) so the root layout can use it. */
+/** localStorage key for a pinned theme (`light` or `dark`). No entry means "follow the OS". */
 export const THEME_STORAGE_KEY = 'portfolio-theme';
 
+/**
+ * Runs before paint: applies a pinned theme by writing it into <meta name="color-scheme">,
+ * which the CSS reads (see the `dark` variant in globals.css). Without a pinned theme, or
+ * without JS, the meta stays `light dark` and the site follows the OS.
+ */
 export const themeInitScript = `
 (function () {
   try {
-    var k = "${THEME_STORAGE_KEY}";
-    var t = localStorage.getItem(k);
-    var root = document.documentElement;
-    if (t === "dark") root.classList.add("dark");
-    else if (t === "light") root.classList.remove("dark");
-    else if (window.matchMedia("(prefers-color-scheme: dark)").matches)
-      root.classList.add("dark");
+    var t = localStorage.getItem("${THEME_STORAGE_KEY}");
+    if (t !== "light" && t !== "dark") return;
+    var m = document.querySelector('meta[name="color-scheme"]');
+    if (!m) {
+      m = document.createElement("meta");
+      m.name = "color-scheme";
+      document.head.appendChild(m);
+    }
+    m.content = t;
   } catch (e) {}
 })();
 `;

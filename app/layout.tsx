@@ -34,6 +34,11 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${hankenGrotesk.variable} h-full antialiased`}
     >
+      <head>
+        {/* Both schemes supported, so the browser themes the canvas before CSS loads.
+            lib/theme.ts rewrites `content` to pin a scheme; CSS reads it from here. */}
+        <meta name="color-scheme" content="light dark" suppressHydrationWarning />
+      </head>
       <body className="flex min-h-full flex-col font-sans">
         <Script
           id="document-init"

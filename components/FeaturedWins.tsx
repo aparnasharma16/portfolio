@@ -5,7 +5,7 @@ import type { FeaturedWin } from '@/lib/portfolio-data';
 /** Headline outcomes: number first, then what it means. */
 export function ResultsGrid({ wins }: { wins: readonly FeaturedWin[] }) {
   return (
-    <section id="results" aria-labelledby="results-title" className="scroll-mt-20">
+    <section id="results" aria-labelledby="results-title">
       <SectionIntro
         id="results-title"
         title="Results"

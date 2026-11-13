@@ -5,7 +5,7 @@ import type { ExpertiseArea } from '@/lib/portfolio-data';
 /** Strengths as ruled rows: the label on the left, what it means on the right. */
 export function HowIWork({ areas }: { areas: readonly ExpertiseArea[] }) {
   return (
-    <section id="how-i-work" aria-labelledby="how-i-work-title" className="scroll-mt-20">
+    <section id="how-i-work" aria-labelledby="how-i-work-title">
       <SectionIntro
         id="how-i-work-title"
         title="How I work"

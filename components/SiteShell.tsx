@@ -1,9 +1,10 @@
 import { MobileDock } from '@/components/MobileDock';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SiteHeader } from '@/components/SiteHeader';
+import { ToastRegion } from '@/components/Toast';
 import type { ReactNode } from 'react';
 
-/** Page chrome shared by every route: skip link, header, footer, and the mobile dock. */
+/** Page chrome shared by every route: skip link, header, footer, the mobile dock, and the toast. */
 export function SiteShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex min-h-full flex-1 flex-col bg-[var(--background)] pb-[calc(5rem+env(safe-area-inset-bottom))] text-[var(--foreground)] sm:pb-0 print:pb-0">
@@ -17,6 +18,7 @@ export function SiteShell({ children }: { children: ReactNode }) {
       <div className="flex-1">{children}</div>
       <SiteFooter />
       <MobileDock />
+      <ToastRegion />
     </div>
   );
 }

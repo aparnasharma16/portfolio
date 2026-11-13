@@ -1,3 +1,4 @@
+import { IconTooltip } from '@/components/IconTooltip';
 import { GithubIcon, InstagramIcon, LinkedInIcon, XBrandIcon } from '@/components/icons';
 import { profile } from '@/lib/portfolio-data';
 
@@ -36,18 +37,5 @@ export function SocialLinks({ className }: SocialLinksProps) {
         );
       })}
     </ul>
-  );
-}
-
-/** Hover/focus label for icon-only controls (social links, copy email). */
-export function IconTooltip({ label }: { label: string }) {
-  return (
-    <span
-      className="pointer-events-none absolute -top-8 left-1/2 -translate-x-1/2 rounded-md bg-[var(--foreground)] px-2 py-0.5 text-caption font-medium whitespace-nowrap text-[var(--background)] opacity-0 shadow-lg transition-opacity group-hover:opacity-100 group-focus-visible:opacity-100"
-      aria-hidden
-    >
-      {label}
-      <span className="absolute -bottom-0.5 left-1/2 h-1.5 w-1.5 -translate-x-1/2 rotate-45 bg-[var(--foreground)]" />
-    </span>
   );
 }

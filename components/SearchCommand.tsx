@@ -15,23 +15,12 @@ import {
 } from '@/components/icons';
 import { navIcons } from '@/components/navIcons';
 import { TechGlyph } from '@/components/TechChip';
-import { Toast, useToast } from '@/components/Toast';
+import { showToast } from '@/components/Toast';
 import { profile, siteNav } from '@/lib/portfolio-data';
 import { contentIndex, type ContentGroup } from '@/lib/search-index';
 import { toggleTheme, useIsDark } from '@/lib/theme';
-import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import { usePathname, useRouter } from 'next/navigation';
-import {
-  useCallback,
-  useEffect,
-  useId,
-  useMemo,
-  useRef,
-  useState,
-  useSyncExternalStore,
-  type ReactNode,
-} from 'react';
-import { createPortal } from 'react-dom';
+import { useCallback, useEffect, useId, useMemo, useRef, useState, type ReactNode } from 'react';
 
 type GroupTitle = 'Pages' | ContentGroup | 'Actions';
 
@@ -102,7 +91,34 @@ function matchScore(command: Command, query: string): number | null {
   return 3;
 }
 
-const subscribeNever = () => () => {};
+/**
+ * Light dismiss (click the backdrop to close) where `<dialog closedby="any">` isn't
+ * supported yet. Tests the pointer position, not the event target, since the dialog is
+ * also the target for its own padding; press and release must both land outside.
+ */
+function addLightDismissFallback(dialog: HTMLDialogElement) {
+  if ('closedBy' in HTMLDialogElement.prototype) return () => {};
+  const outside = (event: PointerEvent) => {
+    const rect = dialog.getBoundingClientRect();
+    return (
+      event.clientX < rect.left ||
+      event.clientX > rect.right ||
+      event.clientY < rect.top ||
+      event.clientY > rect.bottom
+    );
+  };
+  let pressedOutside = false;
+  const onDown = (event: PointerEvent) => (pressedOutside = outside(event));
+  const onUp = (event: PointerEvent) => {
+    if (pressedOutside && outside(event)) dialog.close();
+  };
+  dialog.addEventListener('pointerdown', onDown);
+  dialog.addEventListener('pointerup', onUp);
+  return () => {
+    dialog.removeEventListener('pointerdown', onDown);
+    dialog.removeEventListener('pointerup', onUp);
+  };
+}
 
 /**
  * ⌘K palette: jump to a page, a role, a case study, or a tool in the stack, or run a
@@ -112,22 +128,14 @@ export function SearchCommand() {
   const router = useRouter();
   const pathname = usePathname();
   const isDark = useIsDark();
-  const reduceMotion = useReducedMotion();
-  const { message: toastMessage, show: showToast } = useToast();
   const listId = useId();
-  const mounted = useSyncExternalStore(
-    subscribeNever,
-    () => true,
-    () => false
-  );
 
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState('');
   const [active, setActive] = useState(0);
   const [recent, setRecent] = useState<string[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
-  const triggerRef = useRef<HTMLButtonElement>(null);
-  const rootRef = useRef<HTMLDivElement>(null);
+  const dialogRef = useRef<HTMLDialogElement>(null);
   const listRef = useRef<HTMLUListElement>(null);
 
   const openPalette = useCallback(() => {
@@ -137,11 +145,8 @@ export function SearchCommand() {
     setOpen(true);
   }, []);
 
-  const close = useCallback(() => {
-    setOpen(false);
-    // Next frame: the page behind is still inert until the dialog's effect cleans up.
-    requestAnimationFrame(() => triggerRef.current?.focus());
-  }, []);
+  /** Closing goes through the dialog; its `close` event syncs `open` (Esc and backdrop too). */
+  const close = useCallback(() => dialogRef.current?.close(), []);
 
   /** Go to `href`. Same-page anchors use the hash directly so open rows react to it. */
   const navigate = useCallback(
@@ -244,7 +249,7 @@ export function SearchCommand() {
         run: () => window.open(profile.links.github, '_blank', 'noopener,noreferrer'),
       },
     ],
-    [router, navigate, isDark, showToast]
+    [router, navigate, isDark]
   );
 
   /** Groups in display order; `results` is the same items flattened for keyboard nav. */
@@ -310,44 +315,32 @@ export function SearchCommand() {
     return () => window.removeEventListener('keydown', onKey);
   }, [open, close, openPalette]);
 
-  // While open: lock page scroll, make everything behind the dialog inert (no stray
-  // focus or screen-reader browsing), and focus the input.
+  // Open as a native modal: the browser makes the page inert, keeps focus inside, closes
+  // on Esc / back gesture, and returns focus to whatever opened it.
   useEffect(() => {
-    if (!open) return;
-    const { overflow } = document.body.style;
-    document.body.style.overflow = 'hidden';
-    const behind = Array.from(document.body.children).filter(
-      (el): el is HTMLElement => el instanceof HTMLElement && el !== rootRef.current && !el.inert
-    );
-    behind.forEach((el) => (el.inert = true));
-    const frame = requestAnimationFrame(() => inputRef.current?.focus());
-    return () => {
-      document.body.style.overflow = overflow;
-      behind.forEach((el) => (el.inert = false));
-      cancelAnimationFrame(frame);
-    };
+    const dialog = dialogRef.current;
+    if (!open || !dialog || dialog.open) return;
+    dialog.showModal();
+    inputRef.current?.focus();
   }, [open]);
 
-  // Keep the active row in view.
   useEffect(() => {
-    listRef.current?.querySelector('[aria-selected="true"]')?.scrollIntoView({ block: 'nearest' });
-  }, [active, open]);
+    const dialog = dialogRef.current;
+    return dialog ? addLightDismissFallback(dialog) : undefined;
+  }, []);
 
-  function onDialogKeyDown(event: React.KeyboardEvent<HTMLDivElement>) {
-    if (event.key === 'Escape') {
-      event.preventDefault();
-      close();
-    } else if (event.key === 'Tab') {
-      // Keep focus cycling inside the dialog (input and its close button).
-      const focusable = Array.from(
-        event.currentTarget.querySelectorAll<HTMLElement>('input, button')
-      );
-      const index = focusable.indexOf(document.activeElement as HTMLElement);
-      const next = (index + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length;
-      event.preventDefault();
-      focusable[next]?.focus();
-    }
-  }
+  // Keep the active row in view. Scrolls the list only: `scrollIntoView` would also scroll
+  // the page, since the dialog's DOM parent (the sticky header) sits in the document.
+  useEffect(() => {
+    const list = listRef.current;
+    const row = list?.querySelector<HTMLElement>('[aria-selected="true"]');
+    if (!list || !row) return;
+    const top = row.offsetTop - list.offsetTop;
+    const bottom = top + row.offsetHeight;
+    if (top < list.scrollTop) list.scrollTop = top;
+    else if (bottom > list.scrollTop + list.clientHeight)
+      list.scrollTop = bottom - list.clientHeight;
+  }, [active, open]);
 
   function onInputKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
     if (event.key === 'ArrowDown') {
@@ -371,157 +364,133 @@ export function SearchCommand() {
   );
 
   const palette = (
-    <AnimatePresence>
-      {open ? (
-        <div
-          ref={rootRef}
-          className="fixed inset-0 z-[9999] flex items-start justify-center px-4 pt-[min(18vh,10rem)]"
+    <dialog
+      ref={dialogRef}
+      // Click the backdrop to close (fallback above for browsers without `closedby`).
+      {...({ closedby: 'any' } as object)}
+      aria-label="Search and commands"
+      onClose={() => setOpen(false)}
+      className="command-dialog mx-auto mt-[min(18vh,10rem)] w-[calc(100%-2rem)] max-w-[32rem] overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--background)] p-0 text-[var(--foreground)] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.4)]"
+    >
+      <div className="flex items-center gap-3 border-b border-[var(--border)] pr-2 pl-4">
+        <SearchIcon className="h-4 w-4 shrink-0 text-[var(--muted-fg)]" />
+        <input
+          ref={inputRef}
+          type="text"
+          role="combobox"
+          aria-label="Search"
+          aria-expanded="true"
+          aria-controls={listId}
+          aria-activedescendant={activeCommand ? optionId(activeCommand) : undefined}
+          aria-autocomplete="list"
+          autoComplete="off"
+          autoCorrect="off"
+          autoCapitalize="off"
+          spellCheck={false}
+          enterKeyHint="go"
+          value={query}
+          onChange={(event) => {
+            setQuery(event.target.value);
+            setActive(0);
+          }}
+          onKeyDown={onInputKeyDown}
+          placeholder="Search roles, skills, pages"
+          // 16px on phones: anything smaller makes iOS Safari zoom the page on focus.
+          className="h-12 w-full min-w-0 bg-transparent text-base text-[var(--foreground)] placeholder:text-[var(--muted-fg)] focus-visible:outline-none sm:h-11 sm:text-body"
+        />
+        <button
+          type="button"
+          onClick={close}
+          aria-label="Close search"
+          className="shrink-0 rounded-md px-2 py-1 text-small font-medium text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] pointer-fine:border pointer-fine:border-[var(--border)] pointer-fine:px-1.5 pointer-fine:py-0.5 pointer-fine:text-caption"
         >
-          <motion.div
-            className="absolute inset-0 bg-black/50"
-            onClick={close}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: reduceMotion ? 0 : 0.15 }}
-            aria-hidden
-          />
-          <motion.div
-            role="dialog"
-            aria-modal="true"
-            aria-label="Search and commands"
-            onKeyDown={onDialogKeyDown}
-            className="relative w-full max-w-[32rem] overflow-hidden rounded-xl border border-[var(--border-strong)] bg-[var(--background)] shadow-[0_24px_64px_-16px_rgba(0,0,0,0.4)]"
-            initial={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: -6 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={reduceMotion ? { opacity: 0 } : { opacity: 0, scale: 0.98, y: -6 }}
-            transition={{ duration: reduceMotion ? 0 : 0.16, ease: [0.22, 1, 0.36, 1] }}
-          >
-            <div className="flex items-center gap-3 border-b border-[var(--border)] pr-2 pl-4">
-              <SearchIcon className="h-4 w-4 shrink-0 text-[var(--muted-fg)]" />
-              <input
-                ref={inputRef}
-                type="text"
-                role="combobox"
-                aria-label="Search"
-                aria-expanded="true"
-                aria-controls={listId}
-                aria-activedescendant={activeCommand ? optionId(activeCommand) : undefined}
-                aria-autocomplete="list"
-                autoComplete="off"
-                autoCorrect="off"
-                autoCapitalize="off"
-                spellCheck={false}
-                enterKeyHint="go"
-                value={query}
-                onChange={(event) => {
-                  setQuery(event.target.value);
-                  setActive(0);
-                }}
-                onKeyDown={onInputKeyDown}
-                placeholder="Search roles, skills, pages"
-                // 16px on phones: anything smaller makes iOS Safari zoom the page on focus.
-                className="h-12 w-full min-w-0 bg-transparent text-base text-[var(--foreground)] placeholder:text-[var(--muted-fg)] focus-visible:outline-none sm:h-11 sm:text-body"
-              />
-              <button
-                type="button"
-                onClick={close}
-                aria-label="Close search"
-                className="shrink-0 rounded-md px-2 py-1 text-small font-medium text-[var(--muted-fg)] transition-colors hover:bg-[var(--secondary)] hover:text-[var(--foreground)] pointer-fine:border pointer-fine:border-[var(--border)] pointer-fine:px-1.5 pointer-fine:py-0.5 pointer-fine:text-caption"
+          <span className="pointer-coarse:hidden">Esc</span>
+          <span className="pointer-fine:hidden">Cancel</span>
+        </button>
+      </div>
+
+      <ul
+        ref={listRef}
+        id={listId}
+        role="listbox"
+        aria-label="Results"
+        className="max-h-[min(22rem,55vh)] overflow-y-auto overscroll-contain p-1"
+      >
+        {results.length === 0 ? (
+          <li className="px-6 py-10 text-center text-small text-pretty text-[var(--muted-fg)]">
+            Nothing matches &ldquo;{query.trim()}&rdquo;. Try a skill like &ldquo;React&rdquo;, or
+            &ldquo;resume&rdquo;.
+          </li>
+        ) : (
+          groups.map((group) => (
+            <li key={group.title} role="presentation">
+              <p
+                className="px-2.5 pt-2.5 pb-1 text-caption font-medium text-[var(--muted-fg)]"
+                aria-hidden
               >
-                <span className="pointer-coarse:hidden">Esc</span>
-                <span className="pointer-fine:hidden">Cancel</span>
-              </button>
-            </div>
-
-            <ul
-              ref={listRef}
-              id={listId}
-              role="listbox"
-              aria-label="Results"
-              className="max-h-[min(22rem,55vh)] overflow-y-auto overscroll-contain p-1"
-            >
-              {results.length === 0 ? (
-                <li className="px-6 py-10 text-center text-small text-pretty text-[var(--muted-fg)]">
-                  Nothing matches &ldquo;{query.trim()}&rdquo;. Try a skill like
-                  &ldquo;React&rdquo;, or &ldquo;resume&rdquo;.
-                </li>
-              ) : (
-                groups.map((group) => (
-                  <li key={group.title} role="presentation">
-                    <p
-                      className="px-2.5 pt-2.5 pb-1 text-caption font-medium text-[var(--muted-fg)]"
-                      aria-hidden
+                {group.title}
+              </p>
+              <ul role="group" aria-label={group.title}>
+                {group.items.map((command) => {
+                  const index = results.indexOf(command);
+                  const selected = command === activeCommand;
+                  return (
+                    <li
+                      key={command.id}
+                      id={optionId(command)}
+                      role="option"
+                      aria-selected={selected}
+                      onMouseMove={() => setActive(index)}
+                      onClick={() => runCommand(command)}
+                      className={`flex min-h-10 cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-1.5 sm:min-h-9 ${
+                        selected ? 'bg-[var(--secondary)]' : ''
+                      }`}
                     >
-                      {group.title}
-                    </p>
-                    <ul role="group" aria-label={group.title}>
-                      {group.items.map((command) => {
-                        const index = results.indexOf(command);
-                        const selected = command === activeCommand;
-                        return (
-                          <li
-                            key={command.id}
-                            id={optionId(command)}
-                            role="option"
-                            aria-selected={selected}
-                            onMouseMove={() => setActive(index)}
-                            onClick={() => runCommand(command)}
-                            className={`flex min-h-10 cursor-pointer items-center gap-2.5 rounded-md px-2.5 py-1.5 sm:min-h-9 ${
-                              selected ? 'bg-[var(--secondary)]' : ''
-                            }`}
-                          >
-                            <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-[var(--muted-fg)]">
-                              {command.icon}
-                            </span>
-                            {/* Phones: title over description. Wider: one line, and the description
+                      <span className="flex h-3.5 w-3.5 shrink-0 items-center justify-center text-[var(--muted-fg)]">
+                        {command.icon}
+                      </span>
+                      {/* Phones: title over description. Wider: one line, and the description
                                 gives way first when space runs out. */}
-                            <span className="flex min-w-0 flex-1 flex-col sm:flex-row sm:items-baseline sm:gap-2.5">
-                              <span className="truncate text-body text-[var(--foreground)] sm:text-control">
-                                {command.title}
-                              </span>
-                              <span className="truncate text-small text-[var(--muted-fg)] sm:min-w-[4rem] sm:flex-1 sm:shrink-[4]">
-                                {command.description}
-                              </span>
-                            </span>
-                            <kbd
-                              className={`ml-auto shrink-0 font-sans text-caption text-[var(--muted-fg)] pointer-coarse:hidden ${
-                                selected ? 'opacity-100' : 'opacity-0'
-                              }`}
-                              aria-hidden
-                            >
-                              ↵
-                            </kbd>
-                          </li>
-                        );
-                      })}
-                    </ul>
-                  </li>
-                ))
-              )}
-            </ul>
+                      <span className="flex min-w-0 flex-1 flex-col sm:flex-row sm:items-baseline sm:gap-2.5">
+                        <span className="truncate text-body text-[var(--foreground)] sm:text-control">
+                          {command.title}
+                        </span>
+                        <span className="truncate text-small text-[var(--muted-fg)] sm:min-w-[4rem] sm:flex-1 sm:shrink-[4]">
+                          {command.description}
+                        </span>
+                      </span>
+                      <kbd
+                        className={`ml-auto shrink-0 font-sans text-caption text-[var(--muted-fg)] pointer-coarse:hidden ${
+                          selected ? 'opacity-100' : 'opacity-0'
+                        }`}
+                        aria-hidden
+                      >
+                        ↵
+                      </kbd>
+                    </li>
+                  );
+                })}
+              </ul>
+            </li>
+          ))
+        )}
+      </ul>
 
-            <p className="sr-only" role="status" aria-live="polite">
-              {query.trim()
-                ? `${results.length} ${results.length === 1 ? 'result' : 'results'}`
-                : ''}
-            </p>
+      <p className="sr-only" role="status" aria-live="polite">
+        {query.trim() ? `${results.length} ${results.length === 1 ? 'result' : 'results'}` : ''}
+      </p>
 
-            <div className="flex items-center gap-4 border-t border-[var(--border)] px-4 py-1.5 text-caption text-[var(--muted-fg)] pointer-coarse:hidden">
-              <span>↑↓ to move</span>
-              <span>↵ to open</span>
-              <span className="ml-auto">Esc to close</span>
-            </div>
-          </motion.div>
-        </div>
-      ) : null}
-    </AnimatePresence>
+      <div className="flex items-center gap-4 border-t border-[var(--border)] px-4 py-1.5 text-caption text-[var(--muted-fg)] pointer-coarse:hidden">
+        <span>↑↓ to move</span>
+        <span>↵ to open</span>
+        <span className="ml-auto">Esc to close</span>
+      </div>
+    </dialog>
   );
 
   return (
     <>
       <button
-        ref={triggerRef}
         type="button"
         onClick={openPalette}
         className="touch-target flex h-8 items-center gap-1.5 rounded-full border border-[var(--border)] px-2 text-[var(--muted-fg)] transition-colors hover:border-[var(--border-strong)] hover:text-[var(--foreground)] sm:pr-1.5 sm:pl-2.5"
@@ -535,8 +504,7 @@ export function SearchCommand() {
         </kbd>
       </button>
 
-      {mounted ? createPortal(palette, document.body) : null}
-      <Toast message={toastMessage} />
+      {palette}
     </>
   );
 }

@@ -72,6 +72,7 @@ export function WorkExperienceList({
                     <div className="min-w-0">
                       <Disclosure
                         variant="plain"
+                        heading
                         open={open}
                         onToggle={() => roles.toggle(key)}
                         summary={

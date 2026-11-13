@@ -59,8 +59,9 @@ function Hero() {
         <div className="relative shrink-0">
           <div className="relative h-14 w-14 overflow-hidden rounded-full border border-[var(--border)]">
             <Image
-              src="/new_image.jpeg"
-              alt={profile.name}
+              src={profile.avatarPath}
+              // Decorative: the name is the heading right beside it.
+              alt=""
               fill
               sizes="56px"
               className="object-cover object-top"
@@ -74,6 +75,8 @@ function Hero() {
             title={profile.availabilityNote}
           >
             <StatusDot className="h-3 w-3" />
+            {/* `title` is mouse-only; this gives the status to screen readers too. */}
+            <span className="sr-only">{profile.availabilityNote}</span>
           </span>
         </div>
         <div className="min-w-0">

@@ -43,6 +43,7 @@ export function CaseStudiesList({ studies }: { studies: readonly CaseStudy[] }) 
           return (
             <li key={key} id={key}>
               <Disclosure
+                heading
                 open={disclosure.isOpen(key)}
                 onToggle={() => disclosure.toggle(key)}
                 summary={<StudySummary study={study} open={disclosure.isOpen(key)} />}

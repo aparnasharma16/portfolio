@@ -69,7 +69,7 @@ export function StackPreview({ groups, groupLimit = 4, itemLimit = 4, href }: St
       <SectionHeading
         id="stack-preview"
         title="Expertise"
-        action={{ href, subject: 'skills and tools', unit: '', count: total }}
+        action={{ href, subject: 'skills and tools', unit: 'skills', count: total }}
       />
       <div className="mt-4 overflow-hidden rounded-xl border border-[var(--border)]">
         <dl className="divide-y divide-[var(--border)]">

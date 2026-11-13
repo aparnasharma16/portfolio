@@ -44,7 +44,7 @@ export default function BlogPage() {
           <ul className={`mt-6 ${rowList}`}>
             {upcomingBlogTopics.map((topic) => (
               <li key={topic.title} className="py-4">
-                <p className="text-subheading text-[var(--foreground)]">{topic.title}</p>
+                <h3 className="text-subheading text-[var(--foreground)]">{topic.title}</h3>
                 <p className="mt-0.5 text-small text-[var(--muted-fg)]">{topic.hint}</p>
               </li>
             ))}

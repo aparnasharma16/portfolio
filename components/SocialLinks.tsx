@@ -20,7 +20,7 @@ export function SocialLinks({ className }: SocialLinksProps) {
       className={`flex flex-wrap items-center gap-1 print:hidden pointer-coarse:gap-4 ${className ?? ''}`}
       aria-label="Social links"
     >
-      {socialLinks.map(({ key, href, label, Icon }) => {
+      {socialLinks.map(({ key, href, label, Icon }, index) => {
         const external = href.startsWith('http');
         return (
           <li key={key}>
@@ -31,7 +31,8 @@ export function SocialLinks({ className }: SocialLinksProps) {
               {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
             >
               <Icon className="h-4 w-4" />
-              <IconTooltip label={label} />
+              {/* The first icon sits at the page's left edge; a centred label would clip. */}
+              <IconTooltip label={label} align={index === 0 ? 'start' : 'center'} />
             </a>
           </li>
         );

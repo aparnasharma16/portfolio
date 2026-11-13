@@ -1,13 +1,15 @@
 'use client';
 
 import { MoonIcon, SunIcon } from '@/components/icons';
-import { toggleTheme } from '@/lib/theme';
+import { toggleTheme, useThemeSync } from '@/lib/theme';
 
 /**
  * Light/dark switch. Both states are in the markup and CSS (`dark:`) shows the right one,
  * so the icon and its label are correct from the first paint, with or without JS.
  */
 export function ThemeToggle() {
+  useThemeSync();
+
   return (
     <button
       type="button"

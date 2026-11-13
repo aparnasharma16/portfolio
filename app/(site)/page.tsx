@@ -96,9 +96,10 @@ function Hero() {
       </p>
 
       {/* One action row: contact first, resume second, then profiles. On phones the two
-          buttons share a row at equal width and the icons sit underneath. */}
+          buttons share a row at equal width (stacked below 360px, where both labels won't
+          fit side by side) and the icons sit underneath. */}
       <div className="mt-7 flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-5">
-        <div className="grid grid-cols-2 gap-3 sm:flex">
+        <div className="grid gap-3 min-[360px]:grid-cols-2 sm:flex">
           <ButtonLink href={profile.links.email}>
             <MailIcon className="h-4 w-4" />
             Get in touch

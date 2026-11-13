@@ -2,7 +2,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 
 const base =
-  'touch-target inline-flex h-9 items-center print:hidden justify-center gap-2 rounded-lg px-4 text-control font-medium transition active:scale-[0.98]';
+  'touch-target inline-flex h-9 items-center print:hidden justify-center gap-2 rounded-lg px-4 text-control font-medium whitespace-nowrap transition active:scale-[0.98]';
 
 const variants = {
   solid: `${base} bg-[var(--foreground)] text-[var(--background)] hover:opacity-90`,
